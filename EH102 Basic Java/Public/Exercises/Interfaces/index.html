@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>EH102 Exercises</title>
+<link href="../../.ehsdi/exercises.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>EH102 Exercises</h1>
+<p align="right"><a href="../../index.html">&#9668; Back to unit page</a></p>
+
+<h2>Interfaces</h2>
+<p>This set of exercises explores Java interfaces - pure abstract classes.</p>
+
+<h3>1. Implementing a calculator</h3>
+<p>Implement the following interface to create a working calculator, and create a program which tests each of the 4 mathematical operations.</p>
+<pre>interface SimpleCalculator {
+  public double add(double x, double y);
+  public double sub(double x, double y);
+  public double mul(double x, double y);
+  public double div(double x, double y);
+}</pre>
+<div class="solution">Solution: <a href="Exercise01.java">Exercise01.java</a></div>
+
+<h3>2. Multiple inheritance using interfaces</h3>
+<p>Although it is not valid in Java for a class to extend multiple classes, it is valid  for a class to implement several interfaces.</p>
+<ol>
+  <li>Create an interface called <code>A</code> which has
+<ul>
+      <li>A data member called <code>PI</code> of type <code>double</code></li>
+      <li>A method called <code>foo</code></li>
+    </ul>
+  </li>
+  <li>Create another interface called <code>B</code> which extends <code>A</code> and adds
+<ul>
+      <li>A method called <code>bar</code></li>
+    </ul>
+  </li>
+  <li>Create a third interface called <code>C</code> which has
+    <ul>
+      <li>A method called <code>hello</code></li>
+    </ul>
+  </li>
+  <li>Create a class which implements <code>B</code> and <code>C</code>. Observe that this class must define all the methods in <code>A</code>, <code>B</code> and <code>C</code> and has access to <code>PI</code></li>
+</ol>
+<div class="solution">Solution: <a href="Exercise02.java">Exercise02.java</a></div>
+
+<h3>3. Implementing a generic interface</h3>
+<p>The <code>Arrays.sort(Object[] array)</code> method can sort an array of any object type, provided that the object type implements <code>Comparable</code>. <code>Comparable</code> is a generic interface, so</p>
+<ol>
+  <li>Create a class called Person with <em>surname</em> and <em>forename</em> properties of type <code>String</code></li>
+  <li>Make person implement <code>Comparable&lt;Person&gt;</code></li>
+  <li>Edit the <code>compareTo</code> method to make it compare two persons by comparing their surnames</li>
+  <li>Create a Java program with an array of <code>Person</code> objects with different names</li>
+  <li>Pass the array to <code>Array.sort(...)</code> before printing each item in the array to see the new order</li>
+</ol>
+<div class="solution">Solution: <a href="Exercise03.java">Exercise03.java</a></div>
+
+</body>
+</html>

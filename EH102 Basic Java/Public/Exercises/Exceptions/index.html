@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>EH102 Exercises</title>
+<link href="../../.ehsdi/exercises.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>EH102 Exercises</h1>
+<p align="right"><a href="../../index.html">&#9668; Back to unit page</a></p>
+
+<h2>Exceptions</h2>
+<p>These exercises are designed to reinforce the concepts in the Exceptions lecture</p>
+
+<h3>1. Basic Exceptions</h3>
+<p>This is a simple program which demonstrates throwing and catching exceptions.</p>
+<ul>
+<li>Create your own class called ReverseString and a main() which will be empty for now.</li>
+<li>Create a static method called reverse.  It takes an argument of a String and returns a String.</li>
+<li>In reverse, check if the String has a length of 0.  If the length is 0, the reverse method will throw an exception.</li>
+<li>Now include the code to reverse the String.  Do not use the String method reverse().</li>
+<li>Now, in the main() method, attempt to call this method inside of a try block and deal with any potential exceptions in the catch.  Include a finally statement that displays when main() has finished.</li> 
+</ul>
+<div class="solution">Solution: <a href="ReverseString.java">ReverseString.java</a></div>
+
+<h3>2. Errors</h3>
+<p>This exercise demonstrates catching an Error.</p>
+<ul>
+<li>Create your own class called StackOverflow and a main() which calls a static method named myMethod.</li>
+<li>Create a static method called myMethod.  It takes no arguments and simply calls itself.</li>
+<li>Wrap this call to itself in a try and in the catch, print out something to the console to show that you have a chance to do something before the Error shuts everything down.  The toString method on the error will print out what type of error is occuring.</li>
+</ul>
+<div class="solution">Solution: <a href="StackOverflow.java">StackOverflow.java</a></div>
+
+<h3>3. Runtime Exceptions</h3>
+<p>Remember, runtime exceptions are unchecked.  They are usually not handled, but instead, the program is modified to prevent them from occurring in the first place.</p>
+<p>Create your own class which when run causes an ArrayOutOfBoundsException and run it.</p>
+<div class="solution">Solution: <a href="ArrayOutOfBounds.java">ArrayOutOfBounds.java</a></div>
+<p>Handle the ArrayOutOfBounds Runtime Exception by wrapping it in a try catch block and re-run your program.</p>
+<div class="solution">Solution: <a href="ArrayOutOfBounds2.java">ArrayOutOfBounds2.java</a></div>
+
+<h3>4. Custom Exceptions</h3>
+<p>In this exercise, you will create your own type of exception.</p>
+<ul>
+<li>Create your own class called GoodHobbies and a main() which will be empty for now.</li>
+<li>Create a class called BadHobbyException (can be in same file or same package) which extends Exception.</li>
+<li>Create a method inside GoodHobbies called checkHobby which is NOT static takes a String arguments and throws a BadHobbyException if the hobby passed in is bad.  Otherwise, print out that the hobby is good to the console.  Create a list of good hobbies and add whatever you like.</li>
+<li>In the main() method get the hobby out of the command line argument and create a GoodHobbies Object and call the checkHobby method with the hobby.</li>
+</ul>
+<div class="solution">Solution: <a href="GoodHobbies.java">GoodHobbies.java</a></div>
+
+<h3>5. Exception Heirarcy and Rethrowing Exceptions</h3>
+<p>This exercise will combine many topics including java io, throwing and catching exceptions, the exception heirarchy, and rethrowing exceptions.</p>
+<ul>
+<li>Create your own class called ReadFile and a main() which will call the method ReadFile passing one String argument, the name of the file to read which is myFile.txt, from within a try.  This file does not exist on the filesystem.</li>
+<li>Create a static method readFile which takes a String as the parameter.</li>
+<li>Create a File object.  From within a try block attempt to read the file using the classes FileReader and BufferedReader.  See the Java API for details on how to use these.</li>
+<li>Inside the catch, catch an IOException and a FileNotFoundException.</li>
+<li>If the file is not found, attempt to create the file from within that catch.  See the API for the appropriate method.  If the attempt fails, rethrow the FileNotFoundException.</li>
+<li>Run this program twice.  The first time, there should be an exception because the file doesn't exist but the second time, the file will already be there because you created it when there was a FileNotFoundException the first time you ran the program.</li>
+</ul>
+<div class="solution">Solution: <a href="ReadFile.java">ReadFile.java</a></div>
+
+</body>
+</html>

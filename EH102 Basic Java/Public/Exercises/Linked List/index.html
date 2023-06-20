@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>EH102 Exercises</title>
+<link href="../../.ehsdi/exercises.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>EH102 Exercises</h1>
+<p align="right"><a href="../index.html">Back to exercise list</a></p>
+
+<h2>Linked List</h2>
+<p>This tutorial develops a custom collection class based on the linked list data structure (slides: <a href="LinkedList.pptx">PPTX</a> <a href="LinkedList.pdf">PDF</a>).</p>
+
+<h3>1. Creating the nodes</h3>
+<p>Linked lists work by using a holders (called nodes) to hold a data element and link to another holder. So we start by creating a node class which will initially be used to hold strings. The class needs the following properties (remember to create getter and setter methods for the properties):</p>
+<ul>
+  <li><em>data</em> (<code>String</code>)</li>
+  <li><em>next</em> (same class as itself)</li>
+</ul>
+<p>Create also a simple application to test this node class. It should create some instances of the node class, assign data (i.e. a string) to each one, and then link them using their <em>next</em> properties. Assuming the first node in the chain of linked nodes is called <code>first</code>, we can iterate through the chain using:</p>
+<pre>LinkedListNode1 current = first;
+<strong>while</strong> (current != null) {
+  System.out.println(current.getData());
+  current = current.getNext();
+}</pre>
+<div class="solution">Solution: <a href="LinkedListNode1.java">LinkedListNode1.java</a>, <a href="LinkedListTest1.java">LinkedListTest1.java</a></div>
+
+<h3>2. Working with Object data items</h3>
+<p>In order to allow our linked list to store objects of any type - we should change the type of the data variables in the node class to <code>Object</code> instead of <code>String</code>. Then the test application can be modifed to add items of any type (e.g. <code>int</code>, <code>boolean</code>, <code>String</code>).</p>
+<div class="solution">Solution: <a href="LinkedListNode2.java">LinkedListNode2.java</a>, <a href="LinkedListTest2.java">LinkedListTest2.java</a></div>
+
+<h3>3. Creating the list class</h3>
+<p>Next we create the actual list class that will hold the nodes, and manage tasks such as adding items to the list. To hold all of the nodes the list class only needs a reference to the first node in the chain of nodes. However, in order to add items to the end of the list, it is convenient to also keep a reference to the last node in the chain. The list class should have an <code>add(Object obj)</code> method which works as follows (assuming the list class has node variables called <code>first</code> and <code>last</code>):</p>
+<ol>
+	<li>Creates a new node object and sets <code>obj</code> as its data item</li>
+	<li>If <code>first</code> is <code>null</code>, the list must be empty, so set <code>first</code> to reference the new node</li>
+	<li>If <code>last</code> is not <code>null</code>, then set it's <em>next</em> reference to the new node</li>
+	<li>Set <code>last</code> to reference the new node</li>
+</ol>
+<div class="solution">Solution: <a href="LinkedList3.java">LinkedList3.java</a>, <a href="LinkedListTest3.java">LinkedListTest3.java</a></div>
+<h3>4. Going generic</h3>
+<p>Next we modify our list and node classes to be generic, i.e. to allow the user to specify a type parameter rather than just use object references.</p>
+<ol>
+  <li>Add a type parameter called <code>T</code> to <code>LinkedListNode</code>.</li>
+  <li>Change the data member to be of type <code>T</code> and update the <code>getData</code> and <code>setData</code> methods.</li>
+  <li>Add a type parameter called <code>T </code>to <code>LinkedList</code> and update the <code>first</code> and <code>last</code> node objects to use that type parameter.</li>
+  <li>Update the <code>add</code> method of <code>LinkedList</code> to take a parameter of type <code>T</code>.</li>
+  <li>Update the test application to use an instance of <code>LinkedList&lt;String&gt;</code>.</li>
+</ol>
+<div class="solution">Solution: <a href="LinkedListNode4.java">LinkedListNode4.java</a>, <a href="LinkedList4.java">LinkedList4.java</a>, <a href="LinkedListTest4.java">LinkedListTest4.java</a></div>
+
+<h3>5. Extra functionality</h3>
+<p>Finally we want to implement some extra methods on the <code>LinkedList</code> class to make it more useful. Try adding the following methods:</p>
+<ol>
+  <li><code>size()</code> - returns the number of elements in the list (hint: add a counter to count the calls to <code>add</code>).</li>
+  <li><code>get(int index)</code> - returns the data item at the specified index.</li>
+</ol>
+<p>Test the <code>size</code> and <code>get</code> methods by looping through the list in your test application as follows:</p>
+<pre>
+<strong>for</strong> (<strong>int</strong> i = 0; i &lt; list.size(); i++) {
+  System.out.println(list.get(i));
+}</pre>
+<div class="solution">Solution: <a href="LinkedList5.java">LinkedList5.java</a>, <a href="LinkedListTest5.java">LinkedListTest5.java</a></div>
+
+</body>
+</html>
