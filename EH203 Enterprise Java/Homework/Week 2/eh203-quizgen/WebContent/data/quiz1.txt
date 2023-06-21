@@ -1,0 +1,16 @@
+T Who wants to be a Java programaire!
+Q What does JSP stand for?
+W Jolly Super Pages
+W Java Secret Police
+A Java Server Pages
+W Java Super Pages
+Q Which of the following is the correct way to access a request parameter in a servlet?
+W Request.GiveMeTHEParameter!!!
+W ${requestScope.name}
+W requestScope.getParameter("name");
+A request.getParameter("name");
+Q What does EL stand for?
+W Extra Language
+A Expression Language
+W Elephant Language
+W Expression Linguistics

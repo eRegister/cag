@@ -1,0 +1,20 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+ "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+ "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="eh203.hibernate.domain">
+	<class name="Person" table="person">
+		<id name="personId" column="person_id">
+			<generator class="native" />
+		</id>	
+		<property name="forenames" type="string" column="forenames" />
+		<property name="surname" type="string" column="surname" />
+		<property name="dob" type="date" column="dob" />
+		
+		<!-- For step 9 -->
+		<set name="projects" table="project_person" inverse="true">
+			<key column="person_id" />
+			<many-to-many column="project_id" class="Project" />
+		</set>
+				
+	</class>
+</hibernate-mapping>

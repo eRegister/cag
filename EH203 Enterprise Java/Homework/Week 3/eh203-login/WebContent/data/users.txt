@@ -1,0 +1,2 @@
+admin|pass|Administrator
+guest|guest|Guest

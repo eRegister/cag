@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>EH103 Exercises</title>
+<link href="../../.ehsdi/exercises.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>EH203 Exercises</h1>
+<p align="right"><a href="../../index.html">&#9668; Back to unit page</a></p>
+
+<h2>Basic Hibernate II: Project Manager</h2>
+<p>These basic exercises introduce Hibernate.</p>
+
+<h3>1. Creating a hibernate project</h3>
+<p>Follow the steps in the <a href="../Basic Hibernate I/index.html">Basic Hibernate I</a> exercise to create a new Hibernate project. However you should change the value of <strong>hbm2ddl.auto</strong> to <em>create</em> in the <em>hibernate.cfg.xml</em> file so that Hibernate will create the database schema for you.</p>
+
+<h3>2. Creating a Person object</h3>
+<p>In this step we create a class, a table and a Hibernate mapping between the two.</p>
+<ol>
+  <li>Create a new Java class called <code>Person</code> in a package called <code>projectmanager.domain</code> with the following properties:
+    <ul>
+      <li>personId (<code>int</code>)</li>
+      <li>surname (<code>String</code>)</li>
+      <li>forenames (<code>String</code>)</li>
+      <li>dob (<code>Date</code>)</li>
+    </ul>
+  </li>
+  <li>Create a suitable Hibernate mapping file called <em>Person.hbm.xml</em> which maps to a table called <em>person</em> and save it in the same directory as <em>Person.java</em>.</li>
+  <li>Add the mapping file to the configuration file using a <code>mapping</code> element:<br />
+<pre>&lt;mapping resource=&quot;projectmanager/domain/Person.hbm.xml&quot;/&gt;</pre>
+  </li>
+  <li>To test the mapping create a Java application which creates an instance of <code>Person</code> and stores it in the database:<br />
+<pre>Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+session.beginTransaction();
+Person person = new Person("Seymour", "Rowan", new Date());
+session.save(person);
+session.getTransaction().commit();</pre>
+  Run this program and verify that the person table is created and that a new row has been inserted. The modify it to add multiple person objects.</li>
+</ol>
+
+<h3>3. Loading all Person objects</h3>
+<p>Instead of loading just one Person from the database, we can load all Person records into a list. This can be achieved in two different ways, and you should try both. Firstly a HQL (Hibernate Query Language) query:</p>
+<p><code>List&lt;Person&gt; persons = session.createQuery(&quot;from Person&quot;).list();</code></p>
+<p>Secondly, using the newer 'criteria' syntax:</p>
+<p><code>List&lt;Person&gt; persons = session.createCriteria(Person.class).list();</code></p>
+
+<h3>4. Searching for Persons</h3>
+<p>To search for person records based on a search criteria (e.g. a partial name match) we add Restrictions to the criteria.</p>
+<pre>List&lt;Person&gt; persons = session.createCriteria(Person.class)
+  .add(Restrictions.eq(&quot;forenames&quot;, &quot;Bob&quot;))
+  .add(Restrictions.like(&quot;surname&quot;, &quot;%Smi%&quot;))
+  .list();</pre>
+<p>See <a href="https://www.hibernate.org/hib_docs/v3/api/org/hibernate/criterion/Restrictions.html">https://www.hibernate.org/hib_docs/v3/api/org/hibernate/criterion/Restrictions.html</a> for a complete list of Restriction types. </p>
+<p>Create a Java application which allows the user to input a surname value. The application should query the database for a Person with that surname, and display them if they exist. </p>
+
+<h3>5. Inserting a Person object</h3>
+<p>To create a person record the database, we simply create an instance of the <code>Person</code> class, and pass it to <code>session.save(...)</code>.</p>
+<p>Create a Java application which allows a user to add a person by specifying their surname, forenames and DOB. To parse the date from a string in the SQL format use:</p>
+<p><code>String dobStr = ... // Read from console<br>
+</code><code>SimpleDateFormat df = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);<br>
+Date dob = df.parse(dateStr);</code></p>
+
+<h3>6. Deleting a Person object</h3>
+<p>To delete a person object, we first retrieve using the <code>load(...)</code> method shown in step 2. We can then call <code>session.delete(...)</code> to delete it from the database.</p>
+<p>Create a Java application which allows a user to delete a person by specifying their ID.</p>
+
+<h3>7. Updating a Person object</h3>
+<p>To update a person object, we again retrieve using the <code>load(...)</code> method shown in step 2. We can then update the object's properties and then call <code>session.update(...)</code> to update it in the database.</p>
+<p>Create a Java application which allows a user to edit a person's names by specifying their ID.</p>
+
+<h3>8. Adding a project class</h3>
+<p>This time we are going to let Hibernate create a database schema automatically from a mapping file.</p>
+<ol>
+  <li>Create a Java class called Project with the following properties:
+    <ol>
+      <li>projectId (<code>int</code>)</li>
+      <li>name (<code>String</code>)</li>
+      <li>description (<code>String</code>)</li>
+    </ol>
+  </li>
+  <li>Create a Hibernate mapping file called <em>Project.hbm.xml</em> in the same directory. Specify a table called <em>project</em> and use the <code>text</code> type for the description property.</li>
+  <li>Make the following changes to the Hibernate configuration file:
+    <ol>
+      <li>Add a mapping element to load Project.hbm.xml</li>
+      <li>Change the value of <code>hbm2ddl.auto</code> to <code>update</code>.</li>
+    </ol>
+  </li>
+</ol>
+<p>Now run the program from the first exercise and verify afterwards that Hibernate created the <em>project</em> table in the database.</p>
+<div class="solution">Solution: <a href="eh203-basichibernate/src/eh203/hibernate/domain/Project.java">Project.java</a>, <a href="eh203-basichibernate/src/eh203/hibernate/domain/Project.hbm.xml">Project.hbm.xml</a></div>
+
+<h3>9. Adding a manager to a project (<em>many-to-one</em>)</h3>
+<p>If a person can manage many projects, but each project can only have one manager, we call that a <em>many-to-one</em> relationship. This can be defined using the <code>&lt;many-to-one&gt;</code> mapping element:</p>
+<ol>
+  <li>Add a property called manager to <code>Project</code> with a getter and a setter</li>
+  <li>Instead of using <code>&lt;property&gt;</code> to map it in <em>Project.hbm.xml</em>, use the following<br />
+<pre>&lt;many-to-one name=&quot;manager&quot; class=&quot;Person&quot; column=&quot;manager&quot; /&gt;</pre></li>
+</ol>
+<p>Again, run the program from the first exercise to verify that the mapping file is correct, and then verify that a manager column and foreign key was added to the project table in the database.</p>
+<div class="solution">Solution: <a href="eh203-basichibernate/src/eh203/hibernate/domain/Project.java">Project.java</a>, <a href="eh203-basichibernate/src/eh203/hibernate/domain/Project.hbm.xml">Project.hbm.xml</a></div>
+
+<h3>10. Adding persons to projects (<em>many-to-many</em>)</h3>
+<p>We now want to define a <em>many-to-many</em> relationship between <code>Person</code> and <code>Project</code>.</p>
+<ol>
+  <li>Add a <code>Set</code> of projects to the <code>Person</code> class (i.e. <code>Set&lt;Project&gt; projects = new HashSet&lt;Project&gt;()</code>) with a getter and a setter method.</li>
+  <li>Add the following set element to <em>Person.hbm.xml</em> after the existing <code>property</code> elements:<br />
+<pre>&lt;set name=&quot;projects&quot; table=&quot;project_person&quot; inverse=&quot;true&quot;&gt;<br>	 &lt;key column=&quot;person_id&quot; /&gt;<br>  &lt;many-to-many column=&quot;project_id&quot; class=&quot;Project&quot; /&gt;<br>&lt;/set&gt;</pre></li>
+</ol>
+<p>Now run the program from the first exercise and verify afterwards that Hibernate created the <em>project_person</em> table in the database. To create an equivalent set of persons for each project object:</p>
+<ol start="3">
+  <li>Add a <code>Set</code> of persons to the <code>Project</code> class (i.e. <code>Set&lt;Person&gt; persons = new HashSet&lt;Person&gt;()</code>) with a getter and a setter method.</li>
+  <li>Add the following set element to <em>Project.hbm.xml</em> after the existing <code>property</code> elements:<br />
+<pre>&lt;set name=&quot;persons&quot; table=&quot;project_person&quot; inverse=&quot;true&quot;&gt;<br>	 &lt;key column=&quot;project_id&quot; /&gt;<br>  &lt;many-to-many column=&quot;person_id&quot; class=&quot;Person&quot; /&gt;<br>&lt;/set&gt;</pre></li>
+</ol>
+<p>Again, run the program from the first exercise to verify that the mapping file is correct.</p>
+<div class="solution">Solution: <a href="eh203-basichibernate/src/eh203/hibernate/domain/Person.java">Person.java</a>, <a href="eh203-basichibernate/src/eh203/hibernate/domain/Project.java">Project.java</a>, <a href="eh203-basichibernate/src/eh203/hibernate/domain/Person.hbm.xml">Person.hbm.xml</a>, <a href="eh203-basichibernate/src/eh203/hibernate/domain/Project.hbm.xml">Project.hbm.xml</a></div>
+
+<h3>11. Extending person to make supervisor (<em>inheritance</em>)</h3>
+<p>We can model inheritance in Java using <code>&lt;joined-subclass&gt;</code>. This will create a new table for the subclass, with a foreign-key referencing a record in the table for the superclass.</p>
+<ol>
+  <li>Create a Java class called <code>Supervisor</code> which extends <code>Person</code> and adds one additional property called <code>jobTitle</code> of type <code>String</code>.</li>
+  <li>Create a mapping file called Supervisor.hbm.xml, but instead of using a <code>&lt;class&gt;</code> element, use a <code>&lt;joined-subclass&gt;</code> element as follows:<br />
+<pre>&lt;joined-subclass name=&quot;Supervisor&quot; table=&quot;supervisor&quot; extends=&quot;Person&quot;&gt;<br>  &lt;key column=&quot;person_id&quot; foreign-key=&quot;person_id&quot; /&gt;	<br>  &lt;property name=&quot;jobTitle&quot; type=&quot;string&quot; column=&quot;job_title&quot; /&gt;			<br>&lt;/joined-subclass&gt;</pre>
+  </li>
+</ol>
+<p>Run the program from the first exercise and verify that a <em>supervisor</em> table is created with a foreign-key to the <em>person</em> table.</p>
+</body>
+</html>

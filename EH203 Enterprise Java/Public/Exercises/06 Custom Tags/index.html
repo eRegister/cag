@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>EH203 - Exercises</title>
+<link href="../ehsdi.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>EH203 - Exercises</h1>
+<h2>Custom Tags</h2>
+<p>These exercises show the different ways in which we can build reusable components for a web site.</p>
+
+<h3>1. JSP includes with parameters</h3>
+<p>Parameters can be passed to a JSP file which is being included using the &lt;jsp:include&gt; action. E.g. </p>
+<pre>&lt;jsp:include page=&quot;example.jsp&quot;&gt;
+  &lt;jsp:param name=&quot;msg&quot; value=&quot;Hello world&quot; /&gt;
+&lt;/jsp:include&gt;</pre>
+<p>Use this to create a JSP which includes the following templates:</p>
+<ul>
+  <li>A page  header that takes a parameter for the title</li>
+  <li>A page footer that takes a parameter for an email address to be displayed as a link</li>
+</ul>
+<div class="solution">Solution: <a href="eh203-custtags/WebContent/exercise1.jsp">exercise1.jsp</a>, <a href="eh203-custtags/WebContent/exercise1header.jsp">exercise1header.jsp</a>, <a href="eh203-custtags/WebContent/exercise1footer.jsp">exercise1footer.jsp</a></div>
+
+<h3>2. Using TAG files</h3>
+<p>These simple tag examples should be implemented as TAG files placed in /WEB-INF/tags, and imported into a JSP page using 
+<pre>&lt;%@ taglib prefix=&quot;ehsdi&quot; tagdir=&quot;/WEB-INF/tags&quot; %&gt;</pre>
+<ol type="a">
+	<li><strong>hello</strong> - this tag is a simple text include, i.e. the HTML in the tag file ends up in the JSP where the tag is used</li>
+	<li><strong>useragent</strong> - uses a simple EL expression to output the <em>User Agent</em> header value</li>
+	<li><strong>email</strong> - takes 2 attributes to create a mailto link
+	  <ol>
+	    <li><em>name</em>: the person's name</li>
+	    <li><em>address</em>: the email address</li>
+      </ol>
+	</li>
+	<li><strong>message</strong> - takes an attribute for the subject, and also uses the tag body as the message body</li>
+	<li><strong>mapsize</strong> - takes an attribute of type Map, and uses <code>fn:length</code> from JSTL to output the map size. Tag attribute should be specified with a <em>type</em> value to prevent other classes of object being passed to it</li>
+</ol></p>
+<div class="solution">Solution: <a href="eh203-custtags/WebContent/exercise2.jsp">exercise2.jsp</a></div>
+
+<h3>3. Objects as tag attributes</h3>
+<p>Create a TAG file which takes the following attributes to create an HTML list from a Java collection object</p>
+<ol>
+  <li><em>items</em>:  each item in this collection should become an item in the list (<code>java.util.Collection</code>)</li>
+  <li><em>ordered</em>: whether list should be ordered or unordered <code>(java.lang.Boolean</code>)</li>
+</ol>
+<div class="solution">Solution: <a href="eh203-custtags/WebContent/exercise3.jsp">exercise3.jsp</a></div>
+
+<h3>4. Using tag handler classes</h3>
+<p>These simple tag examples should be implemented using tag handler classes - i.e. extend <code>SimpleTagSupport</code>, thus they require a TLD file.</p>
+<ol type="a">
+  <li>
+    <strong>time</strong> - displays the current date and time, i.e. 
+<pre>JspWriter out = getJspContext().getOut();
+out.write(&quot;&lt;i&gt;&quot; + (new Date()) + &quot;&lt;/i&gt;&quot;);</pre>
+  </li>
+  <li><strong>repeat</strong> - repeats the tag body twice</li>
+  <li><strong>copyright</strong> - takes 2 attributes to create a copyright message
+    <ol>
+      <li><em>holder</em> - the copyright holder</li>
+      <li><em>year</em> - the copyright year</li>
+    </ol>
+  </li>
+</ol>
+<div class="solution">Solution: <a href="eh203-custtags/WebContent/exercise4.jsp">exercise4.jsp</a>, <a href="eh203-custtags/WebContent/WEB-INF/ehsdi.tld">ehsdi.tld</a></div>
+
+</body>
+</html>

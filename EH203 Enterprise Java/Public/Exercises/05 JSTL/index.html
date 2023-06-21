@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>EH203 - Exercises</title>
+<link href="../ehsdi.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>EH203 - Exercises</h1>
+<h2>Java Standard Tag Library</h2>
+<p>This set of exercises constructs a basic Guestbook using some of the most commonly used tags in the JSTL.</p>
+
+<h3>1. Constructing the form</h3>
+<p>We start by creating a JSP file which will display the Guestbook.
+It should contain a form which will collect the following information:</p>
+<ul>
+	<li>The visitor's name</li>
+	<li>The visitor's email address</li>
+	<li>The visitor's comment</li>
+</ul>
+<div class="solution">Solution: <a href="eh203-guestbook/WebContent/guestbook1.jsp">guestbook1.jsp</a></div>
+
+<h3>2. Displaying the submitted fields</h3>
+<p>Beneath the form, add suitable to HTML to display a Guestbook entry, and use <code>&#36;{param.<i>XXX</i>}</code> to test how
+it displays the information submitted by the form. We also need to encode any HTML entities to prevent
+a user from modifying our page. This can be done easily with the <code>&lt;c:cout&gt;</code> tag as follows:</p>
+<pre>&lt;c:out value="&#36;{param.comment}" /&gt;</pre>
+<div class="solution">Solution: <a href="eh203-guestbook/WebContent/guestbook2.jsp">guestbook2.jsp</a></div>
+
+<h3>3. Creating the 'Entry' bean</h3>
+<p>Now create a JavaBean to represent a Guestbook entry. It should have the following properties:</p>
+<ul>
+	<li>name (String) - i.e. getName() and setName()</li>
+	<li>email (String)</li>
+	<li>date (Date) - <code>java.util.Date</code>, not <code>java.sql.Date</code></li>
+	<li>comment (String)</li>
+</ul>
+<p>This exercise will use MVC, so now create the controller servlet to handle POST submissions
+from the form. It should use the request parameters to construct an instance of the Entry bean (
+though the date field should be current date/time, i.e. <code>new Date()</code>). This should be set
+as a request attribute, and then modify the JSP to display this instead of the request parameters.</p>
+<div class="solution">Solution: <a href="eh203-guestbook/src/eh203/jstl/Guestbook3.java">Guestbook3.java</a>, <a href="eh203-guestbook/WebContent/guestbook3.jsp">guestbook3.jsp</a>, <a href="eh203-guestbook/src/eh203/jstl/Entry.java">Entry.java</a></div>
+
+<h3>4. Storing and displaying multiple entries</h3>
+<p>Now instead of just storing just one Entry, add an <code>ArrayList</code> of Entry objects to
+the servlet class. The doPost method of the servlet should add a new instance of Entry to the array,
+and the doGet method should set this as request attribute to make it accessible to the JSP. To display
+all the entries in the JSP, use a <code>&lt;c:forEach&gt;</code> tag, as follows:</p>
+<pre>&lt;c:forEach items="&#36;{entries}" var="entry"&gt;
+
+&lt;!-- TODO: display each entry's fields using &#36;{entry.<i>XXX</i>} --&gt;
+
+&lt;/c:forEach&gt;</pre>
+<div class="solution">Solution: <a href="eh203-guestbook/src/eh203/jstl/Guestbook4.java">Guestbook4.java</a>, <a href="eh203-guestbook/WebContent/guestbook4.jsp">guestbook4.jsp</a></div>
+
+<h3>5. Adding a 'no entries' message</h3>
+<p>Add a message in the JSP which is only displayed when there are no entries. This can be done with
+a <code>&lt;c:if&gt;</code> tag, as follows:</p>
+<pre>&lt;c:if test="&#36;{empty entries}"&gt;
+
+  &lt;!-- TODO: display something when there are no entries --&gt;
+
+&lt;/c:if&gt;</pre>
+<div class="solution">Solution: <a href="eh203-guestbook/src/eh203/jstl/Guestbook5.java">Guestbook5.java</a>, <a href="eh203-guestbook/WebContent/guestbook5.jsp">guestbook5.jsp</a></div>
+
+<h3>6. Creating an email link</h3>
+<p>We assume that the email address field is optional. If the user provides an email address, then
+we want to display a mailto: link using their name as the link text, if not then we want to just
+display their name. This can be done with
+a <code>&lt;c:choose&gt;</code>, <code>&lt;c:when&gt;</code> and <code>&lt;c:otherwise&gt;</code> tags, as follows:</p>
+<pre>&lt;c:choose&gt;
+  &lt;c:when test="&#36;{entry.email != ''}"&gt;
+    &lt;!-- TODO: display a mailto: link --&gt;
+  &lt;/c:when&gt;
+  &lt;c:otherwise&gt;
+    &lt;!-- TODO: display just the name --&gt;
+  &lt;/c:otherwise&gt;
+&lt;/c:choose&gt;</pre>
+<div class="solution">Solution: <a href="eh203-guestbook/src/eh203/jstl/Guestbook6.java">Guestbook6.java</a>, <a href="eh203-guestbook/WebContent/guestbook6.jsp">guestbook6.jsp</a></div>
+
+<h3>7. Formatting the date</h3>
+<p>Currently the date is being displayed using the default <code>toString()</code> representation of the date. 
+This can be customized using the <code>&lt;fmt:formatDate&gt;</code> tag, as follows:</p>
+<pre>&lt;fmt:formatDate value="&#36;{entry.date}" dateStyle="short" /&gt;</pre>
+Where <code>dateStyle</code> is one of <code>default</code>, <code>short</code>, <code>medium</code>,
+<code>long</code> or <code>full</code>. If you need more control, you can specify the pattern
+(see <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a>) as follows:
+<pre>&lt;fmt:formatDate value="\${entry.date}" pattern="EEE, MMM d, 'yy" /&gt;</pre>
+<div class="solution">Solution: <a href="eh203-guestbook/src/eh203/jstl/Guestbook7.java">Guestbook7.java</a>, <a href="eh203-guestbook/WebContent/guestbook7.jsp">guestbook7.jsp</a></div>
+
+</body>
+</html>

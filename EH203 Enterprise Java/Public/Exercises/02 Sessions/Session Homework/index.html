@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>EH203 Exercises</title>
+<link href="../../.ehsdi/exercises.css" rel="stylesheet" type="text/css" />
+<style>
+	li {margin:10px 0px;}
+</style>
+</head>
+
+<body>
+<h1>EH203 Exercises</h1>
+<p align="right"><a href="../../index.html">&#9668; Back to unit page</a></p>
+
+<h2>Sessions</h2>
+<p>This exercise allows you to practice using Sessions.  You will use an HttpSession object, cookies, url encoding, and forms to maintain session data in the http stateless environment.</p>
+
+<h3>Practice</h3>
+<p>Create a Dynamic Web Project in Eclipse.</p>
+
+<p><strong>Form-based Sessions</strong><br>
+<ol>
+<li>Create a jsp file.</li>
+<li>Create a form with first name and last name fields. Make the form type POST.</li>
+<li>Create a servlet file.</li>
+<li>Have the servlet get the first name and last name out of the request object and greet the user by printing out html with the jsp variables in the place where name should be.</li>
+<li>Test that this works.</li>
+</ol>
+
+<p><strong>Cookie-based Sessions</strong></p>
+<ol>
+<li>Set first name and last name cookies in the servlet.</li>
+<li>Modify your jsp file to display a greeting if you have cookies and to show the form if not.</li>
+<li>Test that this works.</li>
+</ol>
+
+<p><strong>Url Encoded Link-based Sessions and Cookie Deletion</strong></p>
+<ol>
+<li>add a link to delete cookies on your jsp, sending the user to a second servlet (which you will create in the next step).  This link should have a parameter, called remove and it should have a value of yes.  Don't forget to URLEncode the link.</li>
+<li>Create a second servlet that just gets the first name and last name cookies if they exist and deletes them if the request parameter "remove" is "yes".  Remember that this will be a request of type GET.  Print out a message saying that the cookies have been deleted.</li>
+<li>Test that this works.</li>
+</ol>
+
+<p><strong>HttpSessions</strong></p>
+<ol>
+<li>On your second servlet page (where you delete the cookies), comment out the code that prints out the message that your cookies have been deleted.</li>
+<li>Create an HttpSession object and store first name and last name in it.</li>
+<li>Create a third servlet page. Create an HttpSession object and get first name and last name from it.</li>
+<li>Go back to your second servlet and, after the HttpSession code you wrote, redirect from your second servlet to the third servlet you just created.  Check google to learn how to response redirect from one servlet to another if you are unsure.</li>
+<li>In the third servlet, print out a message that shows which cookies are deleted, using the information you got out of the session on this servlet in a previous step.</li>
+</ol>
+<p><strong>SOLUTION:</strong> The project "Session_Project" will be put in this folder for you to check your answer once you have completed the assignment.</body>
+</html>

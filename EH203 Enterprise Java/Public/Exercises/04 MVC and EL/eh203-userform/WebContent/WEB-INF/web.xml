@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>eh203-userform</display-name>
+	<servlet>
+		<servlet-name>UserForm1</servlet-name>
+		<servlet-class>eh203.userform.UserForm1</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserForm1</servlet-name>
+		<url-pattern>/user.form1</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserForm2</servlet-name>
+		<servlet-class>eh203.userform.UserForm2</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserForm2</servlet-name>
+		<url-pattern>/user.form2</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserForm3</servlet-name>
+		<servlet-class>eh203.userform.UserForm3</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserForm3</servlet-name>
+		<url-pattern>/user.form3</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserForm4</servlet-name>
+		<servlet-class>eh203.userform.UserForm4</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserForm4</servlet-name>
+		<url-pattern>/user.form4</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserForm5</servlet-name>
+		<servlet-class>eh203.userform.UserForm5</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserForm5</servlet-name>
+		<url-pattern>/user.form5</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>

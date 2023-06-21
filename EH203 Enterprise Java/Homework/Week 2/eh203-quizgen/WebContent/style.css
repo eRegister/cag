@@ -1,0 +1,33 @@
+* {
+	font-family: Georgia;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+#header {
+	padding: 10px;
+	background-color: #7AB;
+	font-size: 24px;
+	font-weight: bold;
+}
+
+#status {
+	padding: 5px;
+	background-color: #FFD;
+	text-align: center;
+}
+
+#content {
+	padding: 5px;
+	background-color: #DDF;
+}
+
+#footer {
+	padding: 10px;
+	background-color: #ACB;
+	font-size: 12px;
+	text-align: center;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>EH203 - Exercises</title>
+<link href="../ehsdi.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>EH203 - Exercises</h1>
+<h2>Java Server Pages</h2>
+<p>This set of exercises introduces Java Server Pages</p>
+
+<h3>1. Hello World</h3>
+<p>This JSP simply prints something to the HTML response using <code>out.println(...)</code>.</p>
+<div class="solution">Solution: <a href="eh203-jsps/WebContent/exercise01.jsp">exercise01.jsp</a></div>
+
+<h3>2. Counter with helper class</h3>
+<p>This JSP uses a helper class to keep track of the number of page requests. The helper class is imported using a page directive such as</p>
+<p><code>&lt;%@ page import=&quot;eh203.jsps.Counter&quot; %&gt;</code></p>
+<div class="solution">Solution: <a href="eh203-jsps/WebContent/exercise02.jsp">exercise02.jsp</a>, <a href="eh203-jsps/src/eh203/jsps/Counter.java">Counter.java</a></div>
+
+<h3>3. Header and footer templates</h3>
+<p>It's very common to split pages into header, content and footer, so that the header and footer can be shared between many pages in a site, as a way of reducing duplicated code. One JSP's content can be included in another JSP using an include directive such as:</p>
+<p><code>&lt;%@ include file=&quot;exercise03header.jsp&quot; %&gt;</code></p>
+<div class="solution">Solution: <a href="eh203-jsps/WebContent/exercise01.jsp">exercise03.jsp</a>, <a href="eh203-jsps/WebContent/exercise03header.jsp">exercise03header.jsp</a>, <a href="eh203-jsps/WebContent/exercise03footer.jsp">exercise03footer.jsp</a></div>
+
+<h3>4. Counter with scriplet</h3>
+<p>Instead of using a helper class, implement a counter using a JSP declaration tag (<code>&lt;%! ... %&gt;</code>).</p>
+<div class="solution">Solution: <a href="eh203-jsps/WebContent/exercise01.jsp">exercise04.jsp</a></div>
+
+<h3>5. Request parameters</h3>
+<p>Use a scriplet to generate an HTML table dynamically from the request parameters. You can enumerate the parameters as follows:</p>
+<pre>for (Object name : request.getParameterMap().keySet()) {
+  String value = request.getParameter(name.toString());
+  ...
+}</pre>
+<div class="solution">Solution: <a href="eh203-jsps/WebContent/exercise01.jsp">exercise05.jsp</a></div>
+
+<h3>6. Initialization parameters</h3>
+<p>In order to define initialization parameters as we would with a regular servlet, we have to define our JSP &quot;servlet&quot; in <code>web.xml</code>:</p>
+<pre>&lt;servlet&gt;
+  &lt;servlet-name&gt;Exercise06&lt;/servlet-name&gt;
+  &lt;jsp-file&gt;/exercise06.jsp&lt;/jsp-file&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;email&lt;/param-name&gt;
+    &lt;param-value&gt;rseymour@pih.org&lt;/param-value&gt;
+  &lt;/init-param&gt;
+&lt;/servlet&gt;</pre>
+<div class="solution">Solution: <a href="eh203-jsps/WebContent/exercise01.jsp">exercise06.jsp</a></div>
+
+</body>
+</html>
