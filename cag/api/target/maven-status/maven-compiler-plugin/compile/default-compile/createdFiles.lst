@@ -1,0 +1,10 @@
+org/openmrs/module/cag/api/dao/CagDao.class
+org/openmrs/module/cag/api/dao/CommunityARTGroupDao.class
+org/openmrs/module/cag/CommunityARTGroupActivator.class
+org/openmrs/module/cag/api/CommunityARTGroupService.class
+org/openmrs/module/cag/CommunityARTGroupConfig.class
+org/openmrs/module/cag/api/impl/CagServiceImpl.class
+org/openmrs/module/cag/api/impl/CommunityARTGroupServiceImpl.class
+org/openmrs/module/cag/cag/Cag.class
+org/openmrs/module/cag/api/CagService.class
+org/openmrs/module/cag/Item.class
