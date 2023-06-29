@@ -21,6 +21,9 @@
         <th>Id</th>
         <th>Cag Name</th>
         <th>Description</th>
+        <th>Voided</th>
+        <th>Voided By</th>
+        <th>Void Reason</th>
     </tr>
     <% if (cagslist) {%>
     <% cagslist.each { %>
@@ -28,6 +31,9 @@
         <td>${ it.id }</td>
         <td>${ it.name }</td>
         <td>${ it.description }</td>
+        <td>${ it.voided }</td>
+        <td>${ it.voidedBy }</td>
+        <td>${ it.voidReason }</td>
     </tr>
     <% } %>
     <% }%>

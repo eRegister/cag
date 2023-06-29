@@ -73,7 +73,7 @@
 			Updating the CAG table
 		</comment>
 		<addColumn tableName="cag_cag">
-			<column name="uuid" type="varchar(11)">
+			<column name="uuid" type="varchar(38)">
 				<constraints nullable="false"/>
 			</column>
 		</addColumn>
