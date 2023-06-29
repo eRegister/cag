@@ -13,3 +13,22 @@
     </tr>
     <% } %>
 </table>
+
+</hr>
+<h1>CAGs LIST</h1>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Cag Name</th>
+        <th>Description</th>
+    </tr>
+    <% if (cagslist) {%>
+    <% cagslist.each { %>
+    <tr>
+        <td>${ it.id }</td>
+        <td>${ it.name }</td>
+        <td>${ it.description }</td>
+    </tr>
+    <% } %>
+    <% }%>
+</table>
