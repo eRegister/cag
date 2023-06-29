@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="appointmentDAO" class="org.openmrs.module.appointments.hibernate.HibernateAppointmentDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="appointmentService" class="org.openmrs.module.appointments.service.impl.AppointmentServiceImpl">
+		<property name="appointmentDAO" ref="appointmentDAO" />
+	</bean>
+
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>org.openmrs.module.appointments.service.AppointmentService</value>
+				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager" ref="transactionManager" />
+					<property name="target" ref="appointmentService" />
+					<property name="preInterceptors">
+						<list>
+							<ref bean="authorizationInterceptor" />
+						</list>
+					</property>
+					<property name="transactionAttributeSource">
+						<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="appointmentsUrlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="order">
+			<value>1</value>
+		</property>
+		<property name="mappings">
+			<props>
+				<prop key="module/@MODULE_ID@/appointment.form">appointmentFormController</prop>
+				<prop key="module/@MODULE_ID@/appointment.list">appointmentListController</prop>
+				<prop key="**/patientAppointments.portlet">patientAppointmentsPortletController</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="appointmentFormController"
+		class="@MODULE_PACKAGE@.web.controller.AppointmentFormController">
+		<property name="commandName">
+			<value>appointment</value>
+		</property>
+		<property name="formView">
+			<value>/module/@MODULE_ID@/appointmentForm</value>
+		</property>
+		<property name="successView">
+			<value>appointment.list</value>
+		</property>
+	</bean>
+
+	<bean id="appointmentListController"
+		class="@MODULE_PACKAGE@.web.controller.AppointmentListController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/appointmentList</value>
+		</property>
+	</bean>
+
+	<bean id="patientAppointmentsPortletController"
+		class="org.openmrs.module.appointments.web.controller.PatientAppointmentsPortletController" />
+</beans>

@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>EH204 Exercises</title>
+<link href="../../.ehsdi/exercises.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>EH204 Exercises</h1>
+<h2>Stress Monitor: A new OpenMRS module</h2>
+<p>This tutorial creates a basic module from scratch, which will be used to let clinicians track the stress levels of the patients, and will warn them when a patient is stressed.</p>
+
+<h3>1. Creating a new empty module</h3>
+<p>When creating a new module, we never really start from scratch - its much quicker to take an existing module and rename it</p>
+<ol>
+  <li>Get a copy of the basicmodule (<a href="http://svn.openmrs.org/openmrs-modules/basicmodule/trunk/">svn</a>)</li>
+  <li>Rename all packages and classes to use appropriate names for a module called <em>stressmonitor</em></li>
+  <li>Update references in <em>config.xml</em> and other metadata files to use new module name and packages</li>
+</ol>
+<p>Build the module using the ant script and deploy it in OpenMRS to check for problems.</p>
+<h3>2. Add a utilities to measure patient stress</h3>
+<p>In this project we will define stress as <em>pulse</em> &times; <em>blood pressure</em>, where blood pressure is  <a href="http://en.wikipedia.org/wiki/Systole_%28medicine%29" title="Systole (medicine)">systolic</a> blood pressure (mmHg). This isn't medically realistic!</p>
+<ol>
+  <li>
+    Add a utility class with the following helper function:  
+     
+     <pre>double getPatientStressLevel(Patient patient)</pre>      
+     
+  which will calculate the stress level of the specified patient</li>
+  <li>Add a global property to the module called <code>stressThreshold</code> which is the stress level value above which a patient is considered &quot;stressed&quot;.</li>
+</ol>
+<h3>3. Add extension to patient dashboard</h3>
+<p>Add a extension to the patient dashboard to show a warning message when a patient is &quot;stressed&quot;. The extension should display nothing when a pateint's stress levels are normal. Build the module using the ant script and deploy it in OpenMRS to check for problems. </p>
+<h3>4. Add new stress graph tab</h3>
+<p>Add another extension which adds a new tab to the patient dashboard to display a graph of the patient's stress level. Use <a href="http://code.google.com/p/flot/">flot</a> to create the graph.</p>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>EH204 Exercises</title>
+<link href="../../.ehsdi/exercises.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>EH204 Exercises</h1>
+<h2>Logging</h2>
+<p>This tutorial demonstrates logging of a web application using JCL and log4j.</p>
+
+<h3>1. Creating a project with log4j</h3>
+<p>This creates a basic web application with log4j support.</p>
+<ol>
+  <li>Create a new Java web applicaqtion</li>
+  <li>Add a servlet called <code>HelloServlet</code> which is mapped to the url <em>/hello.htm</em></li>
+  <li>Copy the <a href="log4j-1.2.15.jar">log4j JAR</a> file into <em>WEB-INF/lib</em></li>
+  <li>Create a folder called <em>classes</em> in <em>WEB-INF</em> and copy into that folder <a href="log4j.xml">this basic configuration file</a>.</li>
+  <li>In the doGet method of HelloServlet add the following code to test the logging output:<br />
+  <pre>LogManager.getRootLogger().log(Level.WARN, &quot;This is a test message&quot;);</pre>
+  This sends a log message with level WARN directly to log4j root logger.</li>
+</ol>
+<p>If you run the web application now, you should see that log message displayed in the console.</p>
+<h3>2. Creating a logger object</h3>
+<p>In this step we modify the code to send the log message through JCL instead of directly to log4j.</p>
+<ol>
+  <li>Remove the <code>LogManager.getRootLogger()...</code> line from <code>HelloServlet</code></li>
+  <li>Add the following data member to the <code>HelloServlet</code> class:<br/>
+  <pre>protected final Log log = LogFactory.getLog(HelloServlet.class);</pre>
+  </li>
+  <li>Use the log object to write some log messages from the <code>doGet</code> method, e.g. <code>log.info(&quot;...&quot;);</code> or <code>log.warn(&quot;...&quot;)</code></li>
+</ol>
+<p>Run the web application to verify that the log messages are being displayed in the console.</p>
+<h3>3. Modifying the root logging level</h3>
+<p>Currently the configuration file does not specify a logging level for the root logger, thus the default value of DEBUG is being used. This can be changed by adding a <code>&lt;level&gt;</code> element to the <code>&lt;root&gt;</code> element, e.g.</p>
+<pre>&lt;root&gt;
+  &lt;level value=&quot;TRACE&quot; /&gt;
+  &lt;appender-ref ref=&quot;CONSOLE&quot; /&gt;
+&lt;/root&gt;</pre>
+<p>  Try different logging levels (i.e. TRACE, DEBUG, INFO, WARN) and observe which messages are displayed at each level.</p>
+<h3>4. Customizing log output with PatternLayout</h3>
+<p>By replacing SimpleLayout with PatternLayout, we can control exactly how each log message is formatted</p>
+<ol>
+  <li>In <em>log4j.xml</em> replace <code>SimpleLayout</code> with <code>PatternLayout</code> for the existing appender called CONSOLE</li>
+  <li>Add a parameter called ConversionPattern, i.e<br />
+<pre>&lt;layout class=&quot;org.apache.log4j.PatternLayout&quot;&gt;<br>  &lt;param name=&quot;ConversionPattern&quot; value=&quot;%d - %m%n&quot; /&gt;<br>&lt;/layout&gt;</pre>
+  </li>
+  <li>With reference to <a href="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html">the log4j documention</a>, modify the value of the <code>ConversionPattern</code> parameter to make log4j produce log messages in the same format as OpenMRS, e.g.<br/>
+<pre>INFO - FrameworkServlet.initServletBean(296) |2009-07-28 11:53:20,436| FrameworkServlet 'springapp': initialization completed in 454 ms
+DEBUG - HttpServletBean.init(129) |2009-07-28 11:53:20,436| Servlet 'springapp' configured successfully</pre>
+  </li>
+</ol>
+<div class="solution">Solution: <a href="log4j.4.xml">log4j.xml</a></div>
+
+<h3>5. Adding a logger configuration</h3>
+<p>Currently the configuration only contains a definition for the root logger, from which all other loggers inherit their properties. This step adds a new logger to allow us to explicitly set properties for log messages originating from Spring classes</p>
+<ol>
+  <li>Add the following, i.e.<br />
+    <pre>&lt;logger name=&quot;org.springframework&quot;&gt;<br>  &lt;level value=&quot;WARN&quot; /&gt;<br>&lt;/logger&gt;</pre></li>
+</ol>
+<p>Try accessing the controller's URL now to verify that log messages from classes with package names starting org.springframework are restricted to level WARN and above.</p>
+<h3>6. Adding an appender</h3>
+<p>In this step we will configure a <code>SocketAppender</code> which sends log messages to a network port. In order to receive the messages, we need to run a suitable socket listening application such as <a href="http://logview4j.sourceforge.net/">LogView4J</a>.</p>
+<ol>
+  <li>Add a new appender to <em>log4j.xml</em> to use the <code>org.apache.log4j.net.SocketAppender</code> class</li>
+  <li>Parameters are added using child <code>&lt;param&gt;</code> elements (e.g. <code>&lt;param name=&quot;X&quot; value=&quot;Y&quot;&gt;</code>). Add the following parameters to the new socket appender:
+    <ul>
+      <li><em>Port</em>: <code>4447</code> (the default listening port for LogView4J)</li>
+      <li><em>RemoteHost</em>: <code>localhost</code></li>
+    </ul>
+  </li>
+  <li>Apply the new appender to the root logger using an <code>&lt;appender-ref&gt;</code> element</li>
+</ol>
+<p>Launch LogView4J and run the web application again to verify that LogView4J is receiving log messages.</p>
+<div class="solution">Solution: <a href="log4j.6.xml">log4j.xml</a></div>
+
+</body>
+</html>

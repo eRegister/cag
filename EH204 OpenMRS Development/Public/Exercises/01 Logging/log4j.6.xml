@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%p - %C{1}.%M(%L) |%d{ISO8601}| %m%n" />
+		</layout>
+	</appender>
+	
+	<appender name="SOCKET" class="org.apache.log4j.net.SocketAppender">
+		<param name="Port" value="4447" />
+		<param name="RemoteHost" value="localhost" />
+	</appender>
+	
+	<logger name="org.springframework">
+		<level value="TRACE" />
+	</logger>
+	
+	<root>
+		<level value="TRACE" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="SOCKET" />
+	</root>
+
+</log4j:configuration>

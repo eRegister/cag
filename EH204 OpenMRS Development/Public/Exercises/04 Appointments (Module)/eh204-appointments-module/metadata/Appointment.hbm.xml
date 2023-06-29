@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.1//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+    <hibernate-mapping package="org.openmrs.module.appointments">
+    	
+    	<class name="Appointment" table="appointment">
+    	
+    		<id name="appointmentId" type="int" column="appointment_id" unsaved-value="0">
+    			<generator class="native" />
+    		</id>
+    		
+    		<many-to-one name="provider" column="provider_id" class="org.openmrs.User" />
+    		<many-to-one name="patient" column="patient_id" class="org.openmrs.Patient" />
+    		<many-to-one name="location" column="location_id" class="org.openmrs.Location" />
+    		
+    		<property name="when" type="date" column="date"/>
+    		<property name="reason" type="text" column="reason"/>
+    		
+    	</class>
+    	
+    </hibernate-mapping>

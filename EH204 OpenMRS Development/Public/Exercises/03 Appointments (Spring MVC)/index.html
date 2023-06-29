@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>EH204 Exercises</title>
+<link href="../../.ehsdi/exercises.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>EH204 Exercises</h1>
+<h2>Appointments: Spring MVC Web Application</h2>
+<p>This exercise creates a new Spring MVC version of the previous <a href="../02 Appointments (Console)/index.html">Appointments</a> application, whose database we can reuse.</p>
+<h3>1. Creating a basic Spring MVC Web Application</h3>
+<ol>
+  <li>In Eclipse, create a new <em>Dynamic Web Application</em> where:
+    <ul>
+      <li>It has a web.xml deployment descriptor</li>
+      <li>Context path is <em>appointments</em></li>
+    </ul>
+  </li>
+  <li>Inside the <em>WebContent/WEB-INF</em> folder, create a new folder called <em>lib</em> if it doesn't already exist</li>
+  <li>Copy all of the JAR files from <a href="libs.zip">libs.zip</a> into that lib folder (this automatically puts them on the build path)</li>
+  <li>Copy <a href="appointments-servlet.xml">appointments-servlet.xml</a> to the <em>WEB-INF</em> directory (this is an empty Spring application context file)</li>
+  <li>Add a dispatcher servlet to <em>web.xml</em> as follows:<br />
+  <pre>
+&lt;servlet&gt;
+  &lt;servlet-name&gt;appointments&lt;/servlet-name&gt;
+  &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+  &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+  &lt;servlet-name&gt;appointments&lt;/servlet-name&gt;
+  &lt;url-pattern&gt;*.list&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+&lt;servlet-mapping&gt;
+  &lt;servlet-name&gt;appointments&lt;/servlet-name&gt;
+  &lt;url-pattern&gt;*.form&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</pre>
+  </li>
+<li>Add a simple welcome page called <em>index.jsp</em></li>
+</ol>
+Run the web application in Tomcat and verify that the welcome page displays correctly.
+<h3>2. Adding a controller and URL mapping</h3>
+<p>We are now going to add a new page to list appointments which will use a Spring controller.</p>
+<ol>
+<li>Go to the <em>Build Path Configuration </em>dialog for the project. Click <em>Add External JARS...</em> and browse to and select <em>servlet-api.jar</em> in your Tomcat lib folder</li>
+<li>Create a new package in the src folder called <code>appointment.web</code></li>
+<li>In that package, create a new class called <code>AppointmentListController</code> whose super class is <code>ParameterizableViewController</code></li>
+<li>Add the following beans to a<em>ppointments-servlet.xml</em>:
+<pre>&lt;bean id=&quot;urlMapping&quot; class=&quot;org.springframework.web.servlet.handler.SimpleUrlHandlerMapping&quot;&gt;
+  &lt;property name=&quot;mappings&quot;&gt;
+    &lt;props&gt;
+      &lt;prop key=&quot;/appointment.list&quot;&gt;appointmentListController&lt;/prop&gt;
+    &lt;/props&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;
+
+&lt;bean id=&quot;appointmentListController&quot; class=&quot;appointment.web.AppointmentListController&quot;&gt;
+  &lt;property name=&quot;viewName&quot; value=&quot;appointmentList&quot; /&gt;
+&lt;/bean&gt;
+
+&lt;bean id=&quot;jspViewResolver&quot; class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
+  &lt;property name=&quot;viewClass&quot; value=&quot;org.springframework.web.servlet.view.JstlView&quot; /&gt;
+  &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/view/&quot; /&gt;
+  &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot; /&gt;
+&lt;/bean&gt;</pre></li>
+<li>Add a folder called <em>view</em> to <em>WEB-INF</em> where all the JSP views for controllers can be stored</li>
+<li>Add a new JSP to the view folder called <em>appointmentList.jsp</em> which will be used to list the appointments.</li>
+<li>Modifty the welcome page <em>index.jsp</em> and add a link to the URL of the list page (that is,<em> appointment.list</em> NOT <em>appointmentList.jsp</em>)</li>
+</ol>
+<p>Run the web application in Tomcat and verify that both of the pages display correctly.</p>
+<h3>3. Add services and DAO layers</h3>
+<p>These can be copied from the previous <a href="../02 Appointments (Console)/index.html">Appointments</a> exercise</p>
+<ol>
+  <li>Right-click on the appointment package in the previous exercise's Eclipse project and select <em>Copy</em></li>
+  <li>In your file manager, paste this into the src folder of the current Eclipse project</li>
+  <li>Back in Eclipse, right-click on the project and select <em>Refresh</em></li>
+  <li>Delete the Java class <code>appointment.AppointmentMaker</code> from the project.</li>
+  <li>Copy ALL beans from <em>appcontext.xm</em>l in the previous project, to <em>appointments-servlet.xml</em> in the current project.</li>
+</ol>
+<h3>4. Implement the appointment list page</h3>
+<p>We will implement the list page controller so that the list of appointments is loaded from the service, placed in the model, and then rendered in the view.</p>
+<ol>
+  <li>Right-click on the <code>AppointmentListController</code> class and select <em>Source</em> &gt; <em>Override/Implement Methods...</em></li>
+  <li>Select the <code>handleRequestInternal</code> method, and press ok to override it.</li>
+  <li>Insert the following code to load the appointments from the service and put them in the model:<pre>AppointmentService svc = (AppointmentService)getApplicationContext().getBean(&quot;appointmentService&quot;);<br />Map&lt;String, Object&gt; model = <strong>new</strong> HashMap&lt;String, Object&gt;();<br />List&lt;Appointment&gt; appointments = svc.getAppointments();<br />model.put(&quot;appointments&quot;, appointments);<br /><strong>return new </strong>ModelAndView(getViewName(), model);</pre>
+  </li>
+  <li>Edit <em>appointmentList.jsp</em> to display the appointment list as a table (i.e. using <code>&lt;c:forEach&gt;</code> to create table rows)</li>
+</ol>
+<p>Run the web application in Tomcat and verify thatthe list page now lists all appointments in the database.</p>
+<h3>5. A form for adding new appointments </h3>
+<p>We will now add a form which can be used to add new appointments to the database</p>
+<ol>
+  <li>Add a <code>SimpleFormController</code> called <code>AppointmentFormController</code> to the <code>appointment.web</code> package</li>
+  <li>Add a field of type <code>AppointmentService</code> called <code>appointmentService</code> and give it a setter method called <code>setAppointmentService</code> (this will be used to give the controller access to the service by connecting them in the application context)</li>
+  <li>Override the <code>formBackingObject</code> method (used to get the object that this form will edit) and make return a new instance of the <code>Appointment</code> class</li>
+  <li>Override the <code>onSubmit</code> method and add the following code to it:
+<pre>
+Appointment appointment = (Appointment)command;
+appointmentService.saveAppointment(appointment);
+<strong>return new</strong> ModelAndView(new RedirectView(getSuccessView()));</pre>
+  </li>
+  <li>Add a new mapping to the URL mapping bean...
+    <pre>&lt;prop key=&quot;/appointment.form&quot;&gt;appointmentFormController&lt;/prop&gt;</pre>
+  </li>
+  <li>Add a bean for the form controller:
+    <pre>&lt;bean id=&quot;appointmentFormController&quot; class=&quot;appointment.web.AppointmentFormController&quot;&gt;
+ &lt;property name=&quot;formView&quot; value=&quot;appointmentForm&quot; /&gt;
+  &lt;property name=&quot;successView&quot; value=&quot;appointment.list&quot; /&gt;
+  &lt;property name=&quot;commandName&quot; value=&quot;appointment&quot; /&gt;
+  &lt;property name=&quot;appointmentService&quot; ref=&quot;appointmentService&quot; /&gt;
+&lt;/bean&gt;</pre>
+  </li>
+  <li>Add a link to the form on <em>index.jsp</em> (i.e. a link to <em>appointment.form</em>) </li>
+  <li>Finally you need to actually create the JSP form <em>WEB-INF/view/appointmentForm.jsp</em>. Use the Spring Form tag library to create a form whose fields are bound to the command object's properties (<code>&lt;form:form&gt;</code> and <code>&lt;form:input&gt;</code>) . You should also include matching <code>&lt;form:errors&gt;</code> tags for each field so that any errors are displayed on the form.</li>
+  <li>To enable the form to bind the date property of the appointment to a text input, you must override the initBinder method of the AppointmentFormController class and add the following code:
+    <pre>DateFormat dateFormat = <strong>new</strong> SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
+binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));</pre>
+  </li>
+</ol>
+<p>Run the web application in Tomcat and verify that:</p>
+<ul>
+  <li>You can add a new appointment</li>
+  <li>Invalid date values	will result in a error message being displayed on the form</li>
+  <li>When you add an appointment you are redirected to the appointment list page</li>
+</ul>
+<h3>6. Extra...</h3>
+<p>Add a validator for <code>Appointment</code> objects to the appointment form to check for empty names and dates which are in the past.</p>
+<p>&nbsp;</p>
+</body>
+</html>
