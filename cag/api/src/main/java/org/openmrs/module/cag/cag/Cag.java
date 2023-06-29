@@ -37,6 +37,30 @@ public class Cag extends BaseOpenmrsData {
 	@Column(name = "constituency")
 	private String constituency;
 	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getVillage() {
+		return village;
+	}
+	
+	public void setVillage(String village) {
+		this.village = village;
+	}
+	
+	public String getConstituency() {
+		return constituency;
+	}
+	
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+	
 	@Override
 	public Integer getId() {
 		return id;
