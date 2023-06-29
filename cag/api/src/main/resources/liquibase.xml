@@ -67,7 +67,7 @@
 
 	<changeSet id="cag-2023-06-26-17-00" author="kochieng">
 		<preConditions onFail="MARK_RAN">
-			<not><tableExists tableName="cag_cag"/></not>
+			<tableExists tableName="cag_cag"/>
 		</preConditions>
 		<comment>
 			Updating the CAG table
@@ -77,6 +77,6 @@
 				<constraints nullable="false"/>
 			</column>
 		</addColumn>
-		<renameColumn tableName="cag_cag" oldColumnName="created_by" newColumnName="creator"/>
+		<renameColumn tableName="cag_cag" columnDataType="int" oldColumnName="created_by" newColumnName="creator"/>
 	</changeSet>
 </databaseChangeLog>
