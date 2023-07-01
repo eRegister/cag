@@ -35,6 +35,21 @@
 			<artifactId>uiframework-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>webservices.rest-omod</artifactId>
+			<version>${webServicesVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>webservices.rest-omod-common</artifactId>
+			<version>${webServicesVersion}</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

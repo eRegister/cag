@@ -44,6 +44,7 @@ public class AdminList extends AdministrationSectionExt {
 		
 		map.put("module/cag/cag.form", "cag.title");
 		map.put("cag/cag.page", "cag.refapp.title");
+		map.put("cag/cag.page", "Test");
 		
 		return map;
 	}

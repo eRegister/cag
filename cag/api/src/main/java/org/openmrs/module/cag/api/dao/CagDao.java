@@ -33,4 +33,7 @@ public class CagDao {
 		getSession().saveOrUpdate(cag);
 	}
 	
+	public Cag getCagByUuid(String uuid) {
+		return (Cag) getSession().createCriteria(Cag.class).add(Restrictions.eq("uuid", uuid)).uniqueResult();
+	}
 }

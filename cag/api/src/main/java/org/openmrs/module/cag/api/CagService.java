@@ -12,6 +12,9 @@ public interface CagService extends OpenmrsService {
 	Cag getCagById(Integer cagId);
 	
 	@Transactional(readOnly = true)
+	Cag getCagByUuid(String uuid);
+	
+	@Transactional(readOnly = true)
 	List<Cag> getCagList();
 	
 	@Transactional
