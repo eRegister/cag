@@ -22,6 +22,11 @@ public class CagServiceImpl implements CagService {
 		return dao.getCagById(cagId);
 	}
 	
+	@Override
+	public Cag getCagByUuid(String uuid) {
+		return dao.getCagByUuid(uuid);
+	}
+	
 	public List<Cag> getCagList() {
 		return dao.getCagList();
 	}
