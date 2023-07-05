@@ -2,7 +2,7 @@
 
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
-<h2><spring:message code="cag-omod.title" /></h2>
+<h2><spring:message code="cag.title" /></h2>
 
 <br/>
 <table>
