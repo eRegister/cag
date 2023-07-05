@@ -15,6 +15,7 @@ import org.openmrs.test.BaseModuleContextSensitiveTest;
 public class CagServiceImplTest extends BaseModuleContextSensitiveTest {
 	
 	CagService cagService;
+	
 	String uuid;
 	
 	@Override
@@ -29,9 +30,9 @@ public class CagServiceImplTest extends BaseModuleContextSensitiveTest {
 		cagService = Context.getService(CagService.class);
 		uuid = "0D4123CE-0FA6-412B-AEF7-0174E355FA1D";
 	}
-
+	
 	@Test
-	public  void testAddCagShouldAddACag() {
+	public void testAddCagShouldAddACag() {
 		Cag cag = new Cag();
 		cag.setUuid(uuid);
 		cag.setName("Community Cag");
@@ -40,7 +41,7 @@ public class CagServiceImplTest extends BaseModuleContextSensitiveTest {
 		cag.setDateCreated(new Date());
 		
 		List<Cag> cagsList = cagService.getCagList();
-		Assert.assertEquals(cagsList.size(), 0 );
+		Assert.assertEquals(cagsList.size(), 0);
 		
 		cagService.saveCag(cag);
 		
@@ -49,7 +50,7 @@ public class CagServiceImplTest extends BaseModuleContextSensitiveTest {
 		Assert.assertNotNull(savedCag.getId());
 		Assert.assertEquals(cag.getUuid(), savedCag.getUuid());
 		
-		Assert.assertEquals(cagService.getCagList().size(), 1 );
+		Assert.assertEquals(cagService.getCagList().size(), 1);
 		
 	}
 	

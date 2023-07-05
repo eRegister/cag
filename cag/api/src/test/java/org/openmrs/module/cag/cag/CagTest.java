@@ -20,6 +20,6 @@ public class CagTest extends TestCase {
 		
 		assertNotNull(cag.getName());
 		
-		assertTrue("Cag's name length should be > 0", cag.getName().length()>0);
+		assertTrue("Cag's name length should be > 0", cag.getName().length() > 0);
 	}
 }
