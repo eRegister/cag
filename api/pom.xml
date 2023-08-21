@@ -9,6 +9,6 @@
 
 	<artifactId>cag-api</artifactId>
 	<packaging>jar</packaging>
-	<name>Community ART Group API</name>
-	<description>API project for Community ART Group</description>
+	<name>Cag API</name>
+	<description>API project for Cag</description>
 </project>

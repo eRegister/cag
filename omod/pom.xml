@@ -9,8 +9,8 @@
 
 	<artifactId>cag-omod</artifactId>
 	<packaging>jar</packaging>
-	<name>Community ART Group OMOD</name>
-	<description>Omod submodule for Community ART Group</description>
+	<name>Cag OMOD</name>
+	<description>Omod submodule for Cag</description>
 
 	<dependencies>
         <dependency>
@@ -28,27 +28,6 @@
 			<artifactId>openmrs-web</artifactId>
 			<scope>provided</scope>
 			<classifier>tests</classifier>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>uiframework-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>webservices.rest-omod</artifactId>
-			<version>${webServicesVersion}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>webservices.rest-omod-common</artifactId>
-			<version>${webServicesVersion}</version>
-			<classifier>tests</classifier>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

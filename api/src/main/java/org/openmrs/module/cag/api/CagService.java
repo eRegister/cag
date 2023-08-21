@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.cag.cag.Cag;
+import org.openmrs.module.cag.cag.CagPatient;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface CagService extends OpenmrsService {
 	
+	//	Methods acting on Cag
 	@Transactional(readOnly = true)
 	Cag getCagById(Integer cagId);
 	
@@ -22,5 +24,21 @@ public interface CagService extends OpenmrsService {
 	
 	@Transactional
 	void voidCag(Cag cag);
+	
+	//	Handles CagPatient Transactions
+	@Transactional(readOnly = true)
+	CagPatient getCagPatientById(Integer cagPatientId); //find patient method
+	
+	@Transactional(readOnly = true)
+	List<CagPatient> getCagPatientList(Integer id); //read cag patients as list
+	
+	@Transactional
+	void saveCagPatient(CagPatient cagPatient); //save cag patient
+	
+	@Transactional
+	void deletePatientFromCag(CagPatient cagPatient); //set status for cag member
+	
+	@Transactional
+	void deleteCag(String uuid);
 	
 }
