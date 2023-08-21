@@ -1,15 +1,20 @@
 package org.openmrs.module.cag.cag;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.OverridesAttribute;
 
+import jdk.internal.dynalink.linker.LinkerServices;
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.Patient;
+import org.openmrs.Person;
+import org.openmrs.User;
+import org.springframework.stereotype.Repository;
 
-@Entity(name = "cag.cag")
-@Table(name = "cag_cag")
+import java.util.List;
+
+@Repository
+@Entity(name = "cag")
+@AttributeOverride(name = "creator", column = @Column(name = "created_by"))
 public class Cag extends BaseOpenmrsData {
 	
 	public String getName() {
@@ -25,20 +30,37 @@ public class Cag extends BaseOpenmrsData {
 	@Column(name = "cag_id")
 	private Integer id;
 	
-	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "description")
 	private String description;
 	
-	@Column(name = "village")
 	private String village;
 	
-	@Column(name = "constituency")
 	private String constituency;
+	
+	private String district;
+	
+	@ManyToMany
+	@JoinTable(name = "cag_patient", joinColumns = { @JoinColumn(name = "cag_id") }, inverseJoinColumns = { @JoinColumn(name = "id") })
+	private List<Patient> cagPatientList;
+	
+	public List<Patient> getCagPatientList() {
+		return cagPatientList;
+	}
+	
+	public void setCagPatientList(List<Patient> cagPatientList) {
+		this.cagPatientList = cagPatientList;
+	}
 	
 	public String getDescription() {
 		return description;
+	}
+	
+	public Cag() {
+	}
+	
+	public Cag(Integer id) {
+		this.id = id;
 	}
 	
 	public void setDescription(String description) {
@@ -71,4 +93,17 @@ public class Cag extends BaseOpenmrsData {
 		this.id = id;
 	}
 	
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	
+	public String getDistrict() {
+		return district;
+	}
+	
+	@Override
+	public String toString() {
+		return "Cag{" + "id=" + id + ", name='" + name + '\'' + ", description='" + description + '\'' + ", village='"
+		        + village + '\'' + ", constituency='" + constituency + '\'' + ", district='" + district + '\'' + '}';
+	}
 }

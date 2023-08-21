@@ -1,12 +1,23 @@
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+ * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+ *
+ * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+ * graphic logo is a trademark of OpenMRS Inc.
+ */
 package org.openmrs.module.cag.api.impl;
+
+import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.cag.api.CagService;
+import org.openmrs.module.cag.api.db.CagDao;
+import org.openmrs.module.cag.cag.Cag;
+import org.openmrs.module.cag.cag.CagPatient;
 
 import java.util.List;
 
-import org.openmrs.module.cag.api.CagService;
-import org.openmrs.module.cag.cag.Cag;
-import org.openmrs.module.cag.api.dao.CagDao;
-
-public class CagServiceImpl implements CagService {
+public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	
 	private CagDao dao;
 	
@@ -18,6 +29,7 @@ public class CagServiceImpl implements CagService {
 		this.dao = dao;
 	}
 	
+	@Override
 	public Cag getCagById(Integer cagId) {
 		return dao.getCagById(cagId);
 	}
@@ -27,24 +39,54 @@ public class CagServiceImpl implements CagService {
 		return dao.getCagByUuid(uuid);
 	}
 	
+	@Override
 	public List<Cag> getCagList() {
 		return dao.getCagList();
 	}
 	
+	@Override
 	public void saveCag(Cag cag) {
 		dao.saveCag(cag);
 	}
 	
+	@Override
 	public void voidCag(Cag cag) {
 		cag.setVoided(true);
 		dao.saveCag(cag);
 	}
 	
+	@Override
 	public void onStartup() {
+	}
+	
+	@Override
+	public void onShutdown() {
+	}
+	
+	@Override
+	public CagPatient getCagPatientById(Integer cagPatientId) {
+		return this.dao.getCagPatientById(cagPatientId);
+	}
+	
+	@Override
+	public List<CagPatient> getCagPatientList(Integer id) {
+		return dao.getCagPatientList(id);
+	}
+	
+	@Override
+	public void saveCagPatient(CagPatient cagPatient) {
+		dao.saveCagPatient(cagPatient);
+	}
+	
+	@Override
+	public void deletePatientFromCag(CagPatient cagPatient) {
+		cagPatient.setStatus(false);
 		
 	}
 	
-	public void onShutdown() {
-		
+	@Override
+	public void deleteCag(String uuid) {
+		dao.deleteCag(uuid);
 	}
+	
 }
