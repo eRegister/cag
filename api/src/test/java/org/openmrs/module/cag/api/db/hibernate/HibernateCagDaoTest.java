@@ -146,7 +146,7 @@ public class HibernateCagDaoTest extends BaseModuleContextSensitiveTest {
 	}
 	
 	@Test
-	//	@Ignore("Unignore testGetCagPatientList_shouldGetCagPatientList. if you want test getcaglist functionality in CagDao")
+	@Ignore("Unignore testGetCagPatientList_shouldGetCagPatientList. if you want test getcaglist functionality in CagDao")
 	public void getCagPatientList_shouldGetCagPatientList() {
 		
 		int id = 1;
