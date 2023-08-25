@@ -9,6 +9,9 @@
  */
 package org.openmrs.module.cag.api.impl;
 
+import org.openmrs.Patient;
+import org.openmrs.api.UserService;
+import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.cag.api.CagService;
 import org.openmrs.module.cag.api.db.CagDao;
@@ -16,6 +19,7 @@ import org.openmrs.module.cag.cag.Cag;
 import org.openmrs.module.cag.cag.CagPatient;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	
@@ -46,6 +50,9 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	
 	@Override
 	public void saveCag(Cag cag) {
+		
+		cag.setUuid(UUID.randomUUID().toString());
+		cag.setCreator(Context.getAuthenticatedUser());
 		dao.saveCag(cag);
 	}
 	
@@ -69,8 +76,8 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	}
 	
 	@Override
-	public List<CagPatient> getCagPatientList(Integer id) {
-		return dao.getCagPatientList(id);
+	public List<Patient> getCagPatientList(Integer cagId) {
+		return dao.getCagPatientList(cagId);
 	}
 	
 	@Override

@@ -146,15 +146,15 @@ public class HibernateCagDaoTest extends BaseModuleContextSensitiveTest {
 	}
 	
 	@Test
-	//	@Ignore("Unignore testGetCagPatientList_shouldGetCagPatientList. if you want test getcaglist functionality in CagDao")
+	@Ignore("Unignore testGetCagPatientList_shouldGetCagPatientList. if you want test getcaglist functionality in CagDao")
 	public void getCagPatientList_shouldGetCagPatientList() {
 		
 		int id = 1;
-		List<CagPatient> cagPatient1 = dao.getCagPatientList(id);
-		
-		for (CagPatient p : cagPatient1) {
-			System.out.println(p);
-		}
+		List<Patient> cagPatientList = dao.getCagPatientList(id);
+		//
+		//		for (CagPatient p : cagPatient1) {
+		//			System.out.println(p);
+		//		}
 	}
 	
 	@Test

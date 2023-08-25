@@ -3,12 +3,16 @@ package org.openmrs.module.cag.api.db.hibernate;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Patient;
+import org.openmrs.api.PatientService;
+import org.openmrs.api.context.Context;
 import org.openmrs.api.db.hibernate.DbSession;
 import org.openmrs.api.db.hibernate.DbSessionFactory;
 import org.openmrs.module.cag.api.db.CagDao;
 import org.openmrs.module.cag.cag.Cag;
 import org.openmrs.module.cag.cag.CagPatient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HibernateCagDao implements CagDao {
@@ -125,18 +129,36 @@ public class HibernateCagDao implements CagDao {
 	}
 	
 	@Override
-	public List<CagPatient> getCagPatientList(Integer id) {
+	public List<Patient> getCagPatientList(Integer cagId) {
+		List<Integer> idList = getPatientIdList(cagId);
+		
+		if (!idList.isEmpty()) {
+			PatientService patientService = Context.getPatientService();
+			List<Patient> cagPatientList = new ArrayList<Patient>();
+			
+			for (Integer patatientId : idList) {
+				cagPatientList.add(patientService.getPatient(patatientId));
+			}
+			
+			return cagPatientList;
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public List<Integer> getPatientIdList(Integer cagId) {
+		
 		Transaction tx = getSession().beginTransaction();
-		
-		Query query = getSession().createQuery("from cag_patient cp where cp.status=:status and cp.cag_id=:id");
+		Query query = getSession().createQuery(
+		    "select p.patient_id from cag_patient p where p.status=:status and p.cag_id=:cagId");
 		query.setBoolean("status", true);
-		query.setInteger("id", id);
-		List<CagPatient> cagPatientList = query.list();
-		
+		query.setInteger("cagId", cagId);
+		List<Integer> idList = query.list();
 		if (!tx.wasCommitted())
 			tx.commit();
 		
-		return cagPatientList;
+		return idList;
 	}
 	
 	@Override
@@ -152,4 +174,5 @@ public class HibernateCagDao implements CagDao {
 	public void deletePatientFromCag(CagPatient cagPatient) {
 		
 	}
+	
 }

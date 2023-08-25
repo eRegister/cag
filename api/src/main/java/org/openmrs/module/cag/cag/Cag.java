@@ -40,6 +40,7 @@ public class Cag extends BaseOpenmrsData {
 	
 	private String district;
 	
+	@Transient
 	@ManyToMany
 	@JoinTable(name = "cag_patient", joinColumns = { @JoinColumn(name = "cag_id") }, inverseJoinColumns = { @JoinColumn(name = "id") })
 	private List<Patient> cagPatientList;

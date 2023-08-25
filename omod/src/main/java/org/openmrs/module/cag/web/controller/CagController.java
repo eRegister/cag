@@ -9,79 +9,46 @@
  */
 package org.openmrs.module.cag.web.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.User;
-import org.openmrs.api.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.cag.api.CagService;
+import org.openmrs.module.cag.cag.Cag;
+import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.webservices.rest.web.v1_0.controller.MainResourceController;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 /**
  * This class configured as controller using annotation and mapped with the URL of
  * 'module/${rootArtifactid}/${rootArtifactid}Link.form'.
  */
-@Controller("${rootrootArtifactid}.CagController")
-@RequestMapping(value = "module/${rootArtifactid}/${rootArtifactid}.form")
-public class CagController {
+
+//@Component
+@Controller
+@RequestMapping("/rest1/" + RestConstants.VERSION_1 + CagController.CAG_NAMESPACE)
+public class CagController extends MainResourceController {
 	
-	/** Logger for this class and subclasses */
-	protected final Log log = LogFactory.getLog(getClass());
-	
-	@Autowired
-	UserService userService;
-	
-	/** Success form view name */
-	private final String VIEW = "/module/${rootArtifactid}/${rootArtifactid}";
-	
-	/**
-	 * Initially called after the getUsers method to get the landing form name
-	 * 
-	 * @return String form view name
-	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public String onGet() {
-		return VIEW;
-	}
-	
-	/**
-	 * All the parameters are optional based on the necessity
-	 * 
-	 * @param httpSession
-	 * @param anyRequestObject
-	 * @param errors
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.POST)
-	public String onPost(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject,
-	        BindingResult errors) {
-		
-		if (errors.hasErrors()) {
-			// return error view
-		}
-		
-		return VIEW;
-	}
-	
-	/**
-	 * This class returns the form backing object. This can be a string, a boolean, or a normal java
-	 * pojo. The bean name defined in the ModelAttribute annotation and the type can be just defined
-	 * by the return type of this method
-	 */
-	@ModelAttribute("users")
-	protected List<User> getUsers() throws Exception {
-		List<User> users = userService.getAllUsers();
-		
-		// this object will be made available to the jsp page under the variable name
-		// that is defined in the @ModuleAttribute tag
-		return users;
-	}
-	
+	public static final String CAG_NAMESPACE = "/cag";
+	//
+	//	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	//	public @ResponseBody
+	//	String saveCag(@RequestBody Cag cag) throws Exception {
+	//
+	//		if (cag != null) {
+	//			Context.getService(CagService.class).saveCag(cag);
+	//			return "Saved successfully..." + Context.getService(CagService.class).getCagByUuid(cag.getUuid());
+	//		} else {
+	//			//			System.out.println("Failed to save cag...");
+	//			return "Failed to save cag is null...";
+	//		}
+	//	}
+	//
+	//	@Override
+	//	public String getNamespace() {
+	//		return RestConstants.VERSION_1 + "/cag";
+	//	}
 }

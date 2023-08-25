@@ -1,2 +1,4 @@
-/home/moletsane/Documents/Workspace/cag/omod/src/main/java/org/openmrs/module/cag/web/controller/CagController.java
-/home/moletsane/Documents/Workspace/cag/omod/src/main/java/org/openmrs/module/cag/extension/html/AdminList.java
+/home/mojau_p/Desktop/copy/cag/omod/src/main/java/org/openmrs/module/cag/web/resource/CagResource.java
+/home/mojau_p/Desktop/copy/cag/omod/src/main/java/org/openmrs/module/cag/extension/html/AdminList.java
+/home/mojau_p/Desktop/copy/cag/omod/src/main/java/org/openmrs/module/cag/web/resource/CagPatientResource.java
+/home/mojau_p/Desktop/copy/cag/omod/src/main/java/org/openmrs/module/cag/web/controller/CagController.java
