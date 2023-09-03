@@ -42,4 +42,6 @@ public interface CagService extends OpenmrsService {
 	//	@Transactional
 	void deleteCag(String uuid);
 	
+	Cag updateCag(Cag cag);
+	
 }

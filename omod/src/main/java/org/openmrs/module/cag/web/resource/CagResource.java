@@ -13,9 +13,11 @@ import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentat
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
+import org.openmrs.module.webservices.rest.web.resource.api.Updatable;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
+import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.springframework.stereotype.Component;
@@ -32,7 +34,7 @@ import java.util.UUID;
 @Resource(name = RestConstants.VERSION_1 + CagController.CAG_NAMESPACE, supportedClass = Cag.class, supportedOpenmrsVersions = {
         "1.8.*", "2.1.*", "2.4.*" })
 @Component
-public class CagResource extends DelegatingCrudResource<Cag> {
+public class CagResource extends DelegatingCrudResource<Cag> implements Updatable {
 	
 	@Override
 	public Cag getByUniqueId(String uuid) {
@@ -68,7 +70,34 @@ public class CagResource extends DelegatingCrudResource<Cag> {
 	
 	@Override
 	public Object update(String uuid, SimpleObject propertiesToUpdate, RequestContext context) throws ResponseException {
-		return super.update(uuid, propertiesToUpdate, context);
+		System.out.println("update has been called!!!!!!!!!!!");
+		
+		Cag updatingCag = new Cag();
+		updatingCag.setUuid(uuid);
+		updatingCag.setCreator(Context.getAuthenticatedUser());
+		updatingCag.setName(propertiesToUpdate.get("name").toString());
+		updatingCag.setDescription(propertiesToUpdate.get("description").toString());
+		updatingCag.setConstituency(propertiesToUpdate.get("constituency").toString());
+		updatingCag.setVillage(propertiesToUpdate.get("village").toString());
+		updatingCag.setDistrict(propertiesToUpdate.get("district").toString());
+		
+		Cag updatedCag = getService().updateCag(updatingCag);
+		return updatedCag;
+	}
+	
+	@Override
+	public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addProperty("name");
+		description.addProperty("description");
+		description.addProperty("constituency");
+		description.addProperty("village");
+		description.addProperty("district");
+		description.addProperty("changed_by");
+		description.addProperty("date_changed");
+		description.addProperty("creator");
+		
+		return description;
 	}
 	
 	public void addProperty(String propertyName) {

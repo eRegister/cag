@@ -18,6 +18,7 @@ import org.openmrs.module.cag.api.db.CagDao;
 import org.openmrs.module.cag.cag.Cag;
 import org.openmrs.module.cag.cag.CagPatient;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -94,6 +95,14 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	@Override
 	public void deleteCag(String uuid) {
 		dao.deleteCag(uuid);
+	}
+	
+	@Override
+	public Cag updateCag(Cag cag) {
+		
+		cag.setDateChanged(new Date());
+		cag.setChangedBy(Context.getAuthenticatedUser());
+		return dao.updateCag(cag);
 	}
 	
 }

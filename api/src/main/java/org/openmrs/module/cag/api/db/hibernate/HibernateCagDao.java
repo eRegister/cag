@@ -79,7 +79,7 @@ public class HibernateCagDao implements CagDao {
 	}
 	
 	@Override
-	public void updateCag(Cag cag) {
+	public Cag updateCag(Cag cag) {
 		Transaction tx = getSession().beginTransaction();
 		
 		Query query = getSession()
@@ -92,13 +92,14 @@ public class HibernateCagDao implements CagDao {
 		query.setString("district", cag.getDistrict());
 		query.setDate("date_changed", cag.getDateChanged());
 		query.setParameter("changed_by", cag.getChangedBy());
-		//		query.setParameter("creator",cag.getCreator());
 		query.setInteger("voided", 0);
 		query.setString("uuid", cag.getUuid());
 		query.executeUpdate();
 		
 		if (!tx.wasCommitted())
 			tx.commit();
+		
+		return getCagByUuid(cag.getUuid());
 	}
 	
 	@Override

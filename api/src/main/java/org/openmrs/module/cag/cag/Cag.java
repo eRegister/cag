@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.OverridesAttribute;
 
 import jdk.internal.dynalink.linker.LinkerServices;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Patient;
 import org.openmrs.Person;
@@ -15,6 +16,7 @@ import java.util.List;
 @Repository
 @Entity(name = "cag")
 @AttributeOverride(name = "creator", column = @Column(name = "created_by"))
+@JsonIgnoreProperties({ "creator", "changedBy" })
 public class Cag extends BaseOpenmrsData {
 	
 	public String getName() {

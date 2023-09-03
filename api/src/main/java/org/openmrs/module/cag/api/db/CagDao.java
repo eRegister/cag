@@ -18,7 +18,7 @@ public interface CagDao {
 	
 	public Cag getCagByUuid(String uuid);
 	
-	public void updateCag(Cag cag);
+	public Cag updateCag(Cag cag);
 	
 	public CagPatient getCagPatientById(Integer cagPatientId);
 	
