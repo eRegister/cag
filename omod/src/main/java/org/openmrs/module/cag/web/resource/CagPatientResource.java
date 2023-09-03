@@ -18,7 +18,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@Resource(name = RestConstants.VERSION_1 + CagController.CAG_NAMESPACE + "/patients", supportedClass = CagPatient.class, supportedOpenmrsVersions = {
+@Resource(name = RestConstants.VERSION_1 + CagController.CAG_NAMESPACE + "/patient", supportedClass = CagPatient.class, supportedOpenmrsVersions = {
         "1.8.*", "2.1.*", "2.4.*" })
 public abstract class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 	

@@ -104,11 +104,31 @@ public class HibernateCagDao implements CagDao {
 	
 	@Override
 	public void deleteCag(String uuid) {
+		
+		clearCag(getCagByUuid(uuid).getId());
+		
 		Transaction tx = getSession().beginTransaction();
 		
-		Query query = getSession().createQuery("update cag c set c.voided=:voided where uuid=:uuid");
+		System.out.println("Deleting Cag!!!");
+		Query query = getSession().createQuery("update cag c set c.voided=:voided where c.uuid=:uuid");
 		query.setInteger("voided", 1);
 		query.setString("uuid", uuid);
+		query.executeUpdate();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+		
+		System.out.println("Done Cag!!!");
+	}
+
+	@Override
+	public void clearCag(Integer cagId) {
+		Transaction tx = getSession().beginTransaction();
+		
+		System.out.println("Clearing Cag!!!");
+		Query query = getSession().createQuery("update cag_patient set status=:status where cag_id=:cag_id");
+		query.setInteger("status", 0);
+		query.setInteger("cag_id", cagId);
 		query.executeUpdate();
 		
 		if (!tx.wasCommitted())

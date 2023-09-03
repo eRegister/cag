@@ -31,4 +31,6 @@ public interface CagDao {
 	public void deleteCag(String uuid);
 	
 	public List<Integer> getPatientIdList(Integer cagId);
+
+	void clearCag(Integer cagId);
 }
