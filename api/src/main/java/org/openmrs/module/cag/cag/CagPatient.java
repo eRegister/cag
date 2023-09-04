@@ -21,6 +21,7 @@ import javax.persistence.*;
 /**
  * Please note that a corresponding table schema must be created in liquibase.xml.
  */
+
 @Repository
 @Entity(name = "cag_patient")
 @Table(name = "cag_patient")
@@ -35,6 +36,28 @@ public class CagPatient {
 	@JoinColumn(name = "patient_id")
 	@ManyToOne
 	Patient patient;
+	
+	@Column(name = "uuid")
+	private String patientUuid;
+	
+	@Transient
+	private String cagUuid;
+	
+	public String getPatientUuid() {
+		return patientUuid;
+	}
+	
+	public void setPatientUuid(String patientUuid) {
+		this.patientUuid = patientUuid;
+	}
+	
+	public String getCagUuid() {
+		return cagUuid;
+	}
+	
+	public void setCagUuid(String cagUuid) {
+		this.cagUuid = cagUuid;
+	}
 	
 	@Column(name = "cag_id")
 	private Integer cag_id;

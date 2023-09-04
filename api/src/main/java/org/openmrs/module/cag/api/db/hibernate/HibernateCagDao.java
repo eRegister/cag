@@ -120,7 +120,7 @@ public class HibernateCagDao implements CagDao {
 		
 		System.out.println("Done Cag!!!");
 	}
-
+	
 	@Override
 	public void clearCag(Integer cagId) {
 		Transaction tx = getSession().beginTransaction();
@@ -187,13 +187,23 @@ public class HibernateCagDao implements CagDao {
 		Transaction tx = getSession().beginTransaction();
 		
 		getSession().save(cag_patient);
+		
 		if (!tx.wasCommitted())
 			tx.commit();
 	}
 	
 	@Override
-	public void deletePatientFromCag(CagPatient cagPatient) {
+	public void deletePatientFromCag(Integer patientId) {
+		Transaction tx = getSession().beginTransaction();
 		
+		Query query = getSession().createQuery(
+		    "update cag_patient cp set cp.status=:inactive where cp.patient_id=:patientId and cp.status=:isActive");
+		query.setInteger("inactive", 0);
+		query.setInteger("isActive", 1);
+		query.setInteger("patientId", patientId);
+		query.executeUpdate();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
 	}
-	
 }

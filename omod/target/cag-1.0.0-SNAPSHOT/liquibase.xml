@@ -14,7 +14,7 @@
     -->
 
     <!-- Uncomment the changeset below if you want to make the Item class persistable, see also Item and CommunityARTGroupDaoTest -->
-    <changeSet id="cag-2023-06-28-14-40" author="kochieng">
+    <changeSet id="cag-2023-06-28-14-40" author="Mojau">
         <preConditions onFail="MARK_RAN">
             <not><tableExists tableName="cag"/></not>
         </preConditions>
@@ -41,7 +41,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="cag-2016-08-02-12-21" author="raff">
+    <changeSet id="cag-2016-08-02-12-21" author="Mojau">
         <preConditions onFail="MARK_RAN">
             <not><tableExists tableName="cag_patient"/></not>
         </preConditions>
@@ -64,7 +64,7 @@
                                  referencedColumnNames="patient_id" />
     </changeSet>
 
-    <changeSet id="cag-2023-06-26-17-00" author="kochieng">
+    <changeSet id="cag-2023-06-26-17-00" author="Moletsane">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="cag"/>
         </preConditions>
@@ -72,6 +72,21 @@
             Updating the CAG table
         </comment>
         <addColumn tableName="cag">
+            <column name="uuid" type="varchar(38)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <!--			<renameColumn tableName="cag" columnDataType="int" oldColumnName="created_by" newColumnName="creator"/>-->
+    </changeSet>
+
+    <changeSet id="cag-2023-09-04-20-20" author="Moletsane">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="cag_patient"/>
+        </preConditions>
+        <comment>
+            Updating the CAG_PATIENT table
+        </comment>
+        <addColumn tableName="cag_patient">
             <column name="uuid" type="varchar(38)">
                 <constraints nullable="false"/>
             </column>

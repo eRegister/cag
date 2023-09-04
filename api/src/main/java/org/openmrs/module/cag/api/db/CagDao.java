@@ -26,11 +26,11 @@ public interface CagDao {
 	
 	public void saveCagPatient(CagPatient cagPatient);
 	
-	public void deletePatientFromCag(CagPatient cagPatient);
+	void deletePatientFromCag(Integer patientId);
 	
 	public void deleteCag(String uuid);
 	
 	public List<Integer> getPatientIdList(Integer cagId);
-
+	
 	void clearCag(Integer cagId);
 }

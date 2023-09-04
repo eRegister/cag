@@ -54,6 +54,7 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		
 		cag.setUuid(UUID.randomUUID().toString());
 		cag.setCreator(Context.getAuthenticatedUser());
+		cag.setVoided(false);
 		dao.saveCag(cag);
 	}
 	
@@ -82,13 +83,25 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	}
 	
 	@Override
-	public void saveCagPatient(CagPatient cagPatient) {
+	public Patient saveCagPatient(CagPatient cagPatient) {
+		Integer cagId = getCagByUuid(cagPatient.getCagUuid()).getId();
+		cagPatient.setCagId(cagId);
+		
+		Patient patient = Context.getPatientService().getPatientByUuid(cagPatient.getPatientUuid());
+		Integer patientId = patient.getPatientId();
+		cagPatient.setPatientId(patientId);
+		
+		cagPatient.setStatus(true);
+		
 		dao.saveCagPatient(cagPatient);
+		
+		return patient;
 	}
 	
 	@Override
-	public void deletePatientFromCag(CagPatient cagPatient) {
-		cagPatient.setStatus(false);
+	public void deletePatientFromCag(String uuid) {
+		Integer patientId = Context.getPatientService().getPatientByUuid(uuid).getPatientId();
+		dao.deletePatientFromCag(patientId);
 		
 	}
 	

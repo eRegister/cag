@@ -34,10 +34,10 @@ public interface CagService extends OpenmrsService {
 	List<Patient> getCagPatientList(Integer id); //read cag patients as list
 	
 	//	@Transactional
-	void saveCagPatient(CagPatient cagPatient); //save cag patient
+	Patient saveCagPatient(CagPatient cagPatient); //save cag patient
 	
 	//	@Transactional
-	void deletePatientFromCag(CagPatient cagPatient); //set status for cag member
+	void deletePatientFromCag(String uuid); //set status for cag member
 	
 	//	@Transactional
 	void deleteCag(String uuid);
