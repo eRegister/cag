@@ -33,6 +33,8 @@ public interface CagService extends OpenmrsService {
 	//	@Transactional(readOnly = true)
 	List<Patient> getCagPatientList(Integer id); //read cag patients as list
 	
+	CagPatient getCagPatientByUuid(String uuid);
+	
 	//	@Transactional
 	Patient saveCagPatient(CagPatient cagPatient); //save cag patient
 	

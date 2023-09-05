@@ -3,6 +3,7 @@ package org.openmrs.module.cag.web.resource;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.cag.api.CagService;
+import org.openmrs.module.cag.cag.Cag;
 import org.openmrs.module.cag.cag.CagPatient;
 import org.openmrs.module.cag.web.controller.CagController;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -26,6 +27,12 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 	}
 	
 	@Override
+	public CagPatient getByUniqueId(String uuid) {
+		CagPatient cagPatient = getService().getCagPatientByUuid(uuid);
+		return cagPatient;
+	}
+	
+	@Override
 	public CagPatient newDelegate() {
 		return new CagPatient();
 	}
@@ -40,12 +47,7 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 	
 	@Override
 	public void purge(CagPatient cagPatient, RequestContext requestContext) throws ResponseException {
-		getService().deletePatientFromCag(cagPatient.getCagUuid());
-	}
-	
-	@Override
-	public CagPatient getByUniqueId(String s) {
-		return null;
+		getService().deletePatientFromCag(cagPatient.getPatientUuid());
 	}
 	
 	@Override

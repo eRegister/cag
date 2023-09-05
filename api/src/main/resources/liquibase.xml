@@ -64,6 +64,91 @@
                                  referencedColumnNames="patient_id" />
     </changeSet>
 
+        <changeSet id="cag-2013-09-05-15-53" author="Mojau">
+            <preConditions onFail="MARK_RAN">
+                <not><tableExists tableName="cag_visit"/></not>
+            </preConditions>
+            <comment>
+                Creating the cag_visit table
+            </comment>
+            <createTable tableName="cag_visit">
+                <column name="cag_visit_id" type="int" autoIncrement="true">
+                    <constraints primaryKey="true" nullable="false"/>
+                </column>
+                <column name="cag_id" type="int" />
+                <column name="patient_id" type="int"/>
+                <column name="next_visit_date" type="date" />
+            </createTable>
+            <addForeignKeyConstraint constraintName="cag_id_fkey" baseTableName="cag_visit" baseColumnNames="cag_id"  referencedTableName="cag"
+                                     referencedColumnNames="cag_id" />
+            <addForeignKeyConstraint constraintName="cag_patient_id_fkey" baseTableName="cag_visit" baseColumnNames="patient_id"  referencedTableName="patient"
+                                     referencedColumnNames="patient_id" />
+        </changeSet>
+
+
+            <changeSet id="cag-2013-09-05-16-51" author="Mojau">
+                <preConditions onFail="MARK_RAN">
+                    <not><tableExists tableName="missed_drug_pickup"/></not>
+                </preConditions>
+                <comment>
+                    Creating the cag missed drug pickup table
+                </comment>
+                <createTable tableName="cag_missed_drug_pickup">
+                    <column name="missed_drug_pickup_id" type="int" autoIncrement="true">
+                        <constraints primaryKey="true" nullable="false"/>
+                    </column>
+                    <column name="cag_visit_id" type="int" />
+                    <column name="patient_id" type="int"/>
+                    <column name="reason_missed" type="VARCHAR(255)" />
+                </createTable>
+                <addForeignKeyConstraint constraintName="cag_visit_id_fk" baseTableName="cag_missed_drug_pickup" baseColumnNames="cag_visit_id"  referencedTableName="cag_visit"
+                                         referencedColumnNames="cag_visit_id" />
+                <addForeignKeyConstraint constraintName="cag_patient_id_fky" baseTableName="cag_missed_drug_pickup" baseColumnNames="patient_id"  referencedTableName="patient"
+                                         referencedColumnNames="patient_id" />
+            </changeSet>
+
+
+        <changeSet id="cag-2013-09-05-16-40" author="Mojau">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="cag_visit_visit"/></not>
+        </preConditions>
+        <comment>
+            Creating the cag visit_visit table
+        </comment>
+        <createTable tableName="cag_visit_visit">
+            <column name="cag_consultation_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cag_visit_id" type="int" />
+            <column name="visit_id" type="int"/>
+        </createTable>
+        <addForeignKeyConstraint constraintName="cag_visit_id_fkey" baseTableName="cag_visit_visit" baseColumnNames="cag_visit_id"  referencedTableName="cag_visit"
+                                 referencedColumnNames="cag_visit_id" />
+        <addForeignKeyConstraint constraintName="visit_id_fkey" baseTableName="cag_visit_visit" baseColumnNames="visit_id"  referencedTableName="visit"
+                                 referencedColumnNames="visit_id" />
+    </changeSet>
+
+
+        <changeSet id="cag-2013-09-05-17-00" author="Mojau">
+            <preConditions onFail="MARK_RAN">
+                <not><tableExists tableName="cag_encounter"/></not>
+            </preConditions>
+            <comment>
+                Creating the cag encounter table
+            </comment>
+            <createTable tableName="cag_encounter">
+                <column name="cag_encounter_id" type="int" autoIncrement="true">
+                    <constraints primaryKey="true" nullable="false"/>
+                </column>
+                <column name="encounter_id" type="int" />
+                <column name="cag_id" type="int"/>
+            </createTable>
+            <addForeignKeyConstraint constraintName="cag_encounter_id_fkey" baseTableName="cag_encounter" baseColumnNames="encounter_id"  referencedTableName="encounter"
+                                     referencedColumnNames="encounter_id" />
+            <addForeignKeyConstraint constraintName="cag_id_forkey" baseTableName="cag_encounter" baseColumnNames="cag_id"  referencedTableName="cag"
+                                     referencedColumnNames="cag_id" />
+        </changeSet>
+
     <changeSet id="cag-2023-06-26-17-00" author="Moletsane">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="cag"/>
@@ -76,7 +161,6 @@
                 <constraints nullable="false"/>
             </column>
         </addColumn>
-        <!--			<renameColumn tableName="cag" columnDataType="int" oldColumnName="created_by" newColumnName="creator"/>-->
     </changeSet>
 
     <changeSet id="cag-2023-09-04-20-20" author="Moletsane">
@@ -91,6 +175,8 @@
                 <constraints nullable="false"/>
             </column>
         </addColumn>
-        <!--			<renameColumn tableName="cag" columnDataType="int" oldColumnName="created_by" newColumnName="creator"/>-->
+
     </changeSet>
+
+
 </databaseChangeLog>

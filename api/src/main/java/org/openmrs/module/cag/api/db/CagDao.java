@@ -33,4 +33,6 @@ public interface CagDao {
 	public List<Integer> getPatientIdList(Integer cagId);
 	
 	void clearCag(Integer cagId);
+	
+	public CagPatient getCagPatientByUuid(String uuid);
 }
