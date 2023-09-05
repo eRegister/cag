@@ -118,4 +118,8 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		return dao.updateCag(cag);
 	}
 	
+	@Override
+	public CagPatient getCagPatientByUuid(String uuid) {
+		return dao.getCagPatientByUuid(uuid);
+	}
 }
