@@ -158,14 +158,14 @@
 <!--            </column>-->
 <!--            <column name="cag_encounter_id" type="int"/>-->
 <!--            <column name="encounter_id" type="int" />-->
-<!--        </createTable>-->
-<!--        <addForeignKeyConstraint constraintName="cag_encounter_id_fkey" baseTableName="cag_encounter_encounter" baseColumnNames="cag_encounter_id"  referencedTableName="cag_encounter"-->
-<!--                                 referencedColumnNames="cag_encounter_id" />-->
-<!--        <addForeignKeyConstraint constraintName="encounter_id_fkey" baseTableName="cag_encounter_encounter" baseColumnNames="encounter_id"  referencedTableName="encounter"-->
-<!--                                 referencedColumnNames="encounter_id" />-->
-<!--    </changeSet>-->
+<!--            </createTable>-->
+<!--            <addForeignKeyConstraint constraintName="cag_encounter_id_fkey" baseTableName="cag_encounter_encounter" baseColumnNames="cag_encounter_id"  referencedTableName="cag_encounter"-->
+<!--                                     referencedColumnNames="cag_encounter_id" />-->
+<!--            <addForeignKeyConstraint constraintName="encounter_id_fkey" baseTableName="cag_encounter_encounter" baseColumnNames="encounter_id"  referencedTableName="encounter"-->
+<!--                                     referencedColumnNames="encounter_id" />-->
+<!--        </changeSet>-->
 
-<!--    <changeSet id="cag-2023-06-26-17-00" author="Mojau">-->
+    <!--    <changeSet id="cag-2023-06-26-17-00" author="Mojau">-->
 <!--        <preConditions onFail="MARK_RAN">-->
 <!--            <tableExists tableName="cag"/>-->
 <!--        </preConditions>-->
@@ -194,47 +194,79 @@
 
 <!--    </changeSet>-->
 
-    <changeSet id="cag-2023-09-06-12-01" author="Moletsane">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="cag_visit"/>
-        </preConditions>
-        <comment>
-            Updating the CAG_VISIT table
-        </comment>
-        <addColumn tableName="cag_visit">
-            <column name="uuid" type="varchar(38)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
+<!--    <changeSet id="cag-2023-09-06-15-01" author="Moletsane">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="cag_visit"/>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Updating the CAG_VISIT table-->
+<!--        </comment>-->
+<!--        <addColumn tableName="cag_visit">-->
+<!--            <column name="uuid" type="varchar(38)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="next_encounter_date" type="date" />-->
+<!--            <column name="creator" type="int" />-->
+<!--            <column name="date_created" type="date" />-->
+<!--            <column name="date_changed" type="date" />-->
+<!--            <column name="changed_by" type="int" />-->
+<!--            <column name="voided" type="boolean" />-->
+<!--            <column name="voided_by" type="int" />-->
+<!--            <column name="date_voided" type="date" />-->
+<!--            <column name="void_reason" type="VARCHAR(255)" />-->
+<!--        </addColumn>-->
 
-    </changeSet>
+<!--    </changeSet>-->
 
-    <changeSet id="cag-2023-09-06-12-02" author="Moletsane">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="cag_encounter"/>
-        </preConditions>
-        <comment>
-            Updating the CAG_Encounter table
-        </comment>
-        <addColumn tableName="cag_encounter">
-            <column name="uuid" type="varchar(38)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="next_encounter_date" type="date" />
-        </addColumn>
+<!--    <changeSet id="cag-2023-09-06-15-19" author="Moletsane">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="cag_encounter"/>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Updating the CAG_Encounter table-->
+<!--        </comment>-->
+<!--        <addColumn tableName="cag_encounter">-->
+<!--            <column name="uuid" type="varchar(38)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="next_encounter_date" type="date" />-->
+<!--            <column name="creator" type="int" />-->
+<!--            <column name="date_created" type="date" />-->
+<!--            <column name="date_changed" type="date" />-->
+<!--            <column name="changed_by" type="int" />-->
+<!--            <column name="voided" type="boolean" />-->
+<!--            <column name="voided_by" type="int" />-->
+<!--            <column name="date_voided" type="date" />-->
+<!--            <column name="void_reason" type="VARCHAR(255)" />-->
+<!--        </addColumn>-->
 
-    </changeSet>
+<!--    </changeSet>-->
 
-    <changeSet id="cag-2023-09-06-12-58" author="Moletsane">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="cag_visit"/>
-        </preConditions>
-        <comment>
-            Updating the CAG_VISIT table
-        </comment>
-        <dropColumn tableName="cag_visit" columnName="next_visit_date"/>
+<!--    <changeSet id="cag-2023-09-06-12-58" author="Moletsane">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="cag_visit"/>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Updating the CAG_VISIT table-->
+<!--        </comment>-->
+<!--        <dropColumn tableName="cag_visit" columnName="next_visit_date"/>-->
 
-    </changeSet>
+<!--    </changeSet>-->
+<!--    <changeSet id="cag-2023-09-06-14-28" author="Mojau">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="cag_visit"/>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Updating the CAG_VISIT table-->
+<!--        </comment>-->
+<!--        <addColumn tableName="cag_visit">-->
+<!--            <column name="voided" type="boolean">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </addColumn>-->
+
+<!--    </changeSet>-->
+
 
 
 </databaseChangeLog>

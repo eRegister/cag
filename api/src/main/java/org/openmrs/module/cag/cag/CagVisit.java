@@ -1,5 +1,6 @@
 package org.openmrs.module.cag.cag;
 
+import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Visit;
 import org.springframework.stereotype.Repository;
 
@@ -10,12 +11,12 @@ import java.util.List;
 
 @Repository
 @Entity(name = "cag_visit")
-public class CagVisit {
+public class CagVisit extends BaseOpenmrsData {
 	
 	@Id
 	@GeneratedValue
 	@Column(name = "cag_visit_id")
-	private Integer cag_visit_id;
+	private Integer id;
 	
 	@Column(name = "cag_id")
 	private Integer cag_id;
@@ -29,8 +30,6 @@ public class CagVisit {
 	@Transient
 	private String patientUuid;
 	
-	private String uuid;
-	
 	@OneToMany
 	private List<Visit> visits = new ArrayList<Visit>();
 	
@@ -42,12 +41,14 @@ public class CagVisit {
 		this.visits = visits;
 	}
 	
-	public Integer getCag_visit_id() {
-		return cag_visit_id;
+	@Override
+	public Integer getId() {
+		return id;
 	}
 	
-	public void setCag_visit_id(Integer cag_visit_id) {
-		this.cag_visit_id = cag_visit_id;
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 	public Integer getCag_id() {

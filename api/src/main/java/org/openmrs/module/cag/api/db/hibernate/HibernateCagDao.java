@@ -227,7 +227,12 @@ public class HibernateCagDao implements CagDao {
 	
 	@Override
 	public void saveCagVisit(CagVisit cagVisit) {
+		Transaction tx = getSession().beginTransaction();
 		
+		getSession().save(cagVisit);
+		
+		if (!tx.wasCommitted())
+			tx.commit();
 	}
 	
 	@Override

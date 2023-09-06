@@ -33,6 +33,10 @@ import java.util.UUID;
 public class CagController extends MainResourceController {
 	
 	public static final String CAG_NAMESPACE = "/cag";
+	
+	public static final String CAG_PATIENT_NAMESPACE = "/cagPatient";
+	
+	public static final String CAG_VISIT_NAMESPACE = "/cagVisit";
 	//
 	//	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	//	public @ResponseBody

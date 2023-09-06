@@ -127,7 +127,7 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	
 	@Override
 	public void saveCagVisit(CagVisit cagVisit) {
-		
+		dao.saveCagVisit(cagVisit);
 	}
 	
 	@Override

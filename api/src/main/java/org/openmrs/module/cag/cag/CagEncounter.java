@@ -1,5 +1,6 @@
 package org.openmrs.module.cag.cag;
 
+import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Encounter;
 import org.springframework.stereotype.Repository;
 
@@ -10,12 +11,12 @@ import java.util.List;
 
 @Repository
 @Entity(name = "cag_encounter")
-public class CagEncounter {
+public class CagEncounter extends BaseOpenmrsData {
 	
 	@Id
 	@GeneratedValue
 	@Column(name = "cag_encounter_id")
-	private Integer cag_encounter_id;
+	private Integer id;
 	
 	@Column(name = "encounter_id")
 	private Integer encounter_id;
@@ -29,12 +30,20 @@ public class CagEncounter {
 	@Transient
 	private String cagUuid;
 	
-	private String uuid;
-	
 	private Date next_encounter_date;
 	
 	@OneToMany
 	private List<Encounter> encounters = new ArrayList<Encounter>();
+	
+	@Override
+	public Integer getId() {
+		return id;
+	}
+	
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	
 	public Date getNext_encounter_date() {
 		return next_encounter_date;
@@ -44,28 +53,12 @@ public class CagEncounter {
 		this.next_encounter_date = next_encounter_date;
 	}
 	
-	public String getUuid() {
-		return uuid;
-	}
-	
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-	
 	public List<Encounter> getEncounters() {
 		return encounters;
 	}
 	
 	public void setEncounters(List<Encounter> encounters) {
 		this.encounters = encounters;
-	}
-	
-	public Integer getCag_encounter_id() {
-		return cag_encounter_id;
-	}
-	
-	public void setCag_encounter_id(Integer cag_encounter_id) {
-		this.cag_encounter_id = cag_encounter_id;
 	}
 	
 	public Integer getEncounter_id() {
