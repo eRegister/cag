@@ -1,5 +1,6 @@
 package org.openmrs.module.cag.web.resource;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.cag.api.CagService;
@@ -22,7 +23,7 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 	@Override
 	protected void delete(CagPatient cagPatient, String reason, RequestContext requestContext) throws ResponseException {
 		System.out.println("Deleting a Patient from Cag!!!!");
-		getService().deletePatientFromCag(cagPatient.getPatientUuid());
+		getService().deletePatientFromCag(cagPatient.getUuid());
 	}
 	
 	@Override
@@ -32,6 +33,9 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 	
 	@Override
 	public CagPatient save(CagPatient cagPatient) {
+		
+		CagPatient existOnCag = getService().getCagPatientByUuid(cagPatient.getUuid());
+		System.out.println(existOnCag);
 		
 		Patient patient = getService().saveCagPatient(cagPatient);
 		
@@ -44,15 +48,19 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 	}
 	
 	@Override
-	public CagPatient getByUniqueId(String s) {
-		return null;
+	public CagPatient getByUniqueId(String uuid) {
+		System.out.println("getByUniqueId id being called!!!");
+		CagPatient cagPatient = getService().getCagPatientByUuid(uuid);
+		System.out.println(cagPatient);
+		
+		return cagPatient;
 	}
 	
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addProperty("cagUuid");
-		description.addProperty("patientUuid");
+		description.addProperty("uuid");
 		return description;
 	}
 	
@@ -64,23 +72,26 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 			description = new DelegatingResourceDescription();
 			
 			description.addProperty("cagPatientId");
-			description.addProperty("status");
-			description.addProperty("cag_id");
-			description.addProperty("patient_id");
+			description.addProperty("cagId");
+			description.addProperty("patientId");
+			description.addProperty("uuid");
 			
 			description.addSelfLink();
 			description.addLink("full", ".?v=full");
 		} else if (representation instanceof FullRepresentation) {
 			description = new DelegatingResourceDescription();
 			
-			description.addProperty("status");
-			description.addProperty("cag_id");
-			description.addProperty("patient_id");
+			description.addProperty("cagPatientId");
+			description.addProperty("cagId");
+			description.addProperty("patientId");
+			description.addProperty("uuid");
 			
 			description.addSelfLink();
 		} else {
-			description = new DelegatingResourceDescription();
-			description.addProperty("status");
+			description.addProperty("cagPatientId");
+			description.addProperty("cagId");
+			description.addProperty("patientId");
+			description.addProperty("uuid");
 			description.addSelfLink();
 		}
 		

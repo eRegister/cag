@@ -44,4 +44,5 @@ public interface CagService extends OpenmrsService {
 	
 	Cag updateCag(Cag cag);
 	
+	public CagPatient getCagPatientByUuid(String uuid);
 }

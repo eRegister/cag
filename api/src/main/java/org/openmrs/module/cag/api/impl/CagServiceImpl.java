@@ -87,7 +87,7 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		Integer cagId = getCagByUuid(cagPatient.getCagUuid()).getId();
 		cagPatient.setCagId(cagId);
 		
-		Patient patient = Context.getPatientService().getPatientByUuid(cagPatient.getPatientUuid());
+		Patient patient = Context.getPatientService().getPatientByUuid(cagPatient.getUuid());
 		Integer patientId = patient.getPatientId();
 		cagPatient.setPatientId(patientId);
 		
@@ -116,6 +116,11 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		cag.setDateChanged(new Date());
 		cag.setChangedBy(Context.getAuthenticatedUser());
 		return dao.updateCag(cag);
+	}
+	
+	@Override
+	public CagPatient getCagPatientByUuid(String uuid) {
+		return dao.getCagPatientByUuid(uuid);
 	}
 	
 }
