@@ -29,10 +29,10 @@ public class CagVisit {
 	@Transient
 	private String patientUuid;
 	
+	private String uuid;
+	
 	@OneToMany
 	private List<Visit> visits = new ArrayList<Visit>();
-	
-	private Date next_visit_date;
 	
 	public List<Visit> getVisits() {
 		return visits;
@@ -82,11 +82,4 @@ public class CagVisit {
 		this.patientUuid = patientUuid;
 	}
 	
-	public Date getNext_visit_date() {
-		return next_visit_date;
-	}
-	
-	public void setNext_visit_date(Date next_visit_date) {
-		this.next_visit_date = next_visit_date;
-	}
 }

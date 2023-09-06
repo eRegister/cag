@@ -3,9 +3,11 @@ package org.openmrs.module.cag.api;
 import java.util.List;
 
 import org.openmrs.Patient;
+import org.openmrs.Visit;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.cag.cag.Cag;
 import org.openmrs.module.cag.cag.CagPatient;
+import org.openmrs.module.cag.cag.CagVisit;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface CagService extends OpenmrsService {
@@ -44,5 +46,14 @@ public interface CagService extends OpenmrsService {
 	
 	Cag updateCag(Cag cag);
 	
-	public CagPatient getCagPatientByUuid(String uuid);
+	CagPatient getCagPatientByUuid(String uuid);
+	
+	void saveCagVisit(CagVisit cagVisit);
+	
+	CagVisit getCagVisitByUuid(String uuid);
+	
+	void deleteCagVisit(String uuid);
+	
+	List<Visit> getCagVisits(Integer cagId);
+	
 }

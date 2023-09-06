@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -28,8 +29,36 @@ public class CagEncounter {
 	@Transient
 	private String cagUuid;
 	
+	private String uuid;
+	
+	private Date next_encounter_date;
+	
 	@OneToMany
 	private List<Encounter> encounters = new ArrayList<Encounter>();
+	
+	public Date getNext_encounter_date() {
+		return next_encounter_date;
+	}
+	
+	public void setNext_encounter_date(Date next_encounter_date) {
+		this.next_encounter_date = next_encounter_date;
+	}
+	
+	public String getUuid() {
+		return uuid;
+	}
+	
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+	
+	public List<Encounter> getEncounters() {
+		return encounters;
+	}
+	
+	public void setEncounters(List<Encounter> encounters) {
+		this.encounters = encounters;
+	}
 	
 	public Integer getCag_encounter_id() {
 		return cag_encounter_id;

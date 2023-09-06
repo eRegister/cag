@@ -10,6 +10,7 @@
 package org.openmrs.module.cag.api.impl;
 
 import org.openmrs.Patient;
+import org.openmrs.Visit;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
@@ -17,6 +18,7 @@ import org.openmrs.module.cag.api.CagService;
 import org.openmrs.module.cag.api.db.CagDao;
 import org.openmrs.module.cag.cag.Cag;
 import org.openmrs.module.cag.cag.CagPatient;
+import org.openmrs.module.cag.cag.CagVisit;
 
 import java.util.Date;
 import java.util.List;
@@ -123,4 +125,23 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		return dao.getCagPatientByUuid(uuid);
 	}
 	
+	@Override
+	public void saveCagVisit(CagVisit cagVisit) {
+		
+	}
+	
+	@Override
+	public CagVisit getCagVisitByUuid(String uuid) {
+		return null;
+	}
+	
+	@Override
+	public void deleteCagVisit(String uuid) {
+		
+	}
+	
+	@Override
+	public List<Visit> getCagVisits(Integer cagId) {
+		return null;
+	}
 }

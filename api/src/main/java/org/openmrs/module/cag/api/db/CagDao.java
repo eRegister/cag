@@ -1,8 +1,10 @@
 package org.openmrs.module.cag.api.db;
 
 import org.openmrs.Patient;
+import org.openmrs.Visit;
 import org.openmrs.module.cag.cag.Cag;
 import org.openmrs.module.cag.cag.CagPatient;
+import org.openmrs.module.cag.cag.CagVisit;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,4 +37,12 @@ public interface CagDao {
 	void clearCag(Integer cagId);
 	
 	public CagPatient getCagPatientByUuid(String uuid);
+	
+	void saveCagVisit(CagVisit cagVisit);
+	
+	CagVisit getCagVisitByUuid(String uuid);
+	
+	void deleteCagVisit(String uuid);
+	
+	List<Visit> getCagVisits(Integer cagId);
 }

@@ -4,6 +4,7 @@ import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
+import org.openmrs.Visit;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.hibernate.DbSession;
@@ -11,6 +12,7 @@ import org.openmrs.api.db.hibernate.DbSessionFactory;
 import org.openmrs.module.cag.api.db.CagDao;
 import org.openmrs.module.cag.cag.Cag;
 import org.openmrs.module.cag.cag.CagPatient;
+import org.openmrs.module.cag.cag.CagVisit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -221,5 +223,25 @@ public class HibernateCagDao implements CagDao {
 			tx.commit();
 		
 		return cagPatient;
+	}
+	
+	@Override
+	public void saveCagVisit(CagVisit cagVisit) {
+		
+	}
+	
+	@Override
+	public CagVisit getCagVisitByUuid(String uuid) {
+		return null;
+	}
+	
+	@Override
+	public void deleteCagVisit(String uuid) {
+		
+	}
+	
+	@Override
+	public List<Visit> getCagVisits(Integer cagId) {
+		return null;
 	}
 }
