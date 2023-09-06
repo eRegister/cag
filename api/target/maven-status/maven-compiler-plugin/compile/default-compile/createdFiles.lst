@@ -1,3 +1,5 @@
+org/openmrs/module/cag/cag/CagEncounter.class
+org/openmrs/module/cag/cag/CagVisit.class
 org/openmrs/module/cag/api/impl/CagServiceImpl.class
 org/openmrs/module/cag/CagActivator.class
 org/openmrs/module/cag/cag/Cag.class

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 8, Time elapsed: 0.276 sec
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 8, Time elapsed: 0.221 sec
