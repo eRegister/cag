@@ -39,6 +39,7 @@
 			<!--			<resource>org.openmrs.module.mymodule.api.rest.CagResource</resource>-->
 			<resource>org.openmrs.module.cag.web.resource.CagResource</resource>
 			<resource>org.openmrs.module.cag.web.resource.CagPatientResource</resource>
+			<resource>org.openmrs.module.cag.web.resource.CagVisitResource</resource>
 		</rest>
 	</webservices>
 

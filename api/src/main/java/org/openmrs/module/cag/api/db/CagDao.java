@@ -38,11 +38,16 @@ public interface CagDao {
 	
 	public CagPatient getCagPatientByUuid(String uuid);
 	
-	void saveCagVisit(CagVisit cagVisit);
+	Integer saveCagVisit(CagVisit cagVisit);
 	
 	CagVisit getCagVisitByUuid(String uuid);
 	
-	void deleteCagVisit(String uuid);
+	void deleteCagVisit(Integer visitId);
+	
+	CagVisit updateCagVisit(CagVisit cagVisit);
+	
+	void createMapping(CagVisit cagVisit);
 	
 	List<Visit> getCagVisits(Integer cagId);
+	
 }

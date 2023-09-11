@@ -56,4 +56,6 @@ public interface CagService extends OpenmrsService {
 	
 	List<Visit> getCagVisits(Integer cagId);
 	
+	public CagVisit updateCagVisit(String uuid);
+	
 }

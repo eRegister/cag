@@ -1,5 +1,7 @@
 package org.openmrs.module.cag.web.resource;
 
+import org.openmrs.api.context.Context;
+import org.openmrs.module.cag.api.CagService;
 import org.openmrs.module.cag.cag.Cag;
 import org.openmrs.module.cag.cag.CagVisit;
 import org.openmrs.module.cag.web.controller.CagController;
@@ -7,6 +9,8 @@ import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
@@ -15,14 +19,26 @@ import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOp
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import org.springframework.stereotype.Component;
 
-@Resource(name = RestConstants.VERSION_1 + CagController.CAG_VISIT_NAMESPACE, supportedClass = Cag.class, supportedOpenmrsVersions = {
+@Resource(name = RestConstants.VERSION_1 + CagController.CAG_VISIT_NAMESPACE, supportedClass = CagVisit.class, supportedOpenmrsVersions = {
         "1.8.*", "2.1.*", "2.4.*" })
 @Component
 public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 	
 	@Override
 	public Object update(String uuid, SimpleObject propertiesToUpdate, RequestContext context) throws ResponseException {
-		return super.update(uuid, propertiesToUpdate, context);
+		
+		CagVisit updatedCagVisit = getService().updateCagVisit(uuid);
+		
+		return updatedCagVisit;
+	}
+	
+	@Override
+	public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		//		description.addProperty("uuid");
+		description.addProperty("date_stopped");
+		
+		return description;
 	}
 	
 	@Override
@@ -31,23 +47,17 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 	}
 	
 	@Override
-	public DelegatingResourceDescription getCreatableProperties() throws ResourceDoesNotSupportOperationException {
-		return super.getCreatableProperties();
-	}
-	
-	@Override
-	public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
-		return super.getUpdatableProperties();
-	}
-	
-	@Override
-	public CagVisit getByUniqueId(String s) {
-		return null;
+	public CagVisit getByUniqueId(String uuid) {
+		System.out.println("Get CagVisit By Uuid been called !!!");
+		CagVisit cagVisit = getService().getCagVisitByUuid(uuid);
+		
+		return cagVisit;
 	}
 	
 	@Override
 	protected void delete(CagVisit cagVisit, String s, RequestContext requestContext) throws ResponseException {
-		
+		System.out.println("DELETE CagVisit has been called : uuid=" + cagVisit.getUuid());
+		getService().deleteCagVisit(cagVisit.getUuid());
 	}
 	
 	@Override
@@ -57,16 +67,60 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 	
 	@Override
 	public CagVisit newDelegate() {
-		return null;
+		return new CagVisit();
 	}
 	
 	@Override
 	public CagVisit save(CagVisit cagVisit) {
-		return null;
+		
+		System.out.println("Save Cag has been called !!!");
+		getService().saveCagVisit(cagVisit);
+		
+		return getService().getCagVisitByUuid(cagVisit.getUuid());
+	}
+	
+	@Override
+	public DelegatingResourceDescription getCreatableProperties() {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		
+		description.addProperty("cagUuid");
+		description.addProperty("patientUuidList");
+		
+		return description;
 	}
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
-		return null;
+		DelegatingResourceDescription description = null;
+		
+		if (representation instanceof DefaultRepresentation) {
+			description = new DelegatingResourceDescription();
+			
+			description.addProperty("uuid");
+			description.addProperty("dateCreated");
+			
+			description.addSelfLink();
+			description.addLink("full", ".?v=full");
+		} else if (representation instanceof FullRepresentation) {
+			description = new DelegatingResourceDescription();
+			
+			description.addProperty("uuid");
+			description.addProperty("dateCreated");
+			
+			description.addSelfLink();
+		} else {
+			description = new DelegatingResourceDescription();
+			
+			description.addProperty("uuid");
+			description.addProperty("dateCreated");
+			
+			description.addSelfLink();
+		}
+		
+		return description;
+	}
+	
+	private CagService getService() {
+		return Context.getService(CagService.class);
 	}
 }

@@ -31,12 +31,12 @@
 <!--            <column name="constituency" type="varchar(255)" />-->
 <!--            <column name="district" type="varchar(255)" />-->
 <!--            <column name="creator" type="int" />-->
-<!--            <column name="date_created" type="date" />-->
-<!--            <column name="date_changed" type="date" />-->
+<!--            <column name="date_created" type="datetime" />-->
+<!--            <column name="date_changed" type="datetime" />-->
 <!--            <column name="changed_by" type="int" />-->
 <!--            <column name="voided" type="boolean" />-->
 <!--            <column name="voided_by" type="int" />-->
-<!--            <column name="date_voided" type="date" />-->
+<!--            <column name="date_voided" type="datetime" />-->
 <!--            <column name="void_reason" type="VARCHAR(255)" />-->
 <!--        </createTable>-->
 <!--    </changeSet>-->
@@ -165,7 +165,7 @@
 <!--                                     referencedColumnNames="encounter_id" />-->
 <!--        </changeSet>-->
 
-    <!--    <changeSet id="cag-2023-06-26-17-00" author="Mojau">-->
+<!--        <changeSet id="cag-2023-06-26-17-00" author="Mojau">-->
 <!--        <preConditions onFail="MARK_RAN">-->
 <!--            <tableExists tableName="cag"/>-->
 <!--        </preConditions>-->
@@ -205,15 +205,16 @@
 <!--            <column name="uuid" type="varchar(38)">-->
 <!--                <constraints nullable="false"/>-->
 <!--            </column>-->
-<!--            <column name="next_encounter_date" type="date" />-->
+<!--            <column name="next_encounter_date" type="datetime" />-->
 <!--            <column name="creator" type="int" />-->
-<!--            <column name="date_created" type="date" />-->
-<!--            <column name="date_changed" type="date" />-->
+<!--            <column name="date_created" type="datetime" />-->
+<!--            <column name="date_changed" type="datetime" />-->
 <!--            <column name="changed_by" type="int" />-->
 <!--            <column name="voided" type="boolean" />-->
 <!--            <column name="voided_by" type="int" />-->
-<!--            <column name="date_voided" type="date" />-->
+<!--            <column name="date_voided" type="datetime" />-->
 <!--            <column name="void_reason" type="VARCHAR(255)" />-->
+
 <!--        </addColumn>-->
 
 <!--    </changeSet>-->
@@ -229,14 +230,14 @@
 <!--            <column name="uuid" type="varchar(38)">-->
 <!--                <constraints nullable="false"/>-->
 <!--            </column>-->
-<!--            <column name="next_encounter_date" type="date" />-->
+<!--            <column name="next_encounter_date" type="datetime" />-->
 <!--            <column name="creator" type="int" />-->
-<!--            <column name="date_created" type="date" />-->
-<!--            <column name="date_changed" type="date" />-->
+<!--            <column name="date_created" type="datetime" />-->
+<!--            <column name="date_changed" type="datetime" />-->
 <!--            <column name="changed_by" type="int" />-->
 <!--            <column name="voided" type="boolean" />-->
 <!--            <column name="voided_by" type="int" />-->
-<!--            <column name="date_voided" type="date" />-->
+<!--            <column name="date_voided" type="datetime" />-->
 <!--            <column name="void_reason" type="VARCHAR(255)" />-->
 <!--        </addColumn>-->
 
@@ -264,9 +265,9 @@
 <!--                <constraints nullable="false"/>-->
 <!--            </column>-->
 <!--        </addColumn>-->
+<!--        <addColumn name="date_started" type="datetime" />-->
+<!--        <addColumn name="date_stopped" type="datetime" />-->
 
 <!--    </changeSet>-->
-
-
 
 </databaseChangeLog>

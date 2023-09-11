@@ -11,6 +11,8 @@ package org.openmrs.module.cag.api.impl;
 
 import org.openmrs.Patient;
 import org.openmrs.Visit;
+import org.openmrs.VisitType;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
@@ -20,6 +22,7 @@ import org.openmrs.module.cag.cag.Cag;
 import org.openmrs.module.cag.cag.CagPatient;
 import org.openmrs.module.cag.cag.CagVisit;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -127,17 +130,71 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	
 	@Override
 	public void saveCagVisit(CagVisit cagVisit) {
+		cagVisit.setUuid(UUID.randomUUID().toString());
+		cagVisit.setDate_started(new Date());
+		
+		Cag cag = Context.getService(CagService.class).getCagByUuid(cagVisit.getCagUuid());
+		Integer cagId = cag.getId();
+		cagVisit.setCag_id(cagId);
+		cagVisit.setCreator(Context.getAuthenticatedUser());
+		cagVisit.setVoided(false);
+		
+		List<Visit> visitList = openCagPatientsVisits(cagVisit);
+		
+		System.out.println("=============opened Visits=============/n");
+		for (Visit visit : visitList) {
+			System.out.println(visit);
+		}
+		
+		cagVisit.setVisits(visitList);
 		dao.saveCagVisit(cagVisit);
+		
+	}
+	
+	public List<Visit> openCagPatientsVisits(CagVisit cagVisit) {
+		List<Visit> visitList = new ArrayList<Visit>();
+		
+		VisitType visitType = Context.getVisitService().getVisitType(10);
+		Date startDate = new Date();
+		
+		PatientService patientService = Context.getPatientService();
+		
+		for (String patientUuid : cagVisit.getPatientUuidList()) {
+			Visit visit = new Visit(patientService.getPatientByUuid(patientUuid), visitType, startDate);
+			Visit savedVisit = Context.getVisitService().saveVisit(visit);
+			
+			visitList.add(savedVisit);
+			
+		}
+		
+		return visitList;
+		
+	}
+	
+	public void createCagVisitVisitMapping(Integer cagVisitId) {
+		
 	}
 	
 	@Override
 	public CagVisit getCagVisitByUuid(String uuid) {
-		return null;
+		return dao.getCagVisitByUuid(uuid);
+	}
+	
+	@Override
+	public CagVisit updateCagVisit(String uuid) {
+		CagVisit cagVisit = dao.getCagVisitByUuid(uuid);
+		cagVisit.setDate_stopped(new Date());
+		
+		return dao.updateCagVisit(cagVisit);
 	}
 	
 	@Override
 	public void deleteCagVisit(String uuid) {
+		CagVisit cagVisit = getCagVisitByUuid(uuid);
 		
+		System.out.println("=============CAG Visit To Delete=================\n" + cagVisit);
+		
+		dao.deleteCagVisit(cagVisit.getId());
 	}
 	
 	@Override

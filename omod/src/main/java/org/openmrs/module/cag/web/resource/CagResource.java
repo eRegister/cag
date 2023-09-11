@@ -140,6 +140,7 @@ public class CagResource extends DelegatingCrudResource<Cag> implements Updatabl
 			description.addProperty("name");
 			description.addProperty("description");
 			description.addProperty("constituency", Representation.REF);
+			description.addProperty("dateCreated");
 			
 			description.addSelfLink();
 		} else {

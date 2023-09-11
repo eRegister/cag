@@ -15,6 +15,7 @@ import org.openmrs.module.cag.cag.CagPatient;
 import org.openmrs.module.cag.cag.CagVisit;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HibernateCagDao implements CagDao {
@@ -226,23 +227,73 @@ public class HibernateCagDao implements CagDao {
 	}
 	
 	@Override
-	public void saveCagVisit(CagVisit cagVisit) {
+	public Integer saveCagVisit(CagVisit cagVisit) {
 		Transaction tx = getSession().beginTransaction();
 		
 		getSession().save(cagVisit);
 		
 		if (!tx.wasCommitted())
 			tx.commit();
+		
+		return getCagVisitByUuid(cagVisit.getUuid()).getId();
+	}
+	
+	@Override
+	public void createMapping(CagVisit cagVisit) {
+		
 	}
 	
 	@Override
 	public CagVisit getCagVisitByUuid(String uuid) {
-		return null;
+		Transaction tx = getSession().beginTransaction();
+		
+		Query query = getSession().createQuery("from cag_visit cp where cp.uuid=:uuid and voided=:voided");
+		query.setInteger("voided", 0);
+		query.setString("uuid", uuid);
+		CagVisit cagVisit = (CagVisit) query.uniqueResult();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+		
+		return cagVisit;
 	}
 	
 	@Override
-	public void deleteCagVisit(String uuid) {
+	public void deleteCagVisit(Integer cagVisitId) {
+		Transaction tx = getSession().beginTransaction();
 		
+		System.out.println("===========Visit_id =" + cagVisitId);
+		Query query = getSession().createQuery(
+		    "update cag_visit cv set cv.voided=:inactive where cv.id=:visitId and cv.voided=:active");
+		query.setInteger("active", 0);
+		query.setInteger("inactive", 1);
+		query.setInteger("visitId", cagVisitId);
+		query.executeUpdate();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+	}
+	
+	@Override
+	public CagVisit updateCagVisit(CagVisit cagVisit) {
+		Transaction tx = getSession().beginTransaction();
+		
+		Date dateStopped = new Date();
+		System.out.println(dateStopped);
+		
+		//		getSession().update(cagVisit);
+		
+		Query query = getSession().createQuery(
+		    "update cag_visit cv set cv.date_stopped=:date_stopped where cv.uuid=:uuid and cv.voided=:active");
+		query.setDate("date_stopped", new Date());
+		query.setInteger("active", 0);
+		query.setString("uuid", cagVisit.getUuid());
+		query.executeUpdate();
+		//
+		if (!tx.wasCommitted())
+			tx.commit();
+		
+		return getCagVisitByUuid(cagVisit.getCagUuid());
 	}
 	
 	@Override
