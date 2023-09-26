@@ -1,0 +1,10 @@
+/home/mojau_p/cag/api/src/main/java/org/openmrs/module/cag/api/db/CagDao.java
+/home/mojau_p/cag/api/src/main/java/org/openmrs/module/cag/CagConfig.java
+/home/mojau_p/cag/api/src/main/java/org/openmrs/module/cag/CagActivator.java
+/home/mojau_p/cag/api/src/main/java/org/openmrs/module/cag/api/CagService.java
+/home/mojau_p/cag/api/src/main/java/org/openmrs/module/cag/cag/Cag.java
+/home/mojau_p/cag/api/src/main/java/org/openmrs/module/cag/api/db/hibernate/HibernateCagDao.java
+/home/mojau_p/cag/api/src/main/java/org/openmrs/module/cag/cag/CagPatient.java
+/home/mojau_p/cag/api/src/main/java/org/openmrs/module/cag/cag/CagEncounter.java
+/home/mojau_p/cag/api/src/main/java/org/openmrs/module/cag/cag/CagVisit.java
+/home/mojau_p/cag/api/src/main/java/org/openmrs/module/cag/api/impl/CagServiceImpl.java

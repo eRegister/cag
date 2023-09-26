@@ -37,6 +37,9 @@ public class CagController extends MainResourceController {
 	public static final String CAG_PATIENT_NAMESPACE = "/cagPatient";
 	
 	public static final String CAG_VISIT_NAMESPACE = "/cagVisit";
+	
+	public static final String CAG_ENCOUNTER_NAMESPACE = "/cagEncounter";
+	
 	//
 	//	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	//	public @ResponseBody

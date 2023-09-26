@@ -11,6 +11,7 @@ import org.openmrs.api.db.hibernate.DbSession;
 import org.openmrs.api.db.hibernate.DbSessionFactory;
 import org.openmrs.module.cag.api.db.CagDao;
 import org.openmrs.module.cag.cag.Cag;
+import org.openmrs.module.cag.cag.CagEncounter;
 import org.openmrs.module.cag.cag.CagPatient;
 import org.openmrs.module.cag.cag.CagVisit;
 
@@ -299,5 +300,49 @@ public class HibernateCagDao implements CagDao {
 	@Override
 	public List<Visit> getCagVisits(Integer cagId) {
 		return null;
+	}
+	
+	@Override
+	public CagEncounter getCagEncounterByUuid(String uuid) {
+		Transaction tx = getSession().beginTransaction();
+		
+		Query query = getSession().createQuery("from cag_encounter ce where ce.uuid=:uuid and ce.voided=:voided");
+		query.setInteger("voided", 1);
+		query.setString("uuid", uuid);
+		CagEncounter cagEncounter = (CagEncounter) query.uniqueResult();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+		
+		return cagEncounter;
+	}
+	
+	@Override
+	public Integer saveCagEncounter(CagEncounter cagEncounter) {
+		
+		Transaction tx = getSession().beginTransaction();
+		
+		getSession().save(cagEncounter);
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+		
+		return getCagEncounterByUuid(cagEncounter.getUuid()).getId();
+	}
+	
+	@Override
+	public void deleteCagEncounter(String uuid) {
+		
+		Transaction tx = getSession().beginTransaction();
+		
+		System.out.println("Deleting Cag Encounter!!!");
+		Query query = getSession().createQuery("update cag_encounter ce set ce.voided=:voided where ce.uuid=:uuid");
+		query.setInteger("voided", 1);
+		query.setString("uuid", uuid);
+		query.executeUpdate();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+		
 	}
 }

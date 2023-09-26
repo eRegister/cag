@@ -3,6 +3,7 @@ package org.openmrs.module.cag.api.db;
 import org.openmrs.Patient;
 import org.openmrs.Visit;
 import org.openmrs.module.cag.cag.Cag;
+import org.openmrs.module.cag.cag.CagEncounter;
 import org.openmrs.module.cag.cag.CagPatient;
 import org.openmrs.module.cag.cag.CagVisit;
 import org.springframework.stereotype.Repository;
@@ -49,5 +50,11 @@ public interface CagDao {
 	void createMapping(CagVisit cagVisit);
 	
 	List<Visit> getCagVisits(Integer cagId);
+	
+	CagEncounter getCagEncounterByUuid(String uuid);
+	
+	Integer saveCagEncounter(CagEncounter cagEncounter);
+	
+	void deleteCagEncounter(String uuid);
 	
 }

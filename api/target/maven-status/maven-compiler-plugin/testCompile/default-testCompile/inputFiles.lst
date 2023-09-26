@@ -1,0 +1,5 @@
+/home/mojau_p/cag/api/src/test/java/org/openmrs/module/cag/api/db/hibernate/HibernateCagDaoTest.java
+/home/mojau_p/cag/api/src/test/java/org/openmrs/module/cag/api/CagServiceTest.java
+/home/mojau_p/cag/api/src/test/java/org/openmrs/module/cag/cag/CagTest.java
+/home/mojau_p/cag/api/src/test/java/org/openmrs/module/cag/cag/CagPatientTest.java
+/home/mojau_p/cag/api/src/test/java/org/openmrs/module/cag/api/impl/CagServiceImplTest.java

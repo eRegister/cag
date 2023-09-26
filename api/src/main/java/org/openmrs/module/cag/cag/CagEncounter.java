@@ -1,5 +1,6 @@
 package org.openmrs.module.cag.cag;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Encounter;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Repository
 @Entity(name = "cag_encounter")
+@JsonIgnoreProperties({ "creator", "changedBy" })
 public class CagEncounter extends BaseOpenmrsData {
 	
 	@Id

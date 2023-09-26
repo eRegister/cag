@@ -19,6 +19,7 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.cag.api.CagService;
 import org.openmrs.module.cag.api.db.CagDao;
 import org.openmrs.module.cag.cag.Cag;
+import org.openmrs.module.cag.cag.CagEncounter;
 import org.openmrs.module.cag.cag.CagPatient;
 import org.openmrs.module.cag.cag.CagVisit;
 
@@ -200,5 +201,30 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	@Override
 	public List<Visit> getCagVisits(Integer cagId) {
 		return null;
+	}
+	
+	@Override
+	public CagEncounter getCagEncounterByUuid(String uuid) {
+		return dao.getCagEncounterByUuid(uuid);
+	}
+	
+	@Override
+	public void saveCagEncounter(CagEncounter cagEncounter) {
+		
+		cagEncounter.setUuid(UUID.randomUUID().toString());
+		cagEncounter.setNext_encounter_date(new Date());
+		
+		Cag cag = Context.getService(CagService.class).getCagByUuid(cagEncounter.getCagUuid());
+		Integer cagId = cag.getId();
+		cagEncounter.setCag_id(cagId);
+		cagEncounter.setCreator(Context.getAuthenticatedUser());
+		cagEncounter.setVoided(false);
+		dao.saveCagEncounter(cagEncounter);
+		
+	}
+	
+	@Override
+	public void deleteCagEncounter(String uuid) {
+		
 	}
 }
