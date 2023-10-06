@@ -37,22 +37,6 @@ public class CagController extends MainResourceController {
 	public static final String CAG_PATIENT_NAMESPACE = "/cagPatient";
 	
 	public static final String CAG_VISIT_NAMESPACE = "/cagVisit";
-	//
-	//	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	//	public @ResponseBody
-	//	String saveCag(@RequestBody Cag cag) throws Exception {
-	//
-	//		if (cag != null) {
-	//			Context.getService(CagService.class).saveCag(cag);
-	//			return "Saved successfully..." + Context.getService(CagService.class).getCagByUuid(cag.getUuid());
-	//		} else {
-	//			//			System.out.println("Failed to save cag...");
-	//			return "Failed to save cag is null...";
-	//		}
-	//	}
-	//
-	//	@Override
-	//	public String getNamespace() {
-	//		return RestConstants.VERSION_1 + "/cag";
-	//	}
+	
+	public static final String CAG_ENCOUNTER_NAMESPACE = "/cagEncounter";
 }

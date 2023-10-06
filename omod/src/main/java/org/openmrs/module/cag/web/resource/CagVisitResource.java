@@ -19,6 +19,10 @@ import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOp
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 @Resource(name = RestConstants.VERSION_1 + CagController.CAG_VISIT_NAMESPACE, supportedClass = CagVisit.class, supportedOpenmrsVersions = {
         "1.8.*", "2.1.*", "2.4.*" })
 @Component
@@ -26,17 +30,15 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 	
 	@Override
 	public Object update(String uuid, SimpleObject propertiesToUpdate, RequestContext context) throws ResponseException {
-		
-		CagVisit updatedCagVisit = getService().updateCagVisit(uuid);
-		
-		return updatedCagVisit;
+		System.out.println("propertiesToUpdate.toString():\n" + (List<String>) propertiesToUpdate.get("visitUuidList")
+		        + "\n");
+		return getService().closeCagVisit(uuid, (List<String>) propertiesToUpdate.get("visitUuidList"));
 	}
 	
 	@Override
 	public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		//		description.addProperty("uuid");
-		description.addProperty("date_stopped");
+		description.addProperty("visitUuidList");
 		
 		return description;
 	}
@@ -50,6 +52,7 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 	public CagVisit getByUniqueId(String uuid) {
 		System.out.println("Get CagVisit By Uuid been called !!!");
 		CagVisit cagVisit = getService().getCagVisitByUuid(uuid);
+		System.out.println(cagVisit);
 		
 		return cagVisit;
 	}
@@ -72,11 +75,7 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 	
 	@Override
 	public CagVisit save(CagVisit cagVisit) {
-		
-		System.out.println("Save Cag has been called !!!");
-		getService().saveCagVisit(cagVisit);
-		
-		return getService().getCagVisitByUuid(cagVisit.getUuid());
+		return getService().saveCagVisit(cagVisit);
 	}
 	
 	@Override
@@ -85,6 +84,9 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 		
 		description.addProperty("cagUuid");
 		description.addProperty("patientUuidList");
+		description.addProperty("attenderUuid");
+		description.addProperty("absentees");
+		description.addProperty("locationName");
 		
 		return description;
 	}
@@ -97,7 +99,10 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			description = new DelegatingResourceDescription();
 			
 			description.addProperty("uuid");
-			description.addProperty("dateCreated");
+			description.addProperty("display");
+			description.addProperty("visitList");
+			//			description.addProperty("missedPatients");
+			description.addProperty("absentees");
 			
 			description.addSelfLink();
 			description.addLink("full", ".?v=full");
@@ -105,14 +110,20 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			description = new DelegatingResourceDescription();
 			
 			description.addProperty("uuid");
-			description.addProperty("dateCreated");
+			description.addProperty("display");
+			description.addProperty("visitList");
+			//			description.addProperty("missedPatients");
+			description.addProperty("absentees");
 			
 			description.addSelfLink();
 		} else {
 			description = new DelegatingResourceDescription();
 			
 			description.addProperty("uuid");
-			description.addProperty("dateCreated");
+			description.addProperty("display");
+			description.addProperty("visitList");
+			//			description.addProperty("missedPatients");
+			description.addProperty("absentees");
 			
 			description.addSelfLink();
 		}

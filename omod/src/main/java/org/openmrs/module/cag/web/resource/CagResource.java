@@ -30,7 +30,6 @@ import java.awt.print.Pageable;
 import java.util.List;
 import java.util.UUID;
 
-//@Resource(name = "v1/cag", supportedClass = Cag.class, supportedOpenmrsVersions = { "1.8.*", "2.1.*", "2.4.*" })
 @Resource(name = RestConstants.VERSION_1 + CagController.CAG_NAMESPACE, supportedClass = Cag.class, supportedOpenmrsVersions = {
         "1.8.*", "2.1.*", "2.4.*" })
 @Component

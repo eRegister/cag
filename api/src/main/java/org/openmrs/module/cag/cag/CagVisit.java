@@ -1,14 +1,14 @@
 package org.openmrs.module.cag.cag;
 
+import javafx.util.Pair;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.Patient;
 import org.openmrs.Visit;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Repository
 @Entity(name = "cag_visit")
@@ -30,16 +30,67 @@ public class CagVisit extends BaseOpenmrsData {
 	
 	private Date date_stopped;
 	
-	//	@Column(name = "patient_id")
-	//	private Integer patient_id;
+	@Column(name = "patient_id")
+	private int patient_id;
+	
+	@Transient
+	private String attenderUuid;
+	
+	//	@Transient
+	@Column(name = "location")
+	private String locationName;
 	
 	@Transient
 	private List<String> patientUuidList;
 	
-	//	@Transient
-	@OneToMany
+	@Transient
+	private List<String> visitUuidList;
+	
+	@Transient
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "cag_visit_visit", joinColumns = { @JoinColumn(name = "cag_visit_id") }, inverseJoinColumns = { @JoinColumn(name = "visit_id") })
-	private List<Visit> visits = new ArrayList<Visit>();
+	private List<Visit> visitList = new ArrayList<Visit>();
+	
+	@Transient
+	private Map<String, String> absentees = new HashMap<String, String>();
+	
+	@Transient
+	private String display;
+	
+	@Transient
+	private Map<Patient, String> missedPatients = new HashMap<Patient, String>();
+	
+	public List<String> getVisitUuidList() {
+		return visitUuidList;
+	}
+	
+	public void setVisitUuidList(List<String> visitUuidList) {
+		this.visitUuidList = visitUuidList;
+	}
+	
+	public String getAttenderUuid() {
+		return attenderUuid;
+	}
+	
+	public void setAttenderUuid(String attenderUuid) {
+		this.attenderUuid = attenderUuid;
+	}
+	
+	public int getPatient_id() {
+		return patient_id;
+	}
+	
+	public void setPatient_id(int patient_id) {
+		this.patient_id = patient_id;
+	}
+	
+	public String getLocationName() {
+		return locationName;
+	}
+	
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 	
 	public Date getDate_started() {
 		return date_started;
@@ -57,8 +108,8 @@ public class CagVisit extends BaseOpenmrsData {
 		this.date_stopped = date_stopped;
 	}
 	
-	public List<Visit> getVisits() {
-		return visits;
+	public List<Visit> getVisitList() {
+		return visitList;
 	}
 	
 	public List<String> getPatientUuidList() {
@@ -69,8 +120,8 @@ public class CagVisit extends BaseOpenmrsData {
 		this.patientUuidList = patientUuidList;
 	}
 	
-	public void setVisits(List<Visit> visits) {
-		this.visits = visits;
+	public void setVisitList(List<Visit> visitList) {
+		this.visitList = visitList;
 	}
 	
 	@Override
@@ -99,10 +150,35 @@ public class CagVisit extends BaseOpenmrsData {
 		this.cagUuid = cagUuid;
 	}
 	
+	public Map<String, String> getAbsentees() {
+		return absentees;
+	}
+	
+	public void setAbsentees(Map<String, String> absentees) {
+		this.absentees = absentees;
+	}
+	
+	public String getDisplay() {
+		return display;
+	}
+	
+	public void setDisplay(String display) {
+		this.display = display;
+	}
+	
+	public Map<Patient, String> getMissedPatients() {
+		return missedPatients;
+	}
+	
+	public void setMissedPatients(Map<Patient, String> missedPatients) {
+		this.missedPatients = missedPatients;
+	}
+	
 	@Override
 	public String toString() {
-		return "CagVisit{" + "id=" + id + ", cag_id=" + cag_id + ", cagUuid='" + cagUuid + '\'' + ", patientUuidList="
-		        + patientUuidList + ", visits=" + visits + ", voided=" + this.getVoided() + ", uuid=" + this.getUuid()
-		        + ", date_created=" + this.getDateCreated() + ", creator=" + this.getCreator() + '}';
+		return "CagVisit{" + "id=" + id + ", cag_id=" + cag_id + ", cagUuid='" + cagUuid + '\'' + ", date_started="
+		        + date_started + ", date_stopped=" + date_stopped + ", patient_id=" + patient_id + ", attenderUuid='"
+		        + attenderUuid + '\'' + ", locationName='" + locationName + '\'' + ", patientUuidList=" + patientUuidList
+		        + ", visitUuidList=" + visitUuidList + ", visitList=" + visitList + ", absentees=" + absentees + '}';
 	}
 }

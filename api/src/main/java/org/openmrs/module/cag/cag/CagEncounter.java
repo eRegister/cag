@@ -19,21 +19,34 @@ public class CagEncounter extends BaseOpenmrsData {
 	private Integer id;
 	
 	@Column(name = "encounter_id")
-	private Integer encounter_id;
-	
-	@Transient
-	private String encounterUuid;
+	private Integer encounterId;
 	
 	@Column(name = "cag_id")
-	private Integer cag_id;
+	private Integer cagId;
+	
+	@Column(name = "cag_visit_id")
+	private Integer cagVisitId;
+	
+	@Column(name = "next_encounter_date")
+	private Date nextEncounterDate;
+	
+	@Column(name = "location_id")
+	private Integer locationId;
+	
+	@OneToMany
+	private List<Encounter> encounters = new ArrayList<Encounter>();
+	
+	@Transient
+	private Encounter encounter;
 	
 	@Transient
 	private String cagUuid;
 	
-	private Date next_encounter_date;
+	@Transient
+	private String cagVisitUuid;
 	
-	@OneToMany
-	private List<Encounter> encounters = new ArrayList<Encounter>();
+	@Transient
+	private String encounterUuid;
 	
 	@Override
 	public Integer getId() {
@@ -45,12 +58,36 @@ public class CagEncounter extends BaseOpenmrsData {
 		this.id = id;
 	}
 	
-	public Date getNext_encounter_date() {
-		return next_encounter_date;
+	public Integer getEncounterId() {
+		return encounterId;
 	}
 	
-	public void setNext_encounter_date(Date next_encounter_date) {
-		this.next_encounter_date = next_encounter_date;
+	public void setEncounterId(Integer encounterId) {
+		this.encounterId = encounterId;
+	}
+	
+	public Integer getCagId() {
+		return cagId;
+	}
+	
+	public void setCagId(Integer cagId) {
+		this.cagId = cagId;
+	}
+	
+	public Integer getCagVisitId() {
+		return cagVisitId;
+	}
+	
+	public void setCagVisitId(Integer cagVisitId) {
+		this.cagVisitId = cagVisitId;
+	}
+	
+	public Date getNextEncounterDate() {
+		return nextEncounterDate;
+	}
+	
+	public void setNextEncounterDate(Date nextEncounterDate) {
+		this.nextEncounterDate = nextEncounterDate;
 	}
 	
 	public List<Encounter> getEncounters() {
@@ -61,14 +98,6 @@ public class CagEncounter extends BaseOpenmrsData {
 		this.encounters = encounters;
 	}
 	
-	public Integer getEncounter_id() {
-		return encounter_id;
-	}
-	
-	public void setEncounter_id(Integer encounter_id) {
-		this.encounter_id = encounter_id;
-	}
-	
 	public String getEncounterUuid() {
 		return encounterUuid;
 	}
@@ -77,19 +106,35 @@ public class CagEncounter extends BaseOpenmrsData {
 		this.encounterUuid = encounterUuid;
 	}
 	
-	public Integer getCag_id() {
-		return cag_id;
-	}
-	
-	public void setCag_id(Integer cag_id) {
-		this.cag_id = cag_id;
-	}
-	
 	public String getCagUuid() {
 		return cagUuid;
 	}
 	
 	public void setCagUuid(String cagUuid) {
 		this.cagUuid = cagUuid;
+	}
+	
+	public Integer getLocationId() {
+		return locationId;
+	}
+	
+	public void setLocationId(Integer locationId) {
+		this.locationId = locationId;
+	}
+	
+	public String getCagVisitUuid() {
+		return cagVisitUuid;
+	}
+	
+	public void setCagVisitUuid(String cagVisitUuid) {
+		this.cagVisitUuid = cagVisitUuid;
+	}
+	
+	public Encounter getEncounter() {
+		return encounter;
+	}
+	
+	public void setEncounter(Encounter encounter) {
+		this.encounter = encounter;
 	}
 }

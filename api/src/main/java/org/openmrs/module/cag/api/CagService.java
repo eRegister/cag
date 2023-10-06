@@ -6,6 +6,7 @@ import org.openmrs.Patient;
 import org.openmrs.Visit;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.cag.cag.Cag;
+import org.openmrs.module.cag.cag.CagEncounter;
 import org.openmrs.module.cag.cag.CagPatient;
 import org.openmrs.module.cag.cag.CagVisit;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,14 +49,18 @@ public interface CagService extends OpenmrsService {
 	
 	CagPatient getCagPatientByUuid(String uuid);
 	
-	void saveCagVisit(CagVisit cagVisit);
+	CagVisit saveCagVisit(CagVisit cagVisit);
 	
 	CagVisit getCagVisitByUuid(String uuid);
 	
 	void deleteCagVisit(String uuid);
 	
-	List<Visit> getCagVisits(Integer cagId);
+	public CagVisit closeCagVisit(String uuid, List<String> visitUuidList);
 	
-	public CagVisit updateCagVisit(String uuid);
+	CagEncounter getCagEncounterByUuid(String uuid);
+	
+	CagEncounter saveCagEncounter(CagEncounter cagEncounter);
+	
+	void deleteCagEncounter(String uuid);
 	
 }
