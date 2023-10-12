@@ -22,6 +22,7 @@ import org.openmrs.module.cag.api.db.CagDao;
 import org.openmrs.module.cag.cag.*;
 
 import java.lang.ref.SoftReference;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -130,27 +131,19 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	}
 	
 	@Override
-	public CagVisit saveCagVisit(CagVisit cagVisit) {
+	public CagVisit openCagVisit(CagVisit cagVisit) {
 		
-		cagVisit.setUuid(UUID.randomUUID().toString());
-		cagVisit.setDate_started(new Date());
+		//		cagVisit.setDateStarted(new Date());
 		
 		Cag cag = Context.getService(CagService.class).getCagByUuid(cagVisit.getCagUuid());
 		Integer cagId = cag.getId();
-		cagVisit.setCag_id(cagId);
+		cagVisit.setCagId(cagId);
 		cagVisit.setCreator(Context.getAuthenticatedUser());
 		
 		Patient patient = Context.getPatientService().getPatientByUuid(cagVisit.getAttenderUuid());
 		Integer attenderId = patient.getPatientId();
-		cagVisit.setPatient_id(attenderId);
-		
+		cagVisit.setPatientId(attenderId);
 		CagVisit savedCagVisit = dao.saveCagVisit(cagVisit);
-		
-		List<String> patientUuidList = cagVisit.getPatientUuidList();
-		String loggedInLocation = cagVisit.getLocationName();
-		List<Visit> visitList = createCagPatientVisitList(patientUuidList, loggedInLocation);
-		
-		savedCagVisit.setVisitList(visitList);
 		
 		Map<String, String> absentees = cagVisit.getAbsentees();
 		if (!absentees.isEmpty()) {
@@ -172,24 +165,27 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 			}
 		}
 		
-		String displayed = dao.getCagById(cagVisit.getCag_id()).getName() + " @ " + cagVisit.getLocationName() + " - "
-		        + savedCagVisit.getDate_started();
+		String loggedInLocation = cagVisit.getLocationName();
+		Date dateStarted = cagVisit.getDateStarted();
+		
+		createCagPatientVisitList(absentees.keySet(), loggedInLocation, cagId, dateStarted);
+		
+		String displayed = dao.getCagById(cagVisit.getCagId()).getName() + " @ " + cagVisit.getLocationName() + " - "
+		        + savedCagVisit.getDateStarted();
 		savedCagVisit.setDisplay(displayed);
 		
-		return savedCagVisit;
-		
+		return getCagVisitByUuid(savedCagVisit.getUuid());
 	}
 	
-	public List<Visit> createCagPatientVisitList(List<String> patientUuidList, String locationName) {
+	public List<Visit> createCagPatientVisitList(Set<String> absentees, String locationName, Integer cagId, Date dateStarted) {
 		List<Visit> visitList = new ArrayList<Visit>();
 		
 		VisitType visitType = Context.getVisitService().getVisitType(10);
-		Date startDate = new Date();
 		
-		PatientService patientService = Context.getPatientService();
+		List<Patient> presentPatients = getPresentPatients(absentees, cagId);
 		
-		for (String patientUuid : patientUuidList) {
-			Visit visit = new Visit(patientService.getPatientByUuid(patientUuid), visitType, startDate);
+		for (Patient currentPatient : presentPatients) {
+			Visit visit = new Visit(currentPatient, visitType, dateStarted);
 			visit.setLocation(Context.getLocationService().getLocation(locationName));
 			Visit savedVisit = Context.getVisitService().saveVisit(visit);
 			
@@ -203,25 +199,20 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	public CagVisit getCagVisitByUuid(String uuid) {
 		CagVisit retrievedCagVisit = dao.getCagVisitByUuid(uuid);
 		
-		String displayed = dao.getCagById(retrievedCagVisit.getCag_id()).getName() + " @ "
-		        + retrievedCagVisit.getLocationName() + " - " + retrievedCagVisit.getDate_started();
+		System.out.println("\n\n" + retrievedCagVisit + "\n\n");
+		
+		String displayed = dao.getCagById(retrievedCagVisit.getCagId()).getName() + " @ "
+		        + retrievedCagVisit.getLocationName() + " - " + retrievedCagVisit.getDateStarted();
 		retrievedCagVisit.setDisplay(displayed);
 		
-		Patient attender = Context.getPatientService().getPatient(retrievedCagVisit.getPatient_id());
+		Patient attender = Context.getPatientService().getPatient(retrievedCagVisit.getPatientId());
+		List<Visit> attenderActiveVisitList = Context.getVisitService().getActiveVisitsByPatient(attender).subList(0, 1);
+		retrievedCagVisit.setVisitList(attenderActiveVisitList);
 		
-		List<Visit> attenderActiveVisitList = (Context.getVisitService().getActiveVisitsByPatient(attender));
-		
-		List<Visit> visitList = new ArrayList<Visit>();
-		Visit mostRecentVisit = attenderActiveVisitList.get(0);
-		visitList.add(mostRecentVisit);
-		
-		//		retrievedCagVisit.setVisitList(visitList);
 		Map<String, String> absentees = getAbsentees(retrievedCagVisit);
-		
 		retrievedCagVisit.setAbsentees(absentees);
 		
-		retrievedCagVisit.setVisitList(getPresentPatientVisits(absentees.keySet(), retrievedCagVisit.getCag_id(),
-		    retrievedCagVisit.getDate_started()));
+		retrievedCagVisit.setPresentPatients(getPresentPatients(absentees.keySet(), retrievedCagVisit.getCagId()));
 		
 		return retrievedCagVisit;
 	}
@@ -247,7 +238,51 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		return absentees;
 	}
 	
-	public List<Visit> getPresentPatientVisits(Set<String> absenteeUuidSet, Integer cagId, Date visitDate) {
+	public List<Patient> getPresentPatients(Set<String> absentees, Integer cagId) {
+		
+		List<Patient> cagPatientList = getCagPatientList(cagId);
+		
+		List<Patient> presentPatients = new ArrayList<Patient>();
+		for (Patient currentPatient : cagPatientList) {
+			if (!absentees.contains(currentPatient.getUuid())) {
+				presentPatients.add(Context.getPatientService().getPatientByUuid(currentPatient.getUuid()));
+			}
+		}
+		
+		return presentPatients;
+	}
+	
+	@Override
+	public CagVisit closeCagVisit(String uuid, String dateStopped) {
+		
+		Date stopDate = new Date();
+		try {
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			stopDate = simpleDateFormat.parse(dateStopped);
+		}
+		catch (Exception e) {
+			stopDate = new Date();
+			System.out.println("Cought ParseException Exception!!!");
+			throw new ParseException("Date ParseException encountered!", 1);
+		}
+		finally {
+			System.out.println("dateStopped=================== " + stopDate);
+			
+			CagVisit cagVisit = dao.closeCagVisit(uuid, dateStopped);
+			
+			Map<String, String> absentees = getAbsentees(cagVisit);
+			
+			Set<String> absenteeUuidSet = absentees.keySet();
+			Integer cagId = cagVisit.getCagId();
+			Date visitStartDate = cagVisit.getDateStarted();
+			
+			List<Visit> presentPatientVisits = closePatientVisits(absenteeUuidSet, cagId, visitStartDate, dateStopped);
+			
+			return cagVisit;
+		}
+	}
+	
+	public List<Visit> closePatientVisits(Set<String> absenteeUuidSet, Integer cagId, Date visitDate, String dateStopped) {
 		List<Visit> visitList = new ArrayList<Visit>();
 		VisitType visitType = Context.getVisitService().getVisitType(10);
 		
@@ -258,48 +293,11 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		
 		for (Patient presentPatient : cagPatientList) {
 			if (!absenteeUuidSet.contains(presentPatient.getUuid())) {
-				
-				Visit visit = new Visit(presentPatient, visitType, visitDate);
-				String visitUuid = dao.getPresentPatientVisitUuid(presentPatient.getPatientId(), VisitTime);
-				visit.setUuid(visitUuid);
-				visitList.add(visit);
+				dao.closeCagPatientVisit(presentPatient, VisitTime, dateStopped);
 			}
 		}
 		
 		return visitList;
-	}
-	
-	public List<Visit> getCagPatientVisitList(CagVisit cagVisit) {
-		List<Visit> visitList = new ArrayList<Visit>();
-		
-		List<Integer> visitIdList = dao.getVisitIdList(cagVisit);
-		
-		for (Integer visitId : visitIdList) {
-			
-			visitList.add(Context.getVisitService().getVisit(visitId));
-			
-		}
-		return visitList;
-	}
-	
-	@Override
-	public CagVisit closeCagVisit(String uuid, List<String> visitUuidList) {
-		
-		CagVisit cagVisit = dao.getCagVisitByUuid(uuid);
-		
-		cagVisit.setDate_stopped(new Date());
-		
-		closePatientVisits(visitUuidList);
-		return dao.closeCagVisit(cagVisit);
-	}
-	
-	public void closePatientVisits(List<String> visitUuidList) {
-		System.out.println(visitUuidList);
-		
-		for (String visitUuid : visitUuidList) {
-			Visit visitToClose = Context.getVisitService().getVisitByUuid(visitUuid);
-			Context.getVisitService().endVisit(visitToClose, new Date());
-		}
 	}
 	
 	@Override
@@ -319,45 +317,32 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		
 		Integer cagId = Context.getService(CagService.class).getCagByUuid(cagEncounter.getCagUuid()).getId();
 		CagVisit cagVisit = getCagVisitByUuid(cagEncounter.getCagVisitUuid());
-		System.out.println("cagVisit: \n" + cagVisit.toString() + "\n");
 		
 		cagEncounter.setCagId(cagId);
 		cagEncounter.setCagVisitId(cagVisit.getId());
 		cagEncounter.setCreator(Context.getAuthenticatedUser());
 		dao.saveCagEncounter(cagEncounter);
 		
-		//		Setting Attender encounter
-		Encounter attenderEncounter = new Encounter();
-		attenderEncounter.setEncounterDatetime(cagEncounter.getEncounter().getEncounterDatetime());
-		attenderEncounter.setPatient(Context.getPatientService().getPatientByUuid(
-		    cagEncounter.getEncounter().getPatient().getUuid()));
-		attenderEncounter.setLocation(Context.getLocationService().getLocationByUuid(
-		    cagEncounter.getEncounter().getLocation().getUuid()));
-		attenderEncounter.setForm(Context.getFormService().getFormByUuid(cagEncounter.getEncounter().getForm().getUuid()));
-		attenderEncounter.setEncounterType(Context.getEncounterService().getEncounterTypeByUuid(
-		    cagEncounter.getEncounter().getEncounterType().getUuid()));
-		attenderEncounter.setVisit(Context.getVisitService()
-		        .getVisitByUuid(cagEncounter.getEncounter().getVisit().getUuid()));
+		Encounter attenderEncounter = cagEncounter.getEncounter();
+		dao.saveCagPatientEncounter(attenderEncounter);
 		
-		for (Obs obs : cagEncounter.getEncounter().getObs()) {
-			obs.setConcept(Context.getConceptService().getConceptByUuid(obs.getConcept().getUuid()));
-			obs.setPerson(Context.getPersonService().getPersonByUuid(obs.getPerson().getUuid()));
-			System.out.println("\nobs.getPerson().toString() : " + obs.getPerson().toString() + "\nobs.getConcept() : "
-			        + obs.getConcept().getDisplayString() + "\n");
+		//		System.out.println(cagVisit);
+		//		===========================================================
+		//		List<Visit> presentPatientVisits = getPresentPatientVisits(cagVisit);
+		//		===========================================================
+		
+		for (Obs currentObs : cagEncounter.getEncounter().getObs()) {
+			currentObs.setEncounter(attenderEncounter);
+			Context.getObsService().saveObs(currentObs, "Saving Cag Obs");
 		}
 		attenderEncounter.setObs(cagEncounter.getEncounter().getObs());
 		
-		//		System.out.println();
+		System.out.println("\n\nattenderEncounter :\n" + attenderEncounter);
 		
-		Context.getEncounterService().saveEncounter(attenderEncounter);
-		
-		//		Encounter AttenderEncounter = cagEncounter.getEncounter();
-		//		System.out.println("encounter.getLocation().getUuid() : " + AttenderEncounter.getLocation().getUuid());
-		//		Context.getEncounterService().saveEncounter(AttenderEncounter);
-		
-		List<Visit> visitList = cagVisit.getVisitList();
+		//		dao.saveCagPatientEncounter(attenderEncounter);
+		List<Visit> visitList1 = cagVisit.getVisitList();
 		System.out.println("Visit UUID List");
-		for (Visit visit : visitList) {
+		for (Visit visit : visitList1) {
 			System.out.println(visit.getUuid());
 			//			Encounter encounter = new Encounter();
 			
@@ -366,6 +351,39 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		return getCagEncounterByUuid(cagEncounter.getUuid());
 		
 	}
+	
+	public List<Visit> getPresentPatientVisits(CagVisit cagVisit) {
+		List<Visit> presentPatientVisits = new ArrayList<Visit>();
+		
+		Set<String> absenteeUuidSet = getAbsentees(cagVisit).keySet();
+		//		List<Patient> presentPatients = getPresentPatients(absentees.keySet(), cagVisit.getCagId());
+		
+		List<Patient> cagPatientList = getCagPatientList(cagVisit.getCagId());
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String VisitTime = simpleDateFormat.format(cagVisit.getDateStarted());
+		
+		for (Patient presentPatient : cagPatientList) {
+			if (!absenteeUuidSet.contains(presentPatient.getUuid())) {
+				//				dao.closeCagPatientVisit(presentPatient, VisitTime, dateStopped);
+				presentPatientVisits.add(Context.getVisitService().getActiveVisitsByPatient(presentPatient).get(0));
+			}
+		}
+		return presentPatientVisits;
+	}
+	
+	//	public List<Visit> getCagPatientVisitList(CagVisit cagVisit) {
+	//		List<Visit> visitList = new ArrayList<Visit>();
+	//
+	//		List<Integer> visitIdList = dao.getVisitIdList(cagVisit);
+	//
+	//		for (Integer visitId : visitIdList) {
+	//
+	//			visitList.add(Context.getVisitService().getVisit(visitId));
+	//
+	//		}
+	//		return visitList;
+	//	}
 	
 	@Override
 	public void deleteCagEncounter(String uuid) {

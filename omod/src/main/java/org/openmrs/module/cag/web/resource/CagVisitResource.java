@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Resource(name = RestConstants.VERSION_1 + CagController.CAG_VISIT_NAMESPACE, supportedClass = CagVisit.class, supportedOpenmrsVersions = {
@@ -30,15 +31,14 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 	
 	@Override
 	public Object update(String uuid, SimpleObject propertiesToUpdate, RequestContext context) throws ResponseException {
-		System.out.println("propertiesToUpdate.toString():\n" + (List<String>) propertiesToUpdate.get("visitUuidList")
-		        + "\n");
-		return getService().closeCagVisit(uuid, (List<String>) propertiesToUpdate.get("visitUuidList"));
+		System.out.println("propertiesToUpdate.toString():\n" + propertiesToUpdate.get("dateStopped") + "\n");
+		return getService().closeCagVisit(uuid, propertiesToUpdate.get("dateStopped").toString());
 	}
 	
 	@Override
 	public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("visitUuidList");
+		description.addProperty("dateStopped");
 		
 		return description;
 	}
@@ -75,7 +75,7 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 	
 	@Override
 	public CagVisit save(CagVisit cagVisit) {
-		return getService().saveCagVisit(cagVisit);
+		return getService().openCagVisit(cagVisit);
 	}
 	
 	@Override
@@ -83,7 +83,7 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		
 		description.addProperty("cagUuid");
-		description.addProperty("patientUuidList");
+		description.addProperty("dateStarted");
 		description.addProperty("attenderUuid");
 		description.addProperty("absentees");
 		description.addProperty("locationName");
@@ -100,9 +100,9 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			
 			description.addProperty("uuid");
 			description.addProperty("display");
-			description.addProperty("visitList");
-			//			description.addProperty("missedPatients");
+			description.addProperty("presentPatients");
 			description.addProperty("absentees");
+			description.addProperty("visitList");
 			
 			description.addSelfLink();
 			description.addLink("full", ".?v=full");
@@ -111,9 +111,9 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			
 			description.addProperty("uuid");
 			description.addProperty("display");
-			description.addProperty("visitList");
-			//			description.addProperty("missedPatients");
+			description.addProperty("presentPatients");
 			description.addProperty("absentees");
+			description.addProperty("visitList");
 			
 			description.addSelfLink();
 		} else {
@@ -121,9 +121,9 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			
 			description.addProperty("uuid");
 			description.addProperty("display");
-			description.addProperty("visitList");
-			//			description.addProperty("missedPatients");
+			description.addProperty("presentPatients");
 			description.addProperty("absentees");
+			description.addProperty("visitList");
 			
 			description.addSelfLink();
 		}

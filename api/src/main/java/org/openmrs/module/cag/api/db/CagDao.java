@@ -2,6 +2,7 @@ package org.openmrs.module.cag.api.db;
 
 import org.hibernate.Query;
 import org.hibernate.Transaction;
+import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.openmrs.Visit;
 import org.openmrs.module.cag.cag.*;
@@ -47,21 +48,25 @@ public interface CagDao {
 	
 	void deleteCagVisit(Integer visitId);
 	
-	CagVisit closeCagVisit(CagVisit cagVisit);
+	CagVisit closeCagVisit(String cagVisitUuid, String dateStopped);
 	
 	List<Visit> getCagVisits(Integer cagId);
 	
-	List<Integer> getVisitIdList(CagVisit cagVisit);
+	List<Visit> getVisitList(CagVisit cagVisit);
 	
 	void saveAbsentCagPatient(Absentee absentee);
 	
 	List<Absentee> getAbsenteeList(Integer visitId);
 	
-	String getPresentPatientVisitUuid(Integer patientId, String startDate);
+	void closeCagPatientVisit(Patient patient, String startDate, String dateStopped);
+	
+	//	void closeCagPatientVisit(String uuid, Date dateStopped);
 	
 	CagEncounter getCagEncounterByUuid(String uuid);
 	
 	void saveCagEncounter(CagEncounter cagEncounter);
+	
+	void saveCagPatientEncounter(Encounter encounter);
 	
 	void deleteCagEncounter(String uuid);
 	

@@ -1,5 +1,6 @@
 package org.openmrs.module.cag.api;
 
+import java.util.Date;
 import java.util.List;
 
 import org.openmrs.Patient;
@@ -49,13 +50,15 @@ public interface CagService extends OpenmrsService {
 	
 	CagPatient getCagPatientByUuid(String uuid);
 	
-	CagVisit saveCagVisit(CagVisit cagVisit);
+	//	CagVisit saveCagVisit(CagVisit cagVisit);
+	
+	CagVisit openCagVisit(CagVisit cagVisit);
 	
 	CagVisit getCagVisitByUuid(String uuid);
 	
 	void deleteCagVisit(String uuid);
 	
-	public CagVisit closeCagVisit(String uuid, List<String> visitUuidList);
+	public CagVisit closeCagVisit(String uuid, String dateStopped);
 	
 	CagEncounter getCagEncounterByUuid(String uuid);
 	

@@ -4,6 +4,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.openmrs.Visit;
 import org.openmrs.api.PatientService;
@@ -276,43 +277,8 @@ public class HibernateCagDao implements CagDao {
 	}
 	
 	@Override
-	public CagVisit closeCagVisit(CagVisit cagVisit) {
-		Transaction tx = getSession().beginTransaction();
-		
-		Query query = getSession().createQuery(
-		    "update cag_visit cv set cv.date_stopped=:date_stopped where cv.uuid=:uuid and cv.voided=:active");
-		query.setDate("date_stopped", new Date());
-		query.setInteger("active", 0);
-		query.setString("uuid", cagVisit.getUuid());
-		query.executeUpdate();
-		
-		if (!tx.wasCommitted())
-			tx.commit();
-		
-		return getCagVisitByUuid(cagVisit.getCagUuid());
-	}
-	
-	@Override
 	public List<Visit> getCagVisits(Integer cagId) {
 		return null;
-	}
-	
-	@Override
-	public List<Integer> getVisitIdList(CagVisit cagVisit) {
-		Date dateStarted = cagVisit.getDate_started();
-		
-		Transaction tx = getSession().beginTransaction();
-		
-		Query query = getSession().createQuery(
-		    "select v.visit_id from visit v where v.voided=:voided and v.date_started=:dateStarted");
-		query.setBoolean("voided", false);
-		query.setDate("dateStarted", dateStarted);
-		List<Integer> visitIdList = query.list();
-		
-		if (!tx.wasCommitted())
-			tx.commit();
-		
-		return visitIdList;
 	}
 	
 	@Override
@@ -340,21 +306,56 @@ public class HibernateCagDao implements CagDao {
 	}
 	
 	@Override
-	public String getPresentPatientVisitUuid(Integer patientId, String startDate) {
+	public void closeCagPatientVisit(Patient patient, String startDate, String dateStopped) {
 		Transaction tx = getSession().beginTransaction();
 		String uuid = "";
 		
-		SQLQuery query = getSession().createSQLQuery(
-		    "select uuid from visit where patient_id = :patientId and date_started = :startDate limit 1");
-		query.setInteger("patientId", patientId);
+		Query query = getSession()
+		        .createQuery(
+		            "update Visit v set v.stopDatetime=:dateStopped where v.patient = :patient and v.startDatetime = :startDate and v.voided=:active");
+		query.setString("dateStopped", dateStopped);
 		query.setString("startDate", startDate);
-		Object row = query.uniqueResult();
-		String visitUuid = row.toString();
+		query.setInteger("active", 0);
+		query.setParameter("patient", patient);
+		query.executeUpdate();
 		
 		if (!tx.wasCommitted())
 			tx.commit();
 		
-		return visitUuid;
+	}
+	
+	@Override
+	public CagVisit closeCagVisit(String cagVisitUuid, String dateStopped) {
+		Transaction tx = getSession().beginTransaction();
+		
+		Query query = getSession().createQuery(
+		    "update cag_visit cv set cv.dateStopped=:dateStopped where cv.uuid=:uuid and cv.voided=:active");
+		query.setString("dateStopped", dateStopped);
+		query.setInteger("active", 0);
+		query.setString("uuid", cagVisitUuid);
+		query.executeUpdate();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+		
+		return getCagVisitByUuid(cagVisitUuid);
+	}
+	
+	@Override
+	public List<Visit> getVisitList(CagVisit cagVisit) {
+		Date dateStarted = cagVisit.getDateStarted();
+		
+		Transaction tx = getSession().beginTransaction();
+		
+		Query query = getSession().createQuery("from Visit v where v.voided=:voided and v.startDatetime=:dateStarted");
+		query.setBoolean("voided", false);
+		query.setDate("dateStarted", dateStarted);
+		List<Visit> visitList = query.list();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+		
+		return visitList;
 	}
 	
 	@Override
@@ -377,7 +378,17 @@ public class HibernateCagDao implements CagDao {
 		
 		Transaction tx = getSession().beginTransaction();
 		
-		Serializable cagEncounterId = getSession().save(cagEncounter);
+		getSession().save(cagEncounter);
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+	}
+	
+	@Override
+	public void saveCagPatientEncounter(Encounter encounter) {
+		Transaction tx = getSession().beginTransaction();
+		
+		getSession().save(encounter);
 		
 		if (!tx.wasCommitted())
 			tx.commit();

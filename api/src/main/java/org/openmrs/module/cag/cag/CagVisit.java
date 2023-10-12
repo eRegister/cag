@@ -21,17 +21,19 @@ public class CagVisit extends BaseOpenmrsData {
 	private Integer id;
 	
 	@Column(name = "cag_id")
-	private Integer cag_id;
+	private Integer cagId;
 	
 	@Transient
 	private String cagUuid;
 	
-	private Date date_started;
+	@Column(name = "date_started")
+	private Date dateStarted;
 	
-	private Date date_stopped;
+	@Column(name = "date_stopped")
+	private Date dateStopped;
 	
 	@Column(name = "patient_id")
-	private int patient_id;
+	private int patientId;
 	
 	@Transient
 	private String attenderUuid;
@@ -42,6 +44,9 @@ public class CagVisit extends BaseOpenmrsData {
 	
 	@Transient
 	private List<String> patientUuidList;
+	
+	@Transient
+	private List<Patient> presentPatients = new ArrayList<Patient>();
 	
 	@Transient
 	private List<String> visitUuidList;
@@ -56,9 +61,6 @@ public class CagVisit extends BaseOpenmrsData {
 	
 	@Transient
 	private String display;
-	
-	@Transient
-	private Map<Patient, String> missedPatients = new HashMap<Patient, String>();
 	
 	public List<String> getVisitUuidList() {
 		return visitUuidList;
@@ -76,12 +78,12 @@ public class CagVisit extends BaseOpenmrsData {
 		this.attenderUuid = attenderUuid;
 	}
 	
-	public int getPatient_id() {
-		return patient_id;
+	public int getPatientId() {
+		return patientId;
 	}
 	
-	public void setPatient_id(int patient_id) {
-		this.patient_id = patient_id;
+	public void setPatientId(int patientId) {
+		this.patientId = patientId;
 	}
 	
 	public String getLocationName() {
@@ -92,20 +94,20 @@ public class CagVisit extends BaseOpenmrsData {
 		this.locationName = locationName;
 	}
 	
-	public Date getDate_started() {
-		return date_started;
+	public Date getDateStarted() {
+		return dateStarted;
 	}
 	
-	public void setDate_started(Date date_started) {
-		this.date_started = date_started;
+	public void setDateStarted(Date dateStarted) {
+		this.dateStarted = dateStarted;
 	}
 	
-	public Date getDate_stopped() {
-		return date_stopped;
+	public Date getDateStopped() {
+		return dateStopped;
 	}
 	
-	public void setDate_stopped(Date date_stopped) {
-		this.date_stopped = date_stopped;
+	public void setDateStopped(Date dateStopped) {
+		this.dateStopped = dateStopped;
 	}
 	
 	public List<Visit> getVisitList() {
@@ -134,12 +136,12 @@ public class CagVisit extends BaseOpenmrsData {
 		this.id = id;
 	}
 	
-	public Integer getCag_id() {
-		return cag_id;
+	public Integer getCagId() {
+		return cagId;
 	}
 	
-	public void setCag_id(Integer cag_id) {
-		this.cag_id = cag_id;
+	public void setCagId(Integer cagId) {
+		this.cagId = cagId;
 	}
 	
 	public String getCagUuid() {
@@ -166,19 +168,20 @@ public class CagVisit extends BaseOpenmrsData {
 		this.display = display;
 	}
 	
-	public Map<Patient, String> getMissedPatients() {
-		return missedPatients;
+	public List<Patient> getPresentPatients() {
+		return presentPatients;
 	}
 	
-	public void setMissedPatients(Map<Patient, String> missedPatients) {
-		this.missedPatients = missedPatients;
+	public void setPresentPatients(List<Patient> presentPatients) {
+		this.presentPatients = presentPatients;
 	}
 	
 	@Override
 	public String toString() {
-		return "CagVisit{" + "id=" + id + ", cag_id=" + cag_id + ", cagUuid='" + cagUuid + '\'' + ", date_started="
-		        + date_started + ", date_stopped=" + date_stopped + ", patient_id=" + patient_id + ", attenderUuid='"
+		return "CagVisit{" + "id=" + id + ", cagId=" + cagId + ", cagUuid='" + cagUuid + '\'' + ", dateStarted="
+		        + dateStarted + ", dateStopped=" + dateStopped + ", patientId=" + patientId + ", attenderUuid='"
 		        + attenderUuid + '\'' + ", locationName='" + locationName + '\'' + ", patientUuidList=" + patientUuidList
-		        + ", visitUuidList=" + visitUuidList + ", visitList=" + visitList + ", absentees=" + absentees + '}';
+		        + ", presentPatients=" + presentPatients + ", visitUuidList=" + visitUuidList + ", visitList=" + visitList
+		        + ", absentees=" + absentees + ", display='" + display + '\'' + '}';
 	}
 }

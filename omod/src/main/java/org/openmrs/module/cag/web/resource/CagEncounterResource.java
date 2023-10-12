@@ -32,6 +32,7 @@ public class CagEncounterResource extends DelegatingCrudResource<CagEncounter> {
 	
 	@Override
 	public CagEncounter save(CagEncounter cagEncounter) {
+		System.out.println("CagEncounterResource save called!!");
 		return getService().saveCagEncounter(cagEncounter);
 	}
 	
