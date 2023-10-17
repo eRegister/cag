@@ -48,7 +48,7 @@
 	</dependencies>
 
 	<properties>
-		<webservicesRestVersion>2.24.0</webservicesRestVersion>
+		<webservicesRestVersion>2.32.0</webservicesRestVersion>
 	</properties>
 
 	<build>

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+    <!--
+        See http://wiki.openmrs.org/display/docs/Module+liquibase+File for
+        documentation on this file.
+
+        See http://www.liquibase.org/manual/home#available_database_refactorings
+        for a list of supported elements and attributes
+    -->
+
+    <!-- Uncomment the changeset below if you want to make the Item class persistable, see also Item and CommunityARTGroupDaoTest -->
+<!--    <changeSet id="cag-2023-06-28-14-40" author="Moletsane">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not><tableExists tableName="cag"/></not>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Creating the CAG table-->
+<!--        </comment>-->
+<!--        <createTable tableName="cag">-->
+<!--            <column name="cag_id" type="int" autoIncrement="true">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="name" type="varchar(50)" />-->
+<!--            <column name="description" type="varchar(255)" />-->
+<!--            <column name="village" type="varchar(255)" />-->
+<!--            <column name="constituency" type="varchar(255)" />-->
+<!--            <column name="district" type="varchar(255)" />-->
+<!--            <column name="creator" type="int" />-->
+<!--            <column name="date_created" type="datetime" />-->
+<!--            <column name="date_changed" type="datetime" />-->
+<!--            <column name="changed_by" type="int" />-->
+<!--            <column name="voided" type="boolean" />-->
+<!--            <column name="voided_by" type="int" />-->
+<!--            <column name="date_voided" type="datetime" />-->
+<!--            <column name="void_reason" type="VARCHAR(255)" />-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+<!--    <changeSet id="cag-2016-08-02-12-21" author="Mojau">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not><tableExists tableName="cag_patient"/></not>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Creating the cag_patient table-->
+<!--        </comment>-->
+<!--        <createTable tableName="cag_patient">-->
+<!--            <column name="cag_patient_id" type="int" autoIncrement="true">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="cag_id" type="int" />-->
+<!--            <column name="patient_id" type="int"/>-->
+<!--            <column name="status" type="boolean">-->
+<!--                <constraints nullable="false"></constraints>-->
+<!--            </column>-->
+<!--        </createTable>-->
+<!--        <addForeignKeyConstraint constraintName="cag_id_fk" baseTableName="cag_patient" baseColumnNames="cag_id"  referencedTableName="cag"-->
+<!--                                 referencedColumnNames="cag_id" />-->
+<!--        <addForeignKeyConstraint constraintName="cag_patient_id_fk" baseTableName="cag_patient" baseColumnNames="patient_id"  referencedTableName="patient"-->
+<!--                                 referencedColumnNames="patient_id" />-->
+<!--    </changeSet>-->
+
+<!--    <changeSet id="cag-2013-09-05-15-53" author="Mojau">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not><tableExists tableName="cag_visit"/></not>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Creating the cag_visit table-->
+<!--        </comment>-->
+<!--        <createTable tableName="cag_visit">-->
+<!--            <column name="cag_visit_id" type="int" autoIncrement="true">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="cag_id" type="int" />-->
+<!--&lt;!&ndash;            <column name="patient_id" type="int"/>&ndash;&gt;-->
+<!--        </createTable>-->
+<!--        <addForeignKeyConstraint constraintName="cag_id_fkey" baseTableName="cag_visit" baseColumnNames="cag_id"  referencedTableName="cag"-->
+<!--                                 referencedColumnNames="cag_id" />-->
+<!--        <addForeignKeyConstraint constraintName="cag_patient_id_fkey" baseTableName="cag_visit" baseColumnNames="patient_id"  referencedTableName="patient"-->
+<!--                                 referencedColumnNames="patient_id" />-->
+<!--    </changeSet>-->
+
+
+<!--    <changeSet id="cag-2013-09-05-16-51" author="Mojau">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not><tableExists tableName="cag_missed_drug_pickup"/></not>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Creating the cag missed drug pickup table-->
+<!--        </comment>-->
+<!--        <createTable tableName="cag_missed_drug_pickup">-->
+<!--            <column name="missed_drug_pickup_id" type="int" autoIncrement="true">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="cag_visit_id" type="int" />-->
+<!--            <column name="patient_id" type="int"/>-->
+<!--            <column name="reason_missed" type="VARCHAR(255)" />-->
+<!--        </createTable>-->
+<!--        <addForeignKeyConstraint constraintName="cag_visit_id_fk" baseTableName="cag_missed_drug_pickup" baseColumnNames="cag_visit_id"  referencedTableName="cag_visit"-->
+<!--                                 referencedColumnNames="cag_visit_id" />-->
+<!--        <addForeignKeyConstraint constraintName="cag_patient_id_fky" baseTableName="cag_missed_drug_pickup" baseColumnNames="patient_id"  referencedTableName="patient"-->
+<!--                                 referencedColumnNames="patient_id" />-->
+<!--    </changeSet>-->
+
+
+<!--    <changeSet id="cag-2013-09-05-16-40" author="Mojau">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not><tableExists tableName="cag_visit_visit"/></not>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Creating the cag visit_visit table-->
+<!--        </comment>-->
+<!--        <createTable tableName="cag_visit_visit">-->
+<!--            <column name="cag_consultation_id" type="int" autoIncrement="true">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="cag_visit_id" type="int" />-->
+<!--            <column name="visit_id" type="int"/>-->
+<!--        </createTable>-->
+<!--        <addForeignKeyConstraint constraintName="cag_visit_id_fkey" baseTableName="cag_visit_visit" baseColumnNames="cag_visit_id"  referencedTableName="cag_visit"-->
+<!--                                 referencedColumnNames="cag_visit_id" />-->
+<!--        <addForeignKeyConstraint constraintName="visit_id_fkey" baseTableName="cag_visit_visit" baseColumnNames="visit_id"  referencedTableName="visit"-->
+<!--                                 referencedColumnNames="visit_id" />-->
+<!--    </changeSet>-->
+
+
+<!--    <changeSet id="cag-2013-09-05-17-00" author="Mojau">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not><tableExists tableName="cag_encounter"/></not>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Creating the cag encounter table-->
+<!--        </comment>-->
+<!--        <createTable tableName="cag_encounter">-->
+<!--            <column name="cag_encounter_id" type="int" autoIncrement="true">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="cag_id" type="int"/>-->
+<!--        </createTable>-->
+<!--        <addForeignKeyConstraint constraintName="cag_id_forkey" baseTableName="cag_encounter" baseColumnNames="cag_id"  referencedTableName="cag"-->
+<!--                                 referencedColumnNames="cag_id" />-->
+<!--    </changeSet>-->
+
+<!--    <changeSet id="cag-2023-09-06-07-23" author="Moletsane">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not><tableExists tableName="cag_encounter_encounter"/></not>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Creating the cag encounter_encounter table-->
+<!--        </comment>-->
+<!--        <createTable tableName="cag_encounter_encounter">-->
+<!--            <column name="cag_encounter_encounter_id" type="int" autoIncrement="true">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="cag_encounter_id" type="int"/>-->
+<!--            <column name="encounter_id" type="int" />-->
+<!--            </createTable>-->
+<!--            <addForeignKeyConstraint constraintName="cag_encounter_id_fkey" baseTableName="cag_encounter_encounter" baseColumnNames="cag_encounter_id"  referencedTableName="cag_encounter"-->
+<!--                                     referencedColumnNames="cag_encounter_id" />-->
+<!--            <addForeignKeyConstraint constraintName="encounter_id_fkey" baseTableName="cag_encounter_encounter" baseColumnNames="encounter_id"  referencedTableName="encounter"-->
+<!--                                     referencedColumnNames="encounter_id" />-->
+<!--        </changeSet>-->
+
+<!--        <changeSet id="cag-2023-06-26-17-00" author="Mojau">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="cag"/>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Updating the CAG table-->
+<!--        </comment>-->
+<!--        <addColumn tableName="cag">-->
+<!--            <column name="uuid" type="varchar(38)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </addColumn>-->
+<!--    </changeSet>-->
+
+<!--    <changeSet id="cag-2023-09-04-20-20" author="Moletsane">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="cag_patient"/>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Updating the CAG_PATIENT table-->
+<!--        </comment>-->
+<!--        <addColumn tableName="cag_patient">-->
+<!--            <column name="uuid" type="varchar(38)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </addColumn>-->
+
+<!--    </changeSet>-->
+
+<!--    <changeSet id="cag-2023-09-06-15-01" author="Moletsane">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="cag_visit"/>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Updating the CAG_VISIT table-->
+<!--        </comment>-->
+<!--        <addColumn tableName="cag_visit">-->
+<!--            <column name="uuid" type="varchar(38)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="next_encounter_date" type="datetime" />-->
+<!--            <column name="creator" type="int" />-->
+<!--            <column name="date_created" type="datetime" />-->
+<!--            <column name="date_changed" type="datetime" />-->
+<!--            <column name="changed_by" type="int" />-->
+<!--            <column name="voided" type="boolean" />-->
+<!--            <column name="voided_by" type="int" />-->
+<!--            <column name="date_voided" type="datetime" />-->
+<!--            <column name="void_reason" type="VARCHAR(255)" />-->
+
+<!--        </addColumn>-->
+
+<!--    </changeSet>-->
+
+<!--    <changeSet id="cag-2023-09-06-15-19" author="Moletsane">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="cag_encounter"/>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Updating the CAG_Encounter table-->
+<!--        </comment>-->
+<!--        <addColumn tableName="cag_encounter">-->
+<!--            <column name="uuid" type="varchar(38)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="next_encounter_date" type="datetime" />-->
+<!--            <column name="creator" type="int" />-->
+<!--            <column name="date_created" type="datetime" />-->
+<!--            <column name="date_changed" type="datetime" />-->
+<!--            <column name="changed_by" type="int" />-->
+<!--            <column name="voided" type="boolean" />-->
+<!--            <column name="voided_by" type="int" />-->
+<!--            <column name="date_voided" type="datetime" />-->
+<!--            <column name="void_reason" type="VARCHAR(255)" />-->
+<!--        </addColumn>-->
+
+<!--    </changeSet>-->
+
+<!--    <changeSet id="cag-2023-09-06-12-58" author="Moletsane">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="cag_visit"/>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Updating the CAG_VISIT table-->
+<!--        </comment>-->
+<!--        <dropColumn tableName="cag_visit" columnName="next_visit_date"/>-->
+
+<!--    </changeSet>-->
+<!--    <changeSet id="cag-2023-09-06-14-28" author="Mojau">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="cag_visit"/>-->
+<!--        </preConditions>-->
+<!--        <comment>-->
+<!--            Updating the CAG_VISIT table-->
+<!--        </comment>-->
+<!--        <addColumn tableName="cag_visit">-->
+<!--            <column name="voided" type="boolean">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </addColumn>-->
+<!--        <addColumn name="date_started" type="datetime" />-->
+<!--        <addColumn name="date_stopped" type="datetime" />-->
+
+<!--    </changeSet>-->
+
+</databaseChangeLog>

@@ -82,9 +82,9 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		
-		description.addProperty("cagUuid");
+		description.addProperty("cag");
 		description.addProperty("dateStarted");
-		description.addProperty("attenderUuid");
+		description.addProperty("attenderVisit");
 		description.addProperty("absentees");
 		description.addProperty("locationName");
 		
@@ -102,7 +102,7 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			description.addProperty("display");
 			description.addProperty("presentPatients");
 			description.addProperty("absentees");
-			description.addProperty("visitList");
+			description.addProperty("attenderVisit");
 			
 			description.addSelfLink();
 			description.addLink("full", ".?v=full");
@@ -111,9 +111,11 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			
 			description.addProperty("uuid");
 			description.addProperty("display");
+			description.addProperty("dateStarted");
+			description.addProperty("dateStopped");
 			description.addProperty("presentPatients");
 			description.addProperty("absentees");
-			description.addProperty("visitList");
+			description.addProperty("attenderVisit");
 			
 			description.addSelfLink();
 		} else {
@@ -123,7 +125,7 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			description.addProperty("display");
 			description.addProperty("presentPatients");
 			description.addProperty("absentees");
-			description.addProperty("visitList");
+			description.addProperty("attenderVisit");
 			
 			description.addSelfLink();
 		}

@@ -52,7 +52,7 @@ public interface CagDao {
 	
 	List<Visit> getCagVisits(Integer cagId);
 	
-	List<Visit> getVisitList(CagVisit cagVisit);
+	Visit getVisit(Patient patient, String dateStarted);
 	
 	void saveAbsentCagPatient(Absentee absentee);
 	

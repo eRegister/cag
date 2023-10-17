@@ -342,20 +342,23 @@ public class HibernateCagDao implements CagDao {
 	}
 	
 	@Override
-	public List<Visit> getVisitList(CagVisit cagVisit) {
-		Date dateStarted = cagVisit.getDateStarted();
+	public Visit getVisit(Patient patient, String dateStarted) {
 		
 		Transaction tx = getSession().beginTransaction();
 		
-		Query query = getSession().createQuery("from Visit v where v.voided=:voided and v.startDatetime=:dateStarted");
+		Query query = getSession()
+		        .createQuery(
+		            "from Visit v where v.patient=:patient and v.voided=:voided and v.startDatetime=:dateStarted and v.stopDatetime=:dateStopped");
 		query.setBoolean("voided", false);
-		query.setDate("dateStarted", dateStarted);
-		List<Visit> visitList = query.list();
+		query.setString("dateStarted", dateStarted);
+		query.setString("dateStopped", null);
+		query.setParameter("patient", patient);
+		Visit visit = (Visit) query.uniqueResult();
 		
 		if (!tx.wasCommitted())
 			tx.commit();
 		
-		return visitList;
+		return visit;
 	}
 	
 	@Override

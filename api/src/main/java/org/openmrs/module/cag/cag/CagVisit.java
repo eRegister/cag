@@ -24,7 +24,7 @@ public class CagVisit extends BaseOpenmrsData {
 	private Integer cagId;
 	
 	@Transient
-	private String cagUuid;
+	private Cag cag;
 	
 	@Column(name = "date_started")
 	private Date dateStarted;
@@ -36,7 +36,7 @@ public class CagVisit extends BaseOpenmrsData {
 	private int patientId;
 	
 	@Transient
-	private String attenderUuid;
+	private Patient attender;
 	
 	//	@Transient
 	@Column(name = "location")
@@ -57,6 +57,9 @@ public class CagVisit extends BaseOpenmrsData {
 	private List<Visit> visitList = new ArrayList<Visit>();
 	
 	@Transient
+	private Visit attenderVisit;
+	
+	@Transient
 	private Map<String, String> absentees = new HashMap<String, String>();
 	
 	@Transient
@@ -68,14 +71,6 @@ public class CagVisit extends BaseOpenmrsData {
 	
 	public void setVisitUuidList(List<String> visitUuidList) {
 		this.visitUuidList = visitUuidList;
-	}
-	
-	public String getAttenderUuid() {
-		return attenderUuid;
-	}
-	
-	public void setAttenderUuid(String attenderUuid) {
-		this.attenderUuid = attenderUuid;
 	}
 	
 	public int getPatientId() {
@@ -144,14 +139,6 @@ public class CagVisit extends BaseOpenmrsData {
 		this.cagId = cagId;
 	}
 	
-	public String getCagUuid() {
-		return cagUuid;
-	}
-	
-	public void setCagUuid(String cagUuid) {
-		this.cagUuid = cagUuid;
-	}
-	
 	public Map<String, String> getAbsentees() {
 		return absentees;
 	}
@@ -176,12 +163,36 @@ public class CagVisit extends BaseOpenmrsData {
 		this.presentPatients = presentPatients;
 	}
 	
+	public Cag getCag() {
+		return cag;
+	}
+	
+	public void setCag(Cag cag) {
+		this.cag = cag;
+	}
+	
+	public Patient getAttender() {
+		return attender;
+	}
+	
+	public void setAttender(Patient attender) {
+		this.attender = attender;
+	}
+	
+	public Visit getAttenderVisit() {
+		return attenderVisit;
+	}
+	
+	public void setAttenderVisit(Visit attenderVisit) {
+		this.attenderVisit = attenderVisit;
+	}
+	
 	@Override
 	public String toString() {
-		return "CagVisit{" + "id=" + id + ", cagId=" + cagId + ", cagUuid='" + cagUuid + '\'' + ", dateStarted="
-		        + dateStarted + ", dateStopped=" + dateStopped + ", patientId=" + patientId + ", attenderUuid='"
-		        + attenderUuid + '\'' + ", locationName='" + locationName + '\'' + ", patientUuidList=" + patientUuidList
-		        + ", presentPatients=" + presentPatients + ", visitUuidList=" + visitUuidList + ", visitList=" + visitList
-		        + ", absentees=" + absentees + ", display='" + display + '\'' + '}';
+		return "CagVisit{" + "id=" + id + ", cagId=" + cagId + ", cagUuid='" + '\'' + ", dateStarted=" + dateStarted
+		        + ", dateStopped=" + dateStopped + ", patientId=" + patientId + ", attenderUuid='" + '\''
+		        + ", locationName='" + locationName + '\'' + ", patientUuidList=" + patientUuidList + ", presentPatients="
+		        + presentPatients + ", visitUuidList=" + visitUuidList + ", visitList=" + visitList + ", absentees="
+		        + absentees + ", display='" + display + '\'' + '}';
 	}
 }

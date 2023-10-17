@@ -1,13 +1,14 @@
 package org.openmrs.module.cag.cag;
 
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.DrugOrder;
 import org.openmrs.Encounter;
+import org.openmrs.Order;
+import org.openmrs.annotation.AllowDirectAccess;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Repository
 @Entity(name = "cag_encounter")
@@ -47,6 +48,9 @@ public class CagEncounter extends BaseOpenmrsData {
 	
 	@Transient
 	private String encounterUuid;
+	
+	@Transient
+	public String displayed;
 	
 	@Override
 	public Integer getId() {
@@ -136,5 +140,13 @@ public class CagEncounter extends BaseOpenmrsData {
 	
 	public void setEncounter(Encounter encounter) {
 		this.encounter = encounter;
+	}
+	
+	public String getDisplayed() {
+		return displayed;
+	}
+	
+	public void setDisplayed(String displayed) {
+		this.displayed = displayed;
 	}
 }
