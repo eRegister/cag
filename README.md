@@ -1,9 +1,9 @@
 # CAG
-==========================
+
 
 Description
 -----------
-This is a very basic module which can be used as a starting point in creating a new module.
+The CAG module is [ICAP Lesotho's ](https://icap.columbia.edu/where-we-work/lesotho/) effort, working with [NUL](https://www.nul.ls/technology/) to extend eRegister to have better support [Community ART Groups](https://www.pepfarsolutions.org/solutions/tag/community+ART+groups+%28CAGs%29)
 
 Building from Source
 --------------------
@@ -31,7 +31,7 @@ simply restart OpenMRS/tomcat and the module will be loaded and started.
 
 CAG Module endpoints
 ------------
-1. CAG
+#### 1. CAG
 
 `
 POST http://localhost:8081/openmrs/ws/rest/v1/cag
@@ -48,7 +48,7 @@ POST http://localhost:8081/openmrs/ws/rest/v1/cag
     }
 ```
 
-2. Updating a CAG:
+#### 2. Updating a CAG:
 
 `
 POST http://localhost:8081/openmrs/ws/rest/v1/cag/{uuid}
@@ -70,7 +70,7 @@ e.g you can execute the following methods
 
 ` DELETE http://localhost:8081/openmrs/ws/rest/v1/cag/{uuid}`
 
-3. Updating members of a CAG (CAG Patient)
+#### 3. Updating members of a CAG (CAG Patient)
 
 ` POST http://localhost:8081/openmrs/ws/rest/v1/cagPatient` 
 
@@ -86,7 +86,7 @@ To remove a member from any cag where they are active:
 `
 DELETE http://localhost:8081/openmrs/ws/rest/v1/cagPatient/{UUID}`
 
-4. Updating a CAG visit
+#### 4. Updating a CAG visit
 
 To open CAG Visit:
 
