@@ -27,10 +27,15 @@
 
 	<aware_of_modules>
 		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
+		<aware_of_module version="1.24.5">org.openmrs.module.emrapi</aware_of_module>
+		<aware_of_module version="1.16.0">org.openmrs.module.reporting</aware_of_module>
+		<aware_of_module version="0.2.12">org.openmrs.module.emrapi-api-1.12</aware_of_module>
+		<aware_of_module version="2.5.0">org.openmrs.module.providermanagement</aware_of_module>
+		<aware_of_module version="1.2">org.openmrs.calculation</aware_of_module>
 	</aware_of_modules>
 
 	<require_modules>
-		<require_module version="2.24.0">org.openmrs.module.webservices.rest</require_module>
+		<require_module version="2.32.0">org.openmrs.module.webservices.rest</require_module>
 	</require_modules>
 
 	<webservices>
@@ -39,6 +44,8 @@
 			<!--			<resource>org.openmrs.module.mymodule.api.rest.CagResource</resource>-->
 			<resource>org.openmrs.module.cag.web.resource.CagResource</resource>
 			<resource>org.openmrs.module.cag.web.resource.CagPatientResource</resource>
+			<resource>org.openmrs.module.cag.web.resource.CagVisitResource</resource>
+			<resource>org.openmrs.module.cag.web.resource.CagEncounterResource</resource>
 		</rest>
 	</webservices>
 
