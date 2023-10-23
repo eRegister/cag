@@ -58,8 +58,8 @@ public class CagEncounterResource extends DelegatingCrudResource<CagEncounter> {
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("cagUuid");
-		description.addProperty("cagVisitUuid");
+		description.addProperty("cag");
+		description.addProperty("cagVisit");
 		description.addProperty("nextEncounterDate");
 		description.addProperty("encounter");
 		return description;
