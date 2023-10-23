@@ -1,10 +1,8 @@
 package org.openmrs.module.cag.web.resource;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.cag.api.CagService;
-import org.openmrs.module.cag.cag.CagPatient;
+import org.openmrs.module.cag.cag.CagEncounter;
 import org.openmrs.module.cag.web.controller.CagController;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -12,55 +10,57 @@ import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
+import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@Resource(name = RestConstants.VERSION_1 + CagController.CAG_PATIENT_NAMESPACE, supportedClass = CagPatient.class, supportedOpenmrsVersions = {
+@Resource(name = RestConstants.VERSION_1 + CagController.CAG_ENCOUNTER_NAMESPACE, supportedClass = CagEncounter.class, supportedOpenmrsVersions = {
         "1.8.*", "2.1.*", "2.4.*" })
-public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
+public class CagEncounterResource extends DelegatingCrudResource<CagEncounter> {
 	
 	@Override
-	protected void delete(CagPatient cagPatient, String reason, RequestContext requestContext) throws ResponseException {
-		System.out.println("Deleting a Patient from Cag!!!!");
-		getService().deletePatientFromCag(cagPatient.getUuid());
+	protected void delete(CagEncounter cagEncounter, String reason, RequestContext requestContext) throws ResponseException {
+		System.out.println("Deleting a Cag Encounter!!!!");
+		getService().deleteCagEncounter(cagEncounter.getUuid());
 	}
 	
 	@Override
-	public CagPatient newDelegate() {
-		return new CagPatient();
+	public CagEncounter newDelegate() {
+		return new CagEncounter();
 	}
 	
 	@Override
-	public CagPatient save(CagPatient cagPatient) {
-		
-		CagPatient existOnCag = getService().getCagPatientByUuid(cagPatient.getUuid());
-		System.out.println(existOnCag);
-		
-		Patient patient = getService().saveCagPatient(cagPatient);
-		
-		return getService().getCagPatientById(patient.getPatientId());
+	public CagEncounter save(CagEncounter cagEncounter) {
+		System.out.println("CagEncounterResource save called!!");
+		return getService().saveCagEncounter(cagEncounter);
 	}
 	
 	@Override
-	public void purge(CagPatient cagPatient, RequestContext requestContext) throws ResponseException {
-		getService().deletePatientFromCag(cagPatient.getCagUuid());
+	public void purge(CagEncounter cagEncounter, RequestContext requestContext) throws ResponseException {
+		getService().deleteCagEncounter(cagEncounter.getUuid());
 	}
 	
 	@Override
-	public CagPatient getByUniqueId(String uuid) {
+	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
+		return super.doGetAll(context);
+	}
+	
+	@Override
+	public CagEncounter getByUniqueId(String uuid) {
 		System.out.println("getByUniqueId id being called!!!");
-		CagPatient cagPatient = getService().getCagPatientByUuid(uuid);
-		System.out.println(cagPatient);
+		CagEncounter cagEncounter = getService().getCagEncounterByUuid(uuid);
+		System.out.println(cagEncounter);
 		
-		return cagPatient;
+		return cagEncounter;
 	}
 	
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addProperty("cagUuid");
-		description.addProperty("uuid");
+		description.addProperty("cagVisitUuid");
+		description.addProperty("encounter");
 		return description;
 	}
 	
@@ -71,27 +71,21 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 		if (representation instanceof DefaultRepresentation) {
 			description = new DelegatingResourceDescription();
 			
-			description.addProperty("cagPatientId");
-			description.addProperty("cagId");
-			description.addProperty("patientId");
 			description.addProperty("uuid");
+			description.addProperty("nextEncounterDate");
 			
 			description.addSelfLink();
 			description.addLink("full", ".?v=full");
 		} else if (representation instanceof FullRepresentation) {
 			description = new DelegatingResourceDescription();
 			
-			description.addProperty("cagPatientId");
-			description.addProperty("cagId");
-			description.addProperty("patientId");
 			description.addProperty("uuid");
+			description.addProperty("nextEncounterDate");
 			
 			description.addSelfLink();
 		} else {
-			description.addProperty("cagPatientId");
-			description.addProperty("cagId");
-			description.addProperty("patientId");
 			description.addProperty("uuid");
+			description.addProperty("nextEncounterDate");
 			description.addSelfLink();
 		}
 		

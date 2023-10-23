@@ -1,4 +1,0 @@
-org/openmrs/module/cag/api/impl/CagServiceImplTest.class
-org/openmrs/module/cag/api/db/hibernate/HibernateCagDaoTest.class
-org/openmrs/module/cag/cag/CagTest.class
-org/openmrs/module/cag/cag/CagPatientTest.class
