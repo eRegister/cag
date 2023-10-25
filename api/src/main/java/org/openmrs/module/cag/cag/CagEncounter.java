@@ -44,7 +44,8 @@ public class CagEncounter extends BaseOpenmrsData {
 	private Integer locationId;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Encounter> encounters = new ArrayList<Encounter>();
+	@JoinTable(name = "cag_encounter_encounter", joinColumns = { @JoinColumn(name = "cag_encounter_id") }, inverseJoinColumns = { @JoinColumn(name = "encounter_id") })
+	private Set<Encounter> encounters = new HashSet<Encounter>();
 	
 	@Transient
 	public String displayed;
@@ -91,11 +92,11 @@ public class CagEncounter extends BaseOpenmrsData {
 		this.nextEncounterDate = nextEncounterDate;
 	}
 	
-	public List<Encounter> getEncounters() {
+	public Set<Encounter> getEncounters() {
 		return encounters;
 	}
 	
-	public void setEncounters(List<Encounter> encounters) {
+	public void setEncounters(Set<Encounter> encounters) {
 		this.encounters = encounters;
 	}
 	

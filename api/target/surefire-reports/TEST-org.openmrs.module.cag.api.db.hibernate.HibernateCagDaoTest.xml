@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="8" failures="0" name="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" time="1.536" errors="0" skipped="8">
+<testsuite tests="8" failures="0" name="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" time="1.574" errors="0" skipped="8">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/jdk1.8.0_361/jre/lib/amd64"/>
@@ -63,28 +63,28 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="deleteCag_shouldDeleteCag" time="0.192">
+  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="deleteCag_shouldDeleteCag" time="0.196">
     <skipped message="Unignore deleteCag_shouldDeleteCag, if you want to test delete functionality in CagDao"/>
   </testcase>
-  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="getCagById_ShouldGetCag" time="0.192">
+  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="getCagById_ShouldGetCag" time="0.196">
     <skipped message="Unignore testTestGetCagByUuid, if you want to make the Item class persistable, see also Item and liquibase.xml"/>
   </testcase>
-  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="getCagBUuid_ShouldGetCagBUuid" time="0.192">
+  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="getCagBUuid_ShouldGetCagBUuid" time="0.196">
     <skipped message="Unignore testTestGetCagByUuid, if you want to make the Item class persistable, see also Item and liquibase.xml"/>
   </testcase>
-  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="saveCag_ShouldSaveCag" time="0.192">
+  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="saveCag_ShouldSaveCag" time="0.196">
     <skipped message="Unignore saveCag_ShouldSaveCag, if you want to make the Item class persistable, see also Item and liquibase.xml"/>
   </testcase>
-  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="getCagList_shouldGetCagList" time="0.192">
+  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="getCagList_shouldGetCagList" time="0.197">
     <skipped message="Unignore testGetCagList_shouldGetCagList, if you want to make the Item class persistable, see also Item and liquibase.xml"/>
   </testcase>
-  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="updateCag_ShouldUpdateCag" time="0.192">
+  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="updateCag_ShouldUpdateCag" time="0.197">
     <skipped message="Unignore updateCag_ShouldUpdateCag, if you want to make the Item class persistable, see also Item and liquibase.xml"/>
   </testcase>
-  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="saveCagPatient_shouldSaveCagPatient" time="0.192">
+  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="saveCagPatient_shouldSaveCagPatient" time="0.198">
     <skipped message="Unignore if you want to make the Item class persistable, see also Item and liquibase.xml"/>
   </testcase>
-  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="getCagPatientList_shouldGetCagPatientList" time="0.192">
+  <testcase classname="org.openmrs.module.cag.api.db.hibernate.HibernateCagDaoTest" name="getCagPatientList_shouldGetCagPatientList" time="0.198">
     <skipped message="Unignore testGetCagPatientList_shouldGetCagPatientList. if you want test getcaglist functionality in CagDao"/>
   </testcase>
 </testsuite>

@@ -100,9 +100,10 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			
 			description.addProperty("uuid");
 			description.addProperty("display");
-			description.addProperty("presentPatients");
-			description.addProperty("absentees");
+			//			description.addProperty("presentPatients");
 			description.addProperty("attenderVisit");
+			description.addProperty("otherMemberVisits");
+			description.addProperty("absentees");
 			
 			description.addSelfLink();
 			description.addLink("full", ".?v=full");
@@ -113,9 +114,10 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			description.addProperty("display");
 			description.addProperty("dateStarted");
 			description.addProperty("dateStopped");
-			description.addProperty("presentPatients");
-			description.addProperty("absentees");
+			//			description.addProperty("presentPatients");
 			description.addProperty("attenderVisit");
+			description.addProperty("otherMemberVisits");
+			description.addProperty("absentees");
 			
 			description.addSelfLink();
 		} else {
@@ -123,9 +125,10 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			
 			description.addProperty("uuid");
 			description.addProperty("display");
-			description.addProperty("presentPatients");
-			description.addProperty("absentees");
+			//			description.addProperty("presentPatients");
 			description.addProperty("attenderVisit");
+			description.addProperty("otherMemberVisits");
+			description.addProperty("absentees");
 			
 			description.addSelfLink();
 		}

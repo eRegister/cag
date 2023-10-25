@@ -61,7 +61,7 @@ public class CagEncounterResource extends DelegatingCrudResource<CagEncounter> {
 		description.addProperty("cag");
 		description.addProperty("cagVisit");
 		description.addProperty("nextEncounterDate");
-		description.addProperty("encounter");
+		description.addProperty("encounters");
 		return description;
 	}
 	

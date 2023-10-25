@@ -54,7 +54,7 @@ public class CagVisit extends BaseOpenmrsData {
 	@Transient
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "cag_visit_visit", joinColumns = { @JoinColumn(name = "cag_visit_id") }, inverseJoinColumns = { @JoinColumn(name = "visit_id") })
-	private List<Visit> visitList = new ArrayList<Visit>();
+	private List<Visit> otherMemberVisits = new ArrayList<Visit>();
 	
 	@Transient
 	private Visit attenderVisit;
@@ -105,10 +105,6 @@ public class CagVisit extends BaseOpenmrsData {
 		this.dateStopped = dateStopped;
 	}
 	
-	public List<Visit> getVisitList() {
-		return visitList;
-	}
-	
 	public List<String> getPatientUuidList() {
 		return patientUuidList;
 	}
@@ -117,8 +113,12 @@ public class CagVisit extends BaseOpenmrsData {
 		this.patientUuidList = patientUuidList;
 	}
 	
-	public void setVisitList(List<Visit> visitList) {
-		this.visitList = visitList;
+	public List<Visit> getOtherMemberVisits() {
+		return otherMemberVisits;
+	}
+	
+	public void setOtherMemberVisits(List<Visit> otherMemberVisits) {
+		this.otherMemberVisits = otherMemberVisits;
 	}
 	
 	@Override
@@ -192,7 +192,7 @@ public class CagVisit extends BaseOpenmrsData {
 		return "CagVisit{" + "id=" + id + ", cagId=" + cagId + ", cagUuid='" + '\'' + ", dateStarted=" + dateStarted
 		        + ", dateStopped=" + dateStopped + ", patientId=" + patientId + ", attenderUuid='" + '\''
 		        + ", locationName='" + locationName + '\'' + ", patientUuidList=" + patientUuidList + ", presentPatients="
-		        + presentPatients + ", visitUuidList=" + visitUuidList + ", visitList=" + visitList + ", absentees="
+		        + presentPatients + ", visitUuidList=" + visitUuidList + ", visitList=" + otherMemberVisits + ", absentees="
 		        + absentees + ", display='" + display + '\'' + '}';
 	}
 }
