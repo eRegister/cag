@@ -10,7 +10,6 @@
 package org.openmrs.module.cag.api.impl;
 
 import ca.uhn.hl7v2.model.v25.datatype.MA;
-import javafx.util.Pair;
 import liquibase.servicelocator.LiquibaseService;
 import org.openmrs.*;
 import org.openmrs.api.APIException;
@@ -441,6 +440,7 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 				
 				for (int index = 0; index < ordersArray.length; index += 2) {
 					Order currentOrder = (Order) ordersArray[index];
+					currentOrder.setInstructions("As directed");
 					Context.getOrderService().saveOrder(currentOrder, new OrderContext());
 				}
 			}

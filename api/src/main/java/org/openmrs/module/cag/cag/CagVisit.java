@@ -1,6 +1,5 @@
 package org.openmrs.module.cag.cag;
 
-import javafx.util.Pair;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Patient;

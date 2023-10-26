@@ -1,5 +1,5 @@
-/home/moletsane/Workspace/cag/api/src/test/java/org/openmrs/module/cag/cag/CagPatientTest.java
-/home/moletsane/Workspace/cag/api/src/test/java/org/openmrs/module/cag/api/impl/CagServiceImplTest.java
-/home/moletsane/Workspace/cag/api/src/test/java/org/openmrs/module/cag/cag/CagTest.java
-/home/moletsane/Workspace/cag/api/src/test/java/org/openmrs/module/cag/api/db/hibernate/HibernateCagDaoTest.java
-/home/moletsane/Workspace/cag/api/src/test/java/org/openmrs/module/cag/api/CagServiceTest.java
+/home/mojau_p/new_cag/openmrs/cag/api/src/test/java/org/openmrs/module/cag/cag/CagTest.java
+/home/mojau_p/new_cag/openmrs/cag/api/src/test/java/org/openmrs/module/cag/api/db/hibernate/HibernateCagDaoTest.java
+/home/mojau_p/new_cag/openmrs/cag/api/src/test/java/org/openmrs/module/cag/cag/CagPatientTest.java
+/home/mojau_p/new_cag/openmrs/cag/api/src/test/java/org/openmrs/module/cag/api/impl/CagServiceImplTest.java
+/home/mojau_p/new_cag/openmrs/cag/api/src/test/java/org/openmrs/module/cag/api/CagServiceTest.java
