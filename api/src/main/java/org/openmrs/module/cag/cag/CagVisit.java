@@ -34,26 +34,18 @@ public class CagVisit extends BaseOpenmrsData {
 	@Column(name = "patient_id")
 	private int patientId;
 	
-	@Transient
-	private Patient attender;
-	
-	//	@Transient
 	@Column(name = "location")
 	private String locationName;
 	
 	@Transient
-	private List<String> patientUuidList;
+	private Patient attender;
 	
-	@Transient
-	private List<Patient> presentPatients = new ArrayList<Patient>();
-	
-	@Transient
-	private List<String> visitUuidList;
-	
-	@Transient
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "cag_visit_visit", joinColumns = { @JoinColumn(name = "cag_visit_id") }, inverseJoinColumns = { @JoinColumn(name = "visit_id") })
-	private List<Visit> otherMemberVisits = new ArrayList<Visit>();
+	private Set<Visit> visits = new HashSet<Visit>();
+	
+	@Transient
+	private Set<Visit> otherMemberVisits = new HashSet<Visit>();
 	
 	@Transient
 	private Visit attenderVisit;
@@ -63,14 +55,6 @@ public class CagVisit extends BaseOpenmrsData {
 	
 	@Transient
 	private String display;
-	
-	public List<String> getVisitUuidList() {
-		return visitUuidList;
-	}
-	
-	public void setVisitUuidList(List<String> visitUuidList) {
-		this.visitUuidList = visitUuidList;
-	}
 	
 	public int getPatientId() {
 		return patientId;
@@ -104,19 +88,19 @@ public class CagVisit extends BaseOpenmrsData {
 		this.dateStopped = dateStopped;
 	}
 	
-	public List<String> getPatientUuidList() {
-		return patientUuidList;
+	public Set<Visit> getVisits() {
+		return visits;
 	}
 	
-	public void setPatientUuidList(List<String> patientUuidList) {
-		this.patientUuidList = patientUuidList;
+	public void setVisits(Set<Visit> visits) {
+		this.visits = visits;
 	}
 	
-	public List<Visit> getOtherMemberVisits() {
+	public Set<Visit> getOtherMemberVisits() {
 		return otherMemberVisits;
 	}
 	
-	public void setOtherMemberVisits(List<Visit> otherMemberVisits) {
+	public void setOtherMemberVisits(Set<Visit> otherMemberVisits) {
 		this.otherMemberVisits = otherMemberVisits;
 	}
 	
@@ -154,14 +138,6 @@ public class CagVisit extends BaseOpenmrsData {
 		this.display = display;
 	}
 	
-	public List<Patient> getPresentPatients() {
-		return presentPatients;
-	}
-	
-	public void setPresentPatients(List<Patient> presentPatients) {
-		this.presentPatients = presentPatients;
-	}
-	
 	public Cag getCag() {
 		return cag;
 	}
@@ -190,8 +166,8 @@ public class CagVisit extends BaseOpenmrsData {
 	public String toString() {
 		return "CagVisit{" + "id=" + id + ", cagId=" + cagId + ", cagUuid='" + '\'' + ", dateStarted=" + dateStarted
 		        + ", dateStopped=" + dateStopped + ", patientId=" + patientId + ", attenderUuid='" + '\''
-		        + ", locationName='" + locationName + '\'' + ", patientUuidList=" + patientUuidList + ", presentPatients="
-		        + presentPatients + ", visitUuidList=" + visitUuidList + ", visitList=" + otherMemberVisits + ", absentees="
-		        + absentees + ", display='" + display + '\'' + '}';
+		        + ", locationName='" + locationName + '\'' + ", patientUuidList=" + ", presentPatients="
+		        + ", visitUuidList=" + ", visitList=" + otherMemberVisits + ", absentees=" + absentees + ", display='"
+		        + display + '\'' + '}';
 	}
 }

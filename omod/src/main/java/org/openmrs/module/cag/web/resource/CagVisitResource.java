@@ -84,8 +84,9 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 		
 		description.addProperty("cag");
 		description.addProperty("dateStarted");
-		description.addProperty("attenderVisit");
+		description.addProperty("attender");
 		description.addProperty("absentees");
+		description.addProperty("visits");
 		description.addProperty("locationName");
 		
 		return description;

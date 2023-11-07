@@ -142,9 +142,10 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		cagVisit.setCagId(cagId);
 		cagVisit.setCreator(Context.getAuthenticatedUser());
 		
-		Patient attender = Context.getPatientService().getPatientByUuid(cagVisit.getAttenderVisit().getPatient().getUuid());
+		Patient attender = Context.getPatientService().getPatientByUuid(cagVisit.getAttender().getUuid());
 		Integer attenderId = attender.getPatientId();
 		cagVisit.setPatientId(attenderId);
+		
 		CagVisit savedCagVisit = dao.saveCagVisit(cagVisit);
 		
 		Map<String, String> absentees = cagVisit.getAbsentees();
@@ -165,50 +166,18 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 				
 			}
 		
-		String loggedInLocation = cagVisit.getLocationName();
-		Date dateStarted = cagVisit.getDateStarted();
+		Set<Visit> visits = cagVisit.getVisits();
+		CagEncounter cagEncounter = new CagEncounter();
+		cagEncounter.setCag(cagVisit.getCag());
+		cagEncounter.setCagVisit(savedCagVisit);
 		
-		createCagPatientVisitList(absentees.keySet(), loggedInLocation, cagId, dateStarted, cagVisit.getAttenderVisit());
+		for (Visit currentVisit : visits) {
+			cagEncounter.getEncounters().add(currentVisit.getNonVoidedEncounters().get(0));
+		}
+		
+		saveCagEncounter(cagEncounter);
 		
 		return getCagVisitByUuid(savedCagVisit.getUuid());
-	}
-	
-	public void createCagPatientVisitList(Set<String> absentees, String locationName, Integer cagId, Date dateStarted,
-	        Visit attenderVisit) {
-		
-		VisitType visitType = Context.getVisitService().getVisitType(10);
-		List<Patient> presentPatients = getPresentPatients(absentees, cagId);
-		
-		Object[] attenderEncounters = attenderVisit.getEncounters().toArray();
-		Encounter attenderEncounter = (Encounter) attenderEncounters[0];
-		System.out.println("Attender Encounter : " + attenderEncounter);
-		
-		for (Patient currentPatient : presentPatients) {
-			Visit visit = new Visit(currentPatient, visitType, dateStarted);
-			visit.setLocation(Context.getLocationService().getLocation(locationName));
-			Visit savedVisit = Context.getVisitService().saveVisit(visit);
-			
-			if (currentPatient.getUuid() != attenderVisit.getPatient().getUuid()) {
-				Encounter currentEncounter = getEncounter(currentPatient, savedVisit, attenderEncounter);
-				System.out.println("\nNOT CAG VISIT ATTENDER ::: Encounter:\n" + currentEncounter);
-				dao.saveCagPatientEncounter(currentEncounter);
-				
-			} else {
-				System.out.println("\n CAG VISIT ATTENDER Encounter:\n" + attenderEncounter);
-				dao.saveCagPatientEncounter(attenderEncounter);
-				
-				System.out.println("Passed saveCagPatientEncounter(attender)");
-				
-				int count = 1;
-				for (Obs currentObs : attenderEncounter.getObs()) {
-					System.out.println(count);
-					attenderEncounter.setVisit(savedVisit);
-					currentObs.setEncounter(attenderEncounter);
-					Context.getObsService().saveObs(currentObs, "Saving Cag member Vital Sign Observation");
-					count += 1;
-				}
-			}
-		}
 	}
 	
 	private Encounter getEncounter(Patient currentPatient, Visit savedVisit, Encounter attenderEncounter) {
@@ -464,204 +433,6 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		String dateString = simpleDateFormat.format(date);
 		
 		return dateString;
-	}
-	
-	public CagEncounter saveCagEncounterBackup(CagEncounter cagEncounter) {
-		
-		Integer cagId = Context.getService(CagService.class).getCagByUuid(cagEncounter.getCag().getUuid()).getId();
-		CagVisit cagVisit = getCagVisitByUuid(cagEncounter.getCagVisit().getUuid());
-		
-		System.out.println("\nOrderset FIIIIIIIIIIIIRRRRRRRRRSSSSSSSSSSSSTTTTT : \n"
-		        + cagEncounter.getEncounter().getOrders().toString());
-		
-		cagEncounter.setCagId(cagId);
-		cagEncounter.setCagVisitId(cagVisit.getId());
-		cagEncounter.setCreator(Context.getAuthenticatedUser());
-		dao.saveCagEncounter(cagEncounter);
-		
-		Encounter attenderEncounter = cagEncounter.getEncounter();
-		dao.saveCagPatientEncounter(attenderEncounter);
-		
-		Set<String> absenteesUuidSet = getAbsentees(cagVisit).keySet();
-		List<Patient> presentPatients = getPresentPatients(absenteesUuidSet, cagId);
-		
-		for (Patient currentPatient : presentPatients) {
-			System.out.println("Current patient is : " + currentPatient);
-			if (!(currentPatient.getUuid() == attenderEncounter.getPatient().getUuid())) {
-				
-				Encounter currentEncounter = new Encounter();
-				currentEncounter.setEncounterType(attenderEncounter.getEncounterType());
-				
-				String visitDate = formatDateTime(cagVisit.getDateStarted());
-				Visit currentVisit = dao.getVisit(currentPatient, visitDate);
-				currentEncounter.setVisit(currentVisit);
-				
-				currentEncounter.setLocation(attenderEncounter.getLocation());
-				currentEncounter.setForm(attenderEncounter.getForm());
-				currentEncounter.setPatient(currentPatient);
-				currentEncounter.setEncounterDatetime(attenderEncounter.getEncounterDatetime());
-				currentEncounter.setCreator(attenderEncounter.getCreator());
-				dao.saveCagPatientEncounter(currentEncounter);
-				
-				Set<Obs> obsSet = attenderEncounter.getObsAtTopLevel(false);
-				int count = 1;
-				
-				for (Obs currentObs : obsSet) {
-					System.out.println("other patient obs : " + count + " : " + currentObs.getConcept().getId() + " : "
-					        + currentObs.getConcept().getUuid());
-					Integer conceptId = currentObs.getConcept().getId();
-					Obs newObs = new Obs(currentPatient, currentObs.getConcept(), currentObs.getObsDatetime(),
-					        currentObs.getLocation());
-					
-					currentObs.setEncounter(currentEncounter);
-					currentObs.setPerson(currentPatient);
-					
-					//					Make call with curr Obs, curr person
-					
-					if (conceptId == 3843) {
-						
-						currentObs.getValueCoded().setUuid("0f880c52-3ced-43ac-a79b-07a2740ae428");
-						System.out.println("About to save obs");
-						Person person = Context.getPersonService().getPersonByUuid(currentPatient.getUuid());
-						
-						Context.getObsService().saveObs(currentObs, "Saving Cag member Observation");
-						
-						System.out.println("After to save obs");
-						
-					} else if (conceptId == 2250) {
-						try {
-							List<Obs> artRegimenObs = Context.getObsService().getObservationsByPersonAndConcept(
-							    currentPatient, currentObs.getConcept());
-							System.out.println("For patient : " + currentPatient + " \n artRegimenObs : "
-							        + artRegimenObs.toString());
-							
-							Concept previousValueConded = artRegimenObs.get(0).getValueCoded();
-							System.out.println(previousValueConded);
-							
-							currentObs.setValueCoded(previousValueConded);
-							Context.getObsService().saveObs(currentObs, "Saving Cag member Observation");
-							
-						}
-						catch (APIException e) {
-							System.out.println("CAG Member (" + currentPatient.getNames()
-							        + ") has no previous ART Consultation (Intake / Followup)");
-						}
-						
-					} else if (conceptId == 3751 || conceptId == 3752 || conceptId == 4174 || conceptId == 3730) {
-						Context.getObsService().saveObs(currentObs, "Saving Cag member Observation");
-						
-					} else if (conceptId == 2403) {
-						System.out.println("\nProcessing Top Level Observation!!!\n");
-						Context.getObsService().saveObs(currentObs, "HIV Treatment and Care Progress Template Observation");
-					}
-				}
-				
-				if (!attenderEncounter.getOrders().isEmpty()) {
-					
-					Set<Order> orders = attenderEncounter.getOrders();
-					Object[] ordersArray = orders.toArray();
-					System.out.println("ordersArray.toString() : " + ordersArray.length);
-					
-					for (int index = 0; index < ordersArray.length; index += 2) {
-						DrugOrder currentOrder = (DrugOrder) ordersArray[index];
-						
-						System.out.println("Looping through orders for patient " + currentPatient);
-						
-						List<Order> orderList = Context.getOrderService().getOrders(currentPatient,
-						    currentOrder.getCareSetting(), currentOrder.getOrderType(), false);
-						if (!orderList.isEmpty()) {
-							int lastIndex = orderList.size() - 1;
-							DrugOrder previousOrder = (DrugOrder) orderList.get(lastIndex);
-							
-							DrugOrder newOrder = new DrugOrder();
-							newOrder.setPatient(currentPatient);
-							newOrder.setEncounter(currentEncounter);
-							newOrder.setOrderType(currentOrder.getOrderType());
-							newOrder.setDateActivated(currentOrder.getDateActivated());
-							newOrder.setAutoExpireDate(currentOrder.getAutoExpireDate());
-							newOrder.setOrderer(currentOrder.getOrderer());
-							newOrder.setUrgency(currentOrder.getUrgency());
-							newOrder.setCareSetting(currentOrder.getCareSetting());
-							newOrder.setScheduledDate(currentOrder.getScheduledDate());
-							newOrder.setDose(previousOrder.getDose());
-							newOrder.setDoseUnits(previousOrder.getDoseUnits());
-							newOrder.setFrequency(previousOrder.getFrequency());
-							newOrder.setQuantityUnits(previousOrder.getQuantityUnits());
-							newOrder.setDrug(previousOrder.getDrug());
-							newOrder.setNumRefills(currentOrder.getNumRefills());
-							newOrder.setDosingInstructions(currentOrder.getDosingInstructions());
-							newOrder.setDuration(currentOrder.getDuration());
-							newOrder.setDurationUnits(currentOrder.getDurationUnits());
-							newOrder.setRoute(previousOrder.getRoute());
-							newOrder.setAction(currentOrder.getAction());
-							newOrder.setQuantity(computeQty(newOrder));
-							
-							System.out.println("\nNEW Order, Details from previous order \n" + newOrder);
-							
-							Context.getOrderService().saveOrder(newOrder, new OrderContext());
-						} else {
-							DrugOrder newOrder = new DrugOrder();
-							newOrder.setPatient(currentPatient);
-							newOrder.setEncounter(currentEncounter);
-							newOrder.setOrderType(currentOrder.getOrderType());
-							newOrder.setDateActivated(currentOrder.getDateActivated());
-							newOrder.setAutoExpireDate(currentOrder.getAutoExpireDate());
-							newOrder.setOrderer(currentOrder.getOrderer());
-							newOrder.setUrgency(currentOrder.getUrgency());
-							newOrder.setCareSetting(currentOrder.getCareSetting());
-							newOrder.setScheduledDate(currentOrder.getScheduledDate());
-							newOrder.setDose(currentOrder.getDose());
-							newOrder.setDoseUnits(currentOrder.getDoseUnits());
-							newOrder.setFrequency(currentOrder.getFrequency());
-							newOrder.setQuantityUnits(currentOrder.getQuantityUnits());
-							newOrder.setDrug(currentOrder.getDrug());
-							newOrder.setNumRefills(currentOrder.getNumRefills());
-							newOrder.setDosingInstructions(currentOrder.getDosingInstructions());
-							newOrder.setDuration(currentOrder.getDuration());
-							newOrder.setDrug(currentOrder.getDrug());
-							newOrder.setDurationUnits(currentOrder.getDurationUnits());
-							newOrder.setRoute(currentOrder.getRoute());
-							newOrder.setAction(currentOrder.getAction());
-							newOrder.setQuantity(computeQty(newOrder));
-							
-							System.out.println("\nNEW Order \n" + newOrder);
-							
-							Context.getOrderService().saveOrder(newOrder, new OrderContext());
-							
-							System.out.println("Successfully saved an order !!!!!!");
-						}
-					}
-				}
-			} else {
-				int count = 1;
-				for (Obs currentObs : attenderEncounter.getObsAtTopLevel(false)) {
-					System.out.println("Attender Obs: " + count + " : " + currentObs + " : " + currentObs.getConcept()
-					        + " : " + currentObs.getPerson());
-					currentObs.setEncounter(attenderEncounter);
-					currentObs.setPerson(currentPatient);
-					Context.getObsService().saveObs(currentObs, "Saving Cag member Observation");
-					count += 1;
-				}
-				if (!attenderEncounter.getOrders().isEmpty()) {
-					Set<Order> orders = attenderEncounter.getOrders();
-					Object[] ordersArray = orders.toArray();
-					
-					for (int index = 0; index < ordersArray.length; index += 2) {
-						Order currentOrder = (Order) ordersArray[index];
-						currentOrder.setPatient(currentPatient);
-						currentOrder.setEncounter(attenderEncounter);
-						
-						Context.getOrderService().saveOrder(currentOrder, new OrderContext());
-					}
-				}
-			}
-		}
-		
-		System.out.println("When trying to get encounter by uuid : " + cagEncounter.getUuid());
-		CagEncounter cagEncounter1 = getCagEncounterByUuid(cagEncounter.getUuid());
-		System.out.println("\nFinally!!!!!!!!!1\n" + cagEncounter1);
-		
-		return cagEncounter1;
 	}
 	
 	public Double computeQty(DrugOrder order) {
