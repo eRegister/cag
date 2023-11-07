@@ -98,172 +98,245 @@ To open CAG Visit:
     "cag": {
         "uuid": "35156159-41d9-4573-b317-28ed17dff0db"
     },
-<<<<<<< HEAD
     "dateStarted": "2023-10-24 09:32:46",
-    "attenderVisit": {
-        "patient": {
-            "uuid": "c8e31d37-c5d6-4b5c-9a59-5a3df1c04198"
-=======
-    "dateStarted": "2023-10-12 03:32:46",
-    "attenderVisit": {
-        "patient": {
-            "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
-        },
-        "location": {
-            "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
-        },
-        "encounters": [
-            {
-                "encounterType": "81888515-3f10-11e4-adec-0800271c1b75",
-                "encounterDatetime": "2023-10-12 03:32:46",
-                "patient": {
-<<<<<<< HEAD
-                    "uuid": "c8e31d37-c5d6-4b5c-9a59-5a3df1c04198"
-=======
-                    "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
-                },
-                "location": {
-                    "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
-                }, 
-                "obs":[
-                    {
-                        "concept": {
-                            "uuid": "9b1fa8e6-8209-4fcd-abd2-142887fc83e0"
-                        },
-                        "valueCoded": "a3e3fdfe-e03c-401d-a3fd-1c2553fefe53",
-                        "valueCodedName": "HTC, Patient",
-                        "obsDatetime": "2023-10-15 02:40:08",
-                        "person": {
-<<<<<<< HEAD
-                            "uuid": "c8e31d37-c5d6-4b5c-9a59-5a3df1c04198"
-=======
-                            "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
-                        },
-                        "location":{
-                            "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
-                        }
-                    },
-                    {
-                        "concept": {
-                            "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                        },
-                        "valueNumeric": 140,
-                        "obsDatetime": "2023-10-15 02:40:08",
-                        "person": {
-<<<<<<< HEAD
-                            "uuid": "c8e31d37-c5d6-4b5c-9a59-5a3df1c04198"
-=======
-                            "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
-                        },
-                        "location":{
-                            "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
-                        }
-                    },
-                    {
-                        "concept": {
-                            "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                        },
-                        "valueNumeric": 60,
-                        "obsDatetime": "2023-10-15 02:40:08",
-                        "person": {
-<<<<<<< HEAD
-                            "uuid": "c8e31d37-c5d6-4b5c-9a59-5a3df1c04198"
-=======
-                            "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
-                        },
-                        "location":{
-                            "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
-                        }
-                    },
-                    {
-                        "concept": {
-                            "uuid": "4a2cec08-4512-4635-b1de-b3b698f56346"
-                        },
-                        "valueCoded": "562fee67-96c5-4b80-ba02-ba8805a28693",
-                        "valueCodedName": "No signs",
-                        "obsDatetime": "2023-10-15 02:40:08",
-                        "person": {
-<<<<<<< HEAD
-                            "uuid": "c8e31d37-c5d6-4b5c-9a59-5a3df1c04198"
-=======
-                            "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
-                        },
-                        "location":{
-                            "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
-                        }
-                    },
-                    {
-                        "concept": {
-                            "uuid": "36e9c8b-3f10-11e4-adec-0800271c1b75"
-                        },
-                        "valueNumeric": 120,
-                        "obsDatetime": "2023-10-15 02:40:08",
-                        "person": {
-<<<<<<< HEAD
-                            "uuid": "c8e31d37-c5d6-4b5c-9a59-5a3df1c04198"
-=======
-                            "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
-                        },
-                        "location":{
-                            "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
-                        }
-                    },
-                    {
-                        "concept": {
-                            "uuid": "c379aa1d-3f10-11e4-adec-0800271c1b75"
-                        },
-                        "valueNumeric": 73,
-                        "obsDatetime": "2023-10-15 02:40:08",
-                        "person": {
-<<<<<<< HEAD
-                            "uuid": "c8e31d37-c5d6-4b5c-9a59-5a3df1c04198"
-=======
-                            "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
-                        },
-                        "location":{
-                            "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
-                        }
-                    },
-                    {
-                        "concept": {
-                            "uuid": "90f53912-95d5-4b5c-a9eb-81f3f937225e"
-                        },
-                        "valueNumeric": 24,
-                        "obsDatetime": "2023-10-15 02:40:08",
-                        "person": {
-<<<<<<< HEAD
-                            "uuid": "c8e31d37-c5d6-4b5c-9a59-5a3df1c04198"
-=======
-                            "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
-                        },
-                        "location":{
-                            "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
-                        }
-                    }
-                ]
-            }
-        ]
+    "locationName": "Unknown location",
+    "attender": {
+        "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
     },
     "absentees": {
-<<<<<<< HEAD
-        "0934ab1b-07ca-4ebe-bd34-c7afbb89d3aa": "Went to Bloemfontein"
-    },
-    "locationName": "MCH"
-=======
         "349d17c1-441a-4543-8596-e479116a3a33": "Went to Bloemfontein",
         "98df327f-c531-4841-bdcf-90be3f62f127": "Visited Quthing"
     },
-    "locationName": "Unknown Location"
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
+    "visits": [
+        {
+            "patient": {
+                "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
+            },
+            "visitType": "33e15d3c-54b7-4e8e-9527-b828c1cb24d0",
+            "location": {
+                "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+            },
+            "startDatetime": "2023-10-18 20:05:00",
+            "encounters": [
+                {
+                    "encounterDatetime": "2023-10-12 03:32:46",
+                    "encounterType": "81888515-3f10-11e4-adec-0800271c1b75",
+                    "patient": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d",
+                    "location": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f", 
+                    "obs":[
+                        {
+                            "concept": {
+                                "conceptId": 55,
+                                "uuid": "84f626d0-3f10-11e4-adec-0800271c1b75"
+                            },
+                            "obsDatetime": "2023-10-15 02:40:08",
+                            "person": {
+                                "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
+                            },
+                            "location":{
+                                "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                            },
+                            "groupMembers": [
+                                {
+                                    "concept": {
+                                        "conceptId": 4964,
+                                        "uuid": "9b1fa8e6-8209-4fcd-abd2-142887fc83e0"
+                                    },
+                                    "valueCoded": "a3e3fdfe-e03c-401d-a3fd-1c2553fefe53",
+                                    "valueCodedName": "HTC, Patient",
+                                    "obsDatetime": "2023-10-15 02:40:08",
+                                    "person": {
+                                        "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
+                                    },
+                                    "location":{
+                                        "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                                    }
+                                },
+                                {
+                                    "concept": {
+                                        "conceptId": 118,
+                                        "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                    },
+                                    "valueNumeric": 140,
+                                    "obsDatetime": "2023-10-15 02:40:08",
+                                    "person": {
+                                        "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
+                                    },
+                                    "location":{
+                                        "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                                    }
+                                },
+                                {
+                                    "concept": {
+                                        "conceptId": 119,
+                                        "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                    },
+                                    "valueNumeric": 60,
+                                    "obsDatetime": "2023-10-15 02:40:08",
+                                    "person": {
+                                        "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
+                                    },
+                                    "location":{
+                                        "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                                    }
+                                },
+                                {
+                                    "concept": {
+                                        "conceptId": 3710,
+                                        "uuid": "4a2cec08-4512-4635-b1de-b3b698f56346"
+                                    },
+                                    "valueCoded": "562fee67-96c5-4b80-ba02-ba8805a28693",
+                                    "valueCodedName": "No signs",
+                                    "obsDatetime": "2023-10-15 02:40:08",
+                                    "person": {
+                                        "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
+                                    },
+                                    "location":{
+                                        "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                                    }
+                                },
+                                {
+                                    "concept": {
+                                        "conceptId": 128,
+                                        "uuid": "c36e9c8b-3f10-11e4-adec-0800271c1b75"
+                                    },
+                                    "valueNumeric": 120,
+                                    "obsDatetime": "2023-10-15 02:40:08",
+                                    "person": {
+                                        "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
+                                    },
+                                    "location":{
+                                        "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                                    }
+                                },
+                                {
+                                    "concept": {
+                                        "conceptId": 131,
+                                        "uuid": "c379aa1d-3f10-11e4-adec-0800271c1b75"
+                                    },
+                                    "valueNumeric": 73,
+                                    "obsDatetime": "2023-10-15 02:40:08",
+                                    "person": {
+                                        "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
+                                    },
+                                    "location":{
+                                        "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                                    }
+                                },
+                                {
+                                    "concept": {
+                                        "conceptId": 2086,
+                                        "uuid": "90f53912-95d5-4b5c-a9eb-81f3f937225e"
+                                    },
+                                    "valueNumeric": 24,
+                                    "obsDatetime": "2023-10-15 02:40:08",
+                                    "person": {
+                                        "uuid": "73ff4a1a-3cc8-4d90-966d-7ae764c6892d"
+                                    },
+                                    "location":{
+                                        "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "patient": "24060928-89df-442b-8f43-a4ae138ada4c",
+            "visitType": "33e15d3c-54b7-4e8e-9527-b828c1cb24d0",
+            "location": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f",
+            "startDatetime": "2023-10-18 20:05:00",
+            "encounters": [
+                {
+
+                    "encounterDatetime": "2023-10-18 20:05:00",
+                    "encounterType": "81888515-3f10-11e4-adec-0800271c1b75",
+                    "patient": "24060928-89df-442b-8f43-a4ae138ada4c",
+                    "location": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f",
+                    "obs": [
+                        {
+                            "concept": {
+                                "conceptId": 55,
+                                "uuid": "84f626d0-3f10-11e4-adec-0800271c1b75"
+                            },
+                            "obsDatetime": "2023-10-15 02:40:08",
+                            "person": {
+                                "uuid": "24060928-89df-442b-8f43-a4ae138ada4c"
+                            },
+                            "location":{
+                                "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                            },
+                            "groupMembers": [
+                                {
+                                    "concept": {
+                                        "conceptId": 4964,
+                                        "uuid": "9b1fa8e6-8209-4fcd-abd2-142887fc83e0"
+                                    },
+                                    "valueCoded": "60c86ea4-5a2d-4d72-8190-32e47d06e0fa",
+                                    "valueCodedName": "HTC, Buddy",
+                                    "obsDatetime": "2023-10-15 02:40:08",
+                                    "person": {
+                                        "uuid": "24060928-89df-442b-8f43-a4ae138ada4c"
+                                    },
+                                    "location":{
+                                        "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "patient": "d1816a76-ca23-4b7a-aa1c-ae5e0fbf1145",
+            "visitType": "33e15d3c-54b7-4e8e-9527-b828c1cb24d0",
+            "location": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f",
+            "startDatetime": "2023-10-18 20:05:00",
+            "encounters": [
+                {
+                    "encounterDatetime": "2023-10-18 20:05:00",
+                    "encounterType": "81888515-3f10-11e4-adec-0800271c1b75",
+                    "patient": "d1816a76-ca23-4b7a-aa1c-ae5e0fbf1145",
+                    "location": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f",
+                    "obs": [
+                        {
+                            "concept": {
+                                "conceptId": 55,
+                                "uuid": "84f626d0-3f10-11e4-adec-0800271c1b75"
+                            },
+                            "obsDatetime": "2023-10-15 02:40:08",
+                            "person": {
+                                "uuid": "d1816a76-ca23-4b7a-aa1c-ae5e0fbf1145"
+                            },
+                            "location":{
+                                "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                            },
+                            "groupMembers": [
+                                {
+                                    "concept": {
+                                        "conceptId": 4964,
+                                        "uuid": "9b1fa8e6-8209-4fcd-abd2-142887fc83e0"
+                                    },
+                                    "valueCoded": "60c86ea4-5a2d-4d72-8190-32e47d06e0fa",
+                                    "valueCodedName": "HTC, Buddy",
+                                    "obsDatetime": "2023-10-15 02:40:08",
+                                    "person": {
+                                        "uuid": "d1816a76-ca23-4b7a-aa1c-ae5e0fbf1145"
+                                    },
+                                    "location":{
+                                        "uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }
 ```
 
@@ -322,7 +395,6 @@ foreign key (patient_id) references patient(patient_id) on update cascade
 
 ### +++++++++++++++++++++CAG ENCOUNTER+++++++++++++++++++++
 
-<<<<<<< HEAD
 Create CAG Encounter (ART Follow-up(Encounter + Obs) + Prescription(drug order)):
 
 `POST http://localhost:8081/openmrs/ws/rest/v1/cagEncounter/`
@@ -669,9 +741,6 @@ Create CAG Encounter (ART Follow-up(Encounter + Obs) + Prescription(drug order))
 
 ```
 
-=======
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
-
 `Add cag_encounter table:`
 
 ```
@@ -714,8 +783,6 @@ CREATE TABLE `cag_encounter` (
 )
 ```
 
-<<<<<<< HEAD
-=======
 Sample Test JSON Data (Represents ART Follow-up form(Encounter) + Prescription(drug order)):
 
 `POST http://localhost:8081/openmrs/ws/rest/v1/cagVisit`
@@ -888,7 +955,6 @@ Sample Test JSON Data (Represents ART Follow-up form(Encounter) + Prescription(d
     }
 }```
 
->>>>>>> 1889e1f64373608034fcb29d3a384f5d5240956a
 ### +++++++++++ Concepts Used (ART Followup Encounter) +++++++++++
 
 Type of client -  3843
