@@ -96,17 +96,34 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	@Override
 	public Patient saveCagPatient(CagPatient cagPatient) {
 		Integer cagId = getCagByUuid(cagPatient.getCagUuid()).getId();
-		cagPatient.setCagId(cagId);
-		
+		final List<Patient> cagPatients = getCagPatientList(cagId);
+		//		List<Cag> cagsList = getCagList();
 		Patient patient = Context.getPatientService().getPatientByUuid(cagPatient.getUuid());
-		Integer patientId = patient.getPatientId();
-		cagPatient.setPatientId(patientId);
-		
-		cagPatient.setStatus(true);
-		
-		dao.saveCagPatient(cagPatient);
-		
-		return patient;
+		if (!(cagPatients.contains(patient))) {
+			List<CagPatient> cagPatientArrayList = dao.getAllCagPatients();
+			CagPatient cagPatientFound = Context.getService(CagService.class).getCagPatientByUuid(patient.getUuid());
+			if ((cagPatientArrayList.contains(cagPatientFound)) && cagPatientFound.getStatus()) {
+				
+				throw new IllegalArgumentException("WARNING!! Patient Already a member of another CAG:" + " "
+				        + Context.getService(CagService.class).getCagById(cagPatientFound.getCagId()).getName());
+			} else {
+				
+				cagPatient.setCagId(cagId);
+				
+				Integer patientId = patient.getPatientId();
+				
+				cagPatient.setPatientId(patientId);
+				
+				cagPatient.setStatus(true);
+				
+				dao.saveCagPatient(cagPatient);
+				return patient;
+			}
+			
+		} else {
+			//			JsonParseException exception;
+			throw new IllegalArgumentException("WARNING!! Patient Already on this CAG.");
+		}
 	}
 	
 	@Override

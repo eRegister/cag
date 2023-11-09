@@ -16,6 +16,7 @@ import org.openmrs.module.cag.cag.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -152,7 +153,7 @@ public class HibernateCagDao implements CagDao {
 	@Override
 	public List<Patient> getCagPatientList(Integer cagId) {
 		List<Integer> idList = getPatientIdList(cagId);
-		
+		List<Patient> emptyList = Collections.<Patient> emptyList();
 		if (!idList.isEmpty()) {
 			PatientService patientService = Context.getPatientService();
 			List<Patient> cagPatientList = new ArrayList<Patient>();
@@ -164,7 +165,7 @@ public class HibernateCagDao implements CagDao {
 			return cagPatientList;
 		}
 		
-		return null;
+		return emptyList;
 	}
 	
 	@Override
@@ -410,5 +411,14 @@ public class HibernateCagDao implements CagDao {
 		if (!tx.wasCommitted())
 			tx.commit();
 		
+	}
+	
+	public List<CagPatient> getAllCagPatients() {
+		Transaction tx = getSession().beginTransaction();
+		Query query = getSession().createQuery("From cag_patient");
+		List<CagPatient> cagPatientList = query.list();
+		if (!tx.wasCommitted())
+			tx.commit();
+		return cagPatientList;
 	}
 }

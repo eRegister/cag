@@ -70,4 +70,6 @@ public interface CagDao {
 	
 	void deleteCagEncounter(String uuid);
 	
+	public List<CagPatient> getAllCagPatients();
+	
 }
