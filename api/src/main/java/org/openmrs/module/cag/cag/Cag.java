@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 @Entity(name = "cag")
 @AttributeOverride(name = "creator", column = @Column(name = "created_by"))
-@JsonIgnoreProperties({ "creator", "changedBy" })
+//@JsonIgnoreProperties({ "creator", "changedBy" })
 public class Cag extends BaseOpenmrsData {
 	
 	@Id

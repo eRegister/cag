@@ -36,10 +36,7 @@ public class HibernateCagDao implements CagDao {
 	public Cag getCagById(Integer cagId) {
 		Transaction tx = getSession().beginTransaction();
 		
-		Query query = getSession().createQuery("from cag c where c.id=:id and c.voided=:voided");
-		query.setInteger("voided", 0);
-		query.setInteger("id", cagId);
-		Cag cag = (Cag) query.uniqueResult();
+		Cag cag = (Cag) getSession().get(Cag.class, cagId);
 		
 		if (!tx.wasCommitted())
 			tx.commit();
@@ -370,6 +367,8 @@ public class HibernateCagDao implements CagDao {
 		query.setInteger("voided", 0);
 		query.setString("uuid", uuid);
 		CagEncounter cagEncounter = (CagEncounter) query.uniqueResult();
+		if (cagEncounter == null)
+			System.out.println("Did not find the cagEncouter!!!");
 		
 		if (!tx.wasCommitted())
 			tx.commit();

@@ -9,6 +9,7 @@ import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
@@ -48,11 +49,11 @@ public class CagEncounterResource extends DelegatingCrudResource<CagEncounter> {
 	
 	@Override
 	public CagEncounter getByUniqueId(String uuid) {
-		System.out.println("getByUniqueId id being called!!!");
-		CagEncounter cagEncounter = getService().getCagEncounterByUuid(uuid);
-		System.out.println(cagEncounter);
+		//		System.out.println("getByUniqueId id being called!!!");
+		//		CagEncounter cagEncounter = getService().getCagEncounterByUuid(uuid);
+		//		System.out.println(cagEncounter);
 		
-		return cagEncounter;
+		return getService().getCagEncounterByUuid(uuid);
 	}
 	
 	@Override
@@ -60,6 +61,9 @@ public class CagEncounterResource extends DelegatingCrudResource<CagEncounter> {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addProperty("cag");
 		description.addProperty("cagVisit");
+		description.addProperty("location");
+		description.addProperty("attender");
+		description.addProperty("cagEncounterDateTime");
 		description.addProperty("nextEncounterDate");
 		description.addProperty("encounters");
 		return description;
@@ -73,21 +77,31 @@ public class CagEncounterResource extends DelegatingCrudResource<CagEncounter> {
 			description = new DelegatingResourceDescription();
 			
 			description.addProperty("uuid");
-			description.addProperty("nextEncounterDate");
+			description.addProperty("cagEncounterDateTime");
+			description.addProperty("cag", Representation.REF);
 			
-			description.addSelfLink();
 			description.addLink("full", ".?v=full");
 		} else if (representation instanceof FullRepresentation) {
 			description = new DelegatingResourceDescription();
 			
 			description.addProperty("uuid");
+			description.addProperty("cagEncounterDateTime");
 			description.addProperty("nextEncounterDate");
+			description.addProperty("cag", Representation.REF);
+			description.addProperty("attender", Representation.REF);
+			description.addProperty("location", Representation.REF);
+			description.addProperty("encounters", Representation.REF);
 			
 			description.addSelfLink();
-		} else {
+		} else if (representation instanceof RefRepresentation) {
+			description = new DelegatingResourceDescription();
+			
 			description.addProperty("uuid");
+			description.addProperty("cagEncounterDateTime");
 			description.addProperty("nextEncounterDate");
-			description.addSelfLink();
+			description.addProperty("cag", Representation.REF);
+			
+			description.addLink("full", ".?v=full");
 		}
 		
 		return description;

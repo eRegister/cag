@@ -187,6 +187,8 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		CagEncounter cagEncounter = new CagEncounter();
 		cagEncounter.setCag(cagVisit.getCag());
 		cagEncounter.setCagVisit(savedCagVisit);
+		cagEncounter.setAttender(cagVisit.getAttender());
+		cagEncounter.setCagEncounterDateTime(cagVisit.getDateStarted());
 		
 		for (Visit currentVisit : visits) {
 			cagEncounter.getEncounters().add(currentVisit.getNonVoidedEncounters().get(0));
@@ -335,7 +337,10 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	
 	@Override
 	public CagEncounter getCagEncounterByUuid(String uuid) {
+		
+		System.out.println("About to fetch CAG Encounter : " + uuid);
 		CagEncounter cagEncounter = dao.getCagEncounterByUuid(uuid);
+		System.out.println("Fetched CAG Encounter : " + cagEncounter.getCag());
 		
 		//		String displayed = dao.getCagById(cagEncounter.getCagId()).getName() + " @ "
 		//		        + Context.getLocationService().getLocation(cagEncounter.getLocationId()) + " - From "
@@ -344,66 +349,18 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		return cagEncounter;
 	}
 	
-	public Set<Obs> copyGroupMembers(Obs currentObs, Patient currentPatient) {
-		Set<Obs> newGroupMembers = new HashSet<Obs>();
-		
-		Set<Obs> currentObsGroupMembers = currentObs.getGroupMembers(false);
-		for (Obs currentObsGroupMember : currentObsGroupMembers) {
-			Integer conceptId = currentObsGroupMember.getConcept().getConceptId();
-			
-			if (COPABLE_CONCEPTS.contains(conceptId)) {
-				
-				Obs newObs = new Obs(currentPatient, currentObsGroupMember.getConcept(), currentObs.getObsDatetime(),
-				        currentObs.getLocation());
-				//				newObs.setValueText(currentObsGroupMember.getValueText());
-				//				newObs.setValueNumeric(currentObsGroupMember.getValueNumeric());
-				//				newObs.setValueDatetime(currentObsGroupMember.getValueDatetime());
-				//				newObs.setValueCoded(currentObsGroupMember.getValueCoded());
-				//				newObs.setValueCodedName(currentObsGroupMember.getValueCodedName());
-				
-				if (conceptId == 3843) {
-					newObs.setConcept(new Concept(3841));
-					
-				} else if (conceptId == 2250) {
-					try {
-						List<Obs> artRegimenObs = Context.getObsService().getObservationsByPersonAndConcept(currentPatient,
-						    currentObs.getConcept());
-						//						System.out.println("For patient : " + currentPatient + " \n artRegimenObs : "
-						//								+ artRegimenObs.toString());
-						
-						Concept previousValueConded = artRegimenObs.get(0).getValueCoded();
-						//						System.out.println("previousValueConded : " + previousValueConded);
-						
-						newObs.setValueCoded(previousValueConded);
-						
-					}
-					catch (APIException e) {
-						System.out.println("CAG Member (" + currentPatient.getNames()
-						        + ") has no previous ART Consultation (Intake / Followup)");
-					}
-					
-				}
-				
-				if (currentObsGroupMember.hasGroupMembers())
-					newObs.setGroupMembers(copyGroupMembers(currentObsGroupMember, currentPatient));
-				
-				newGroupMembers.add(newObs);
-			}
-			
-		}
-		
-		return newGroupMembers;
-	}
-	
 	@Override
 	public CagEncounter saveCagEncounter(CagEncounter cagEncounter) {
 		
-		Integer cagId = Context.getService(CagService.class).getCagByUuid(cagEncounter.getCag().getUuid()).getId();
-		CagVisit cagVisit = getCagVisitByUuid(cagEncounter.getCagVisit().getUuid());
+		//		Integer cagId = Context.getService(CagService.class).getCagByUuid(cagEncounter.getCag().getUuid()).getId();
+		//		CagVisit cagVisit = getCagVisitByUuid(cagEncounter.getCagVisit().getUuid());
 		
-		cagEncounter.setCagId(cagId);
-		cagEncounter.setCagVisitId(cagVisit.getId());
+		//		cagEncounter.setCagId(cagId);
+		//		cagEncounter.setCagVisitId(cagVisit.getId());
 		cagEncounter.setCreator(Context.getAuthenticatedUser());
+		
+		System.out.println("About to save Cag Encounter");
+		
 		dao.saveCagEncounter(cagEncounter);
 		
 		Set<Encounter> encounters = cagEncounter.getEncounters();
