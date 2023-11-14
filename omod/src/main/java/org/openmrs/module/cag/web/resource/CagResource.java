@@ -4,13 +4,13 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.cag.api.CagService;
 import org.openmrs.module.cag.cag.Cag;
-import org.openmrs.module.cag.cag.CagPatient;
 import org.openmrs.module.cag.web.controller.CagController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.api.Updatable;
@@ -21,16 +21,9 @@ import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOp
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.awt.print.Pageable;
 import java.util.List;
-import java.util.UUID;
 
-//@Resource(name = "v1/cag", supportedClass = Cag.class, supportedOpenmrsVersions = { "1.8.*", "2.1.*", "2.4.*" })
 @Resource(name = RestConstants.VERSION_1 + CagController.CAG_NAMESPACE, supportedClass = Cag.class, supportedOpenmrsVersions = {
         "1.8.*", "2.1.*", "2.4.*" })
 @Component
@@ -81,8 +74,7 @@ public class CagResource extends DelegatingCrudResource<Cag> implements Updatabl
 		updatingCag.setVillage(propertiesToUpdate.get("village").toString());
 		updatingCag.setDistrict(propertiesToUpdate.get("district").toString());
 		
-		Cag updatedCag = getService().updateCag(updatingCag);
-		return updatedCag;
+		return getService().updateCag(updatingCag);
 	}
 	
 	@Override
@@ -98,10 +90,6 @@ public class CagResource extends DelegatingCrudResource<Cag> implements Updatabl
 		description.addProperty("creator");
 		
 		return description;
-	}
-	
-	public void addProperty(String propertyName) {
-		getUpdatableProperties().addProperty(propertyName);
 	}
 	
 	@Override
@@ -126,9 +114,10 @@ public class CagResource extends DelegatingCrudResource<Cag> implements Updatabl
 			description.addProperty("uuid");
 			description.addProperty("name");
 			description.addProperty("description");
-			description.addProperty("constituency", Representation.REF);
 			description.addProperty("village");
-			description.addProperty("cagPatientList");
+			description.addProperty("constituency");
+			description.addProperty("district");
+			description.addProperty("dateCreated");
 			
 			description.addSelfLink();
 			description.addLink("full", ".?v=full");
@@ -136,18 +125,23 @@ public class CagResource extends DelegatingCrudResource<Cag> implements Updatabl
 			description = new DelegatingResourceDescription();
 			
 			description.addProperty("uuid");
-			description.addProperty("id");
 			description.addProperty("name");
 			description.addProperty("description");
-			description.addProperty("constituency", Representation.REF);
+			description.addProperty("village");
+			description.addProperty("constituency");
+			description.addProperty("district");
+			description.addProperty("dateCreated");
+			description.addProperty("cagPatientList", Representation.REF);
+			description.addProperty("creator", Representation.REF);
 			
 			description.addSelfLink();
-		} else {
+		} else if (representation instanceof RefRepresentation) {
 			description = new DelegatingResourceDescription();
 			
 			description.addProperty("uuid");
 			description.addProperty("name");
-			description.addSelfLink();
+			
+			description.addLink("full", ".?v=full");
 		}
 		
 		return description;

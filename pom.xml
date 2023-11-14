@@ -55,4 +55,14 @@
     <properties>
         <openmrsPlatformVersion>1.11.6</openmrsPlatformVersion>
     </properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>emrapi-api-1.12</artifactId>
+			<version>1.24.5</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
 </project>
