@@ -9,6 +9,7 @@
  */
 package org.openmrs.module.cag.cag;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Patient;
 import org.openmrs.User;
@@ -22,6 +23,7 @@ import javax.persistence.*;
  * Please note that a corresponding table schema must be created in liquibase.xml.
  */
 
+@JsonIgnoreProperties({ "uuid" })
 @Repository
 @Entity(name = "cag_patient")
 @Table(name = "cag_patient")
@@ -32,32 +34,11 @@ public class CagPatient {
 	@Column(name = "cag_patient_id")
 	private Integer cagPatientId;
 	
-	@Transient
-	@JoinColumn(name = "patient_id")
-	@ManyToOne
-	Patient patient;
-	
 	@Column(name = "uuid")
-	private String patientUuid;
+	private String uuid;
 	
 	@Transient
 	private String cagUuid;
-	
-	public String getPatientUuid() {
-		return patientUuid;
-	}
-	
-	public void setPatientUuid(String patientUuid) {
-		this.patientUuid = patientUuid;
-	}
-	
-	public String getCagUuid() {
-		return cagUuid;
-	}
-	
-	public void setCagUuid(String cagUuid) {
-		this.cagUuid = cagUuid;
-	}
 	
 	@Column(name = "cag_id")
 	private Integer cag_id;
@@ -68,6 +49,22 @@ public class CagPatient {
 	@Basic
 	@Column(name = "status")
 	private boolean status;
+	
+	public void setUuid(String patientUuid) {
+		this.uuid = patientUuid;
+	}
+	
+	public String getUuid() {
+		return uuid;
+	}
+	
+	public String getCagUuid() {
+		return cagUuid;
+	}
+	
+	public void setCagUuid(String cagUuid) {
+		this.cagUuid = cagUuid;
+	}
 	
 	public void setCagPatientId(Integer cagPatientId) {
 		this.cagPatientId = cagPatientId;
@@ -104,6 +101,6 @@ public class CagPatient {
 	@Override
 	public String toString() {
 		return "CagPatient{" + "cagPatientId=" + cagPatientId + ", cag_id=" + cag_id + ", patient_id=" + patient_id
-		        + ", status=" + status + '}';
+		        + ", status=" + status + ",uuid=" + uuid + '}';
 	}
 }

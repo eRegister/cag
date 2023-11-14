@@ -1,36 +1,75 @@
 package org.openmrs.module.cag.api.db;
 
+import org.hibernate.Query;
+import org.hibernate.Transaction;
+import org.openmrs.Encounter;
 import org.openmrs.Patient;
-import org.openmrs.module.cag.cag.Cag;
-import org.openmrs.module.cag.cag.CagPatient;
+import org.openmrs.Visit;
+import org.openmrs.module.cag.cag.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository("cag.CagDao")
 public interface CagDao {
 	
-	public Cag getCagById(Integer cagId);
+	Cag getCagById(Integer cagId);
 	
-	public List<Cag> getCagList();
+	List<Cag> getCagList();
 	
-	public void saveCag(Cag cag);
+	void saveCag(Cag cag);
 	
-	public Cag getCagByUuid(String uuid);
+	Cag getCagByUuid(String uuid);
 	
-	public Cag updateCag(Cag cag);
+	Cag updateCag(Cag cag);
 	
-	public CagPatient getCagPatientById(Integer cagPatientId);
+	CagPatient getCagPatientById(Integer cagPatientId);
 	
-	public List<Patient> getCagPatientList(Integer cagId);
+	List<Patient> getCagPatientList(Integer cagId);
 	
-	public void saveCagPatient(CagPatient cagPatient);
+	void saveCagPatient(CagPatient cagPatient);
 	
 	void deletePatientFromCag(Integer patientId);
 	
-	public void deleteCag(String uuid);
+	void deleteCag(String uuid);
 	
-	public List<Integer> getPatientIdList(Integer cagId);
+	List<Integer> getPatientIdList(Integer cagId);
 	
 	void clearCag(Integer cagId);
+	
+	CagPatient getCagPatientByUuid(String uuid);
+	
+	CagVisit saveCagVisit(CagVisit cagVisit);
+	
+	CagVisit getCagVisitByUuid(String uuid);
+	
+	CagVisit getCagVisitById(Integer id);
+	
+	void deleteCagVisit(Integer visitId);
+	
+	CagVisit closeCagVisit(String cagVisitUuid, String dateStopped);
+	
+	List<Visit> getCagVisits(Integer cagId);
+	
+	Visit getVisit(Patient patient, String dateStarted);
+	
+	void saveAbsentCagPatient(Absentee absentee);
+	
+	List<Absentee> getAbsenteeList(Integer visitId);
+	
+	void closeCagPatientVisit(Patient patient, String startDate, String dateStopped);
+	
+	//	void closeCagPatientVisit(String uuid, Date dateStopped);
+	
+	CagEncounter getCagEncounterByUuid(String uuid);
+	
+	void saveCagEncounter(CagEncounter cagEncounter);
+	
+	void saveCagPatientEncounter(Encounter encounter);
+	
+	void deleteCagEncounter(String uuid);
+	
+	public List<CagPatient> getAllCagPatients();
+	
 }

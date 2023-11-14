@@ -16,16 +16,8 @@ import java.util.List;
 @Repository
 @Entity(name = "cag")
 @AttributeOverride(name = "creator", column = @Column(name = "created_by"))
-@JsonIgnoreProperties({ "creator", "changedBy" })
+//@JsonIgnoreProperties({ "creator", "changedBy" })
 public class Cag extends BaseOpenmrsData {
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 	@Id
 	@GeneratedValue
@@ -46,6 +38,14 @@ public class Cag extends BaseOpenmrsData {
 	@ManyToMany
 	@JoinTable(name = "cag_patient", joinColumns = { @JoinColumn(name = "cag_id") }, inverseJoinColumns = { @JoinColumn(name = "id") })
 	private List<Patient> cagPatientList;
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public List<Patient> getCagPatientList() {
 		return cagPatientList;

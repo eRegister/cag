@@ -11,4 +11,38 @@
 	<packaging>jar</packaging>
 	<name>Cag API</name>
 	<description>API project for Cag</description>
+
+	<dependencies>
+<!--		<dependency>-->
+<!--			<groupId>org.openmrs.module</groupId>-->
+<!--			<artifactId>emrapi</artifactId>-->
+<!--			<version>1.24.5</version>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.openmrs.module</groupId>-->
+<!--			<artifactId>reporting</artifactId>-->
+<!--			<version>1.16.0</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.openmrs.module</groupId>-->
+<!--			<artifactId>calculation</artifactId>-->
+<!--			<version>1.2</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.openmrs.module</groupId>-->
+<!--			<artifactId>serialization.xstream</artifactId>-->
+<!--			<version>0.2.12</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.openmrs.module</groupId>-->
+<!--			<artifactId>providermanagement</artifactId>-->
+<!--			<version>2.5.0</version>-->
+<!--		</dependency>-->
+	</dependencies>
+
 </project>
