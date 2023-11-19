@@ -85,9 +85,7 @@ public class CagResource extends DelegatingCrudResource<Cag> implements Updatabl
 		description.addProperty("constituency");
 		description.addProperty("village");
 		description.addProperty("district");
-		description.addProperty("changed_by");
 		description.addProperty("date_changed");
-		description.addProperty("creator");
 		
 		return description;
 	}
@@ -100,7 +98,7 @@ public class CagResource extends DelegatingCrudResource<Cag> implements Updatabl
 		description.addProperty("constituency");
 		description.addProperty("village");
 		description.addProperty("district");
-		description.addProperty("uuid");
+		description.addProperty("cagPatientList");
 		return description;
 	}
 	
@@ -118,8 +116,8 @@ public class CagResource extends DelegatingCrudResource<Cag> implements Updatabl
 			description.addProperty("constituency");
 			description.addProperty("district");
 			description.addProperty("dateCreated");
+			description.addProperty("cagPatientList", Representation.REF);
 			
-			description.addSelfLink();
 			description.addLink("full", ".?v=full");
 		} else if (representation instanceof FullRepresentation) {
 			description = new DelegatingResourceDescription();

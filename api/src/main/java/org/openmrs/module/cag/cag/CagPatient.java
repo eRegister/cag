@@ -40,11 +40,19 @@ public class CagPatient {
 	@Transient
 	private String cagUuid;
 	
-	@Column(name = "cag_id")
-	private Integer cag_id;
+	//	@Column(name = "cag_id")
+	//	private Integer cag_id;
 	
-	@Column(name = "patient_id")
-	private Integer patient_id;
+	//	@Column(name = "patient_id")
+	//	private Integer patient_id;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "cag_id")
+	private Cag cag;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "patient_id")
+	private Patient patient;
 	
 	@Basic
 	@Column(name = "status")
@@ -74,20 +82,36 @@ public class CagPatient {
 		return cagPatientId;
 	}
 	
-	public void setPatientId(Integer patientId) {
-		this.patient_id = patientId;
+	//	public void setPatientId(Integer patientId) {
+	//		this.patient_id = patientId;
+	//	}
+	//
+	//	public Integer getPatientId() {
+	//		return patient_id;
+	//	}
+	//
+	//	public void setCagId(Integer cagId) {
+	//		this.cag_id = cagId;
+	//	}
+	//
+	//	public Integer getCagId() {
+	//		return cag_id;
+	//	}
+	
+	public Patient getPatient() {
+		return patient;
 	}
 	
-	public Integer getPatientId() {
-		return patient_id;
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 	
-	public void setCagId(Integer cagId) {
-		this.cag_id = cagId;
+	public Cag getCag() {
+		return cag;
 	}
 	
-	public Integer getCagId() {
-		return cag_id;
+	public void setCag(Cag cag) {
+		this.cag = cag;
 	}
 	
 	public void setStatus(boolean status) {
@@ -100,7 +124,7 @@ public class CagPatient {
 	
 	@Override
 	public String toString() {
-		return "CagPatient{" + "cagPatientId=" + cagPatientId + ", cag_id=" + cag_id + ", patient_id=" + patient_id
-		        + ", status=" + status + ",uuid=" + uuid + '}';
+		return "CagPatient{" + "cagPatientId=" + cagPatientId + ", cag=" + cag + ", patient=" + patient + ", status="
+		        + status + ",uuid=" + uuid + '}';
 	}
 }
