@@ -48,6 +48,35 @@ POST http://localhost:8081/openmrs/ws/rest/v1/cag
 }
 ```
 
+**OR**
+
+```
+{
+    "name": "Ratanang Matebele",
+    "description": "Youngsters from Thaba-Ts'oeu",
+    "constituency": "Thaba-Ts'oeu",
+    "village": "Mafika-Lisiu",
+    "district": "Mafeteng",
+    "cagPatientList": [
+        {
+            "uuid": "af4726dd-ba5b-456c-b30e-d30ef3893242"
+        },
+        {
+            "uuid": "86ed2240-e6e9-42ca-a167-69ff0e4781de"
+        },
+        {
+            "uuid": "532a3698-de39-41c4-87d0-002b5b608e48"
+        },
+        {
+            "uuid": "7d570d92-8e78-4aa6-bd1b-72a4e20ceb3b"
+        },
+        {
+            "uuid":"4e963c81-8f69-4458-930b-651666f8616b"
+        }
+    ]
+}
+```
+
 #### 2. Updating a CAG:
 
 `
@@ -70,18 +99,26 @@ e.g you can execute the following methods
 
 ` DELETE http://localhost:8081/openmrs/ws/rest/v1/cag/{uuid}`
 
-#### 3. Updating members of a CAG (CAG Patient)
+#### 3. Adding members to a CAG (CAG Patient)
 
 ` POST http://localhost:8081/openmrs/ws/rest/v1/cagPatient` 
 
 ```
 {
-    "cagUuid": "67d30e4-3c38-11ee-be56-0242ac120002",
-    "uuid": "24060928-89df-442b-8f43-a4ae138ada4c"
+    "cag": {
+        "uuid": "94edc0ce-d96b-493d-9e2b-13fa2a659eaf"
+    },
+    "patient": {
+        "uuid": "0934ab1b-07ca-4ebe-bd34-c7afbb89d3aa"
+    }
 }
 ```
+Retrieve CAG using patient uuid:
 
-To remove a member from any cag where they are active:
+`
+GET http://localhost:8081/openmrs/ws/rest/v1/cagPatient/cc8dd6f2-248a-4fc4-8012-5f01a40fe636`
+
+Deactivate a member from any cag where they are active:
 
 `
 DELETE http://localhost:8081/openmrs/ws/rest/v1/cagPatient/{UUID}`
