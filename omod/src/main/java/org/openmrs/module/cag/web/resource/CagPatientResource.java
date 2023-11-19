@@ -59,8 +59,10 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("cagUuid");
-		description.addProperty("uuid");
+		//		description.addProperty("cagUuid");
+		//		description.addProperty("uuid");
+		description.addProperty("cag");
+		description.addProperty("patient");
 		return description;
 	}
 	
@@ -71,27 +73,24 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 		if (representation instanceof DefaultRepresentation) {
 			description = new DelegatingResourceDescription();
 			
-			description.addProperty("cagPatientId");
-			description.addProperty("cagId");
-			description.addProperty("patientId");
 			description.addProperty("uuid");
+			description.addProperty("cag");
 			
 			description.addSelfLink();
 			description.addLink("full", ".?v=full");
 		} else if (representation instanceof FullRepresentation) {
 			description = new DelegatingResourceDescription();
 			
-			description.addProperty("cagPatientId");
-			description.addProperty("cagId");
-			description.addProperty("patientId");
 			description.addProperty("uuid");
+			description.addProperty("patient");
+			description.addProperty("cag");
 			
 			description.addSelfLink();
 		} else {
-			description.addProperty("cagPatientId");
-			description.addProperty("cagId");
-			description.addProperty("patientId");
+			
 			description.addProperty("uuid");
+			description.addProperty("cag");
+			
 			description.addSelfLink();
 		}
 		

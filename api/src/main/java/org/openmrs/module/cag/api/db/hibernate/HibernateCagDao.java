@@ -149,20 +149,35 @@ public class HibernateCagDao implements CagDao {
 	
 	@Override
 	public List<Patient> getCagPatientList(Integer cagId) {
-		List<Integer> idList = getPatientIdList(cagId);
-		List<Patient> emptyList = Collections.<Patient> emptyList();
-		if (!idList.isEmpty()) {
-			PatientService patientService = Context.getPatientService();
-			List<Patient> cagPatientList = new ArrayList<Patient>();
-			
-			for (Integer patatientId : idList) {
-				cagPatientList.add(patientService.getPatient(patatientId));
-			}
-			
-			return cagPatientList;
-		}
 		
-		return emptyList;
+		Cag cag = new Cag(cagId);
+		Transaction tx = getSession().beginTransaction();
+		
+		Query query = getSession().createQuery(
+		    "select p from cag_patient cp join cp.patient p where cp.cag=:cag and cp.status=:status");
+		query.setBoolean("status", true);
+		query.setParameter("cag", cag);
+		List<Patient> patients = query.list();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+		
+		return patients;
+		
+		//		List<Integer> idList = getPatientIdList(cagId);
+		//		List<Patient> emptyList = Collections.<Patient> emptyList();
+		//		if (!idList.isEmpty()) {
+		//			PatientService patientService = Context.getPatientService();
+		//			List<Patient> cagPatientList = new ArrayList<Patient>();
+		//
+		//			for (Integer patatientId : idList) {
+		//				cagPatientList.add(patientService.getPatient(patatientId));
+		//			}
+		//
+		//			return cagPatientList;
+		//		}
+		//
+		//		return emptyList;
 	}
 	
 	@Override

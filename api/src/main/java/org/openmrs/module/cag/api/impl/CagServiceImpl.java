@@ -63,10 +63,21 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	@Override
 	public void saveCag(Cag cag) {
 		
-		cag.setUuid(UUID.randomUUID().toString());
+		//		cag.setUuid(UUID.randomUUID().toString());
 		cag.setCreator(Context.getAuthenticatedUser());
 		cag.setVoided(false);
 		dao.saveCag(cag);
+		System.out.println("CAg ID : " + cag.getId());
+		
+		List<Patient> patients = cag.getCagPatientList();
+		
+		for (Patient currentPatient : patients) {
+			CagPatient newCagPatient = new CagPatient();
+			newCagPatient.setCag(cag);
+			newCagPatient.setPatient(currentPatient);
+			
+			saveCagPatient(newCagPatient);
+		}
 	}
 	
 	@Override
@@ -95,35 +106,27 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	
 	@Override
 	public Patient saveCagPatient(CagPatient cagPatient) {
-		Integer cagId = getCagByUuid(cagPatient.getCagUuid()).getId();
-		final List<Patient> cagPatients = getCagPatientList(cagId);
-		//		List<Cag> cagsList = getCagList();
-		Patient patient = Context.getPatientService().getPatientByUuid(cagPatient.getUuid());
-		if (!(cagPatients.contains(patient))) {
-			List<CagPatient> cagPatientArrayList = dao.getAllCagPatients();
-			CagPatient cagPatientFound = Context.getService(CagService.class).getCagPatientByUuid(patient.getUuid());
-			if ((cagPatientArrayList.contains(cagPatientFound)) && cagPatientFound.getStatus()) {
-				
-				throw new IllegalArgumentException("WARNING!! Patient Already a member of another CAG:" + " "
-				        + Context.getService(CagService.class).getCagById(cagPatientFound.getCagId()).getName());
-			} else {
-				
-				cagPatient.setCagId(cagId);
-				
-				Integer patientId = patient.getPatientId();
-				
-				cagPatient.setPatientId(patientId);
-				
-				cagPatient.setStatus(true);
-				
-				dao.saveCagPatient(cagPatient);
-				return patient;
-			}
+		
+		CagPatient retrivedCagPatient = getCagPatientByUuid(cagPatient.getPatient().getUuid());
+		
+		System.out.println("retrivedCagPatient : " + retrivedCagPatient);
+		
+		if ((retrivedCagPatient != null)) {
+			
+			throw new IllegalArgumentException("WARNING!! Patient : " + retrivedCagPatient.getPatient().getNames()
+			        + "(uuid=" + retrivedCagPatient.getPatient().getUuid() + ") " + " Already a member of another CAG:"
+			        + " " + retrivedCagPatient.getCag().getName());
 			
 		} else {
-			//			JsonParseException exception;
-			throw new IllegalArgumentException("WARNING!! Patient Already on this CAG.");
+			
+			cagPatient.setUuid(cagPatient.getPatient().getUuid());
+			cagPatient.setStatus(true);
+			
+			dao.saveCagPatient(cagPatient);
+			
+			return cagPatient.getPatient();
 		}
+		
 	}
 	
 	@Override
@@ -143,7 +146,11 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		
 		cag.setDateChanged(new Date());
 		cag.setChangedBy(Context.getAuthenticatedUser());
-		return dao.updateCag(cag);
+		
+		Cag updatedCag = dao.updateCag(cag);
+		updatedCag.setCagPatientList(getCagPatientList(updatedCag.getId()));
+		
+		return updatedCag;
 	}
 	
 	@Override
@@ -199,19 +206,6 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		return getCagVisitByUuid(savedCagVisit.getUuid());
 	}
 	
-	private Encounter getEncounter(Patient currentPatient, Visit savedVisit, Encounter attenderEncounter) {
-		
-		Encounter currentEncounter = new Encounter();
-		currentEncounter.setEncounterType(attenderEncounter.getEncounterType());
-		currentEncounter.setVisit(savedVisit);
-		currentEncounter.setLocation(attenderEncounter.getLocation());
-		currentEncounter.setForm(attenderEncounter.getForm());
-		currentEncounter.setPatient(currentPatient);
-		currentEncounter.setEncounterDatetime(attenderEncounter.getEncounterDatetime());
-		currentEncounter.setCreator(attenderEncounter.getCreator());
-		return currentEncounter;
-	}
-	
 	@Override
 	public CagVisit getCagVisitByUuid(String uuid) {
 		CagVisit retrievedCagVisit = dao.getCagVisitByUuid(uuid);
@@ -225,13 +219,12 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		Patient attender = Context.getPatientService().getPatient(retrievedCagVisit.getPatientId());
 		Visit attenderActiveVisitList = Context.getVisitService().getActiveVisitsByPatient(attender).get(0);
 		retrievedCagVisit.setAttenderVisit(attenderActiveVisitList);
-		//		retrievedCagVisit.setVisitList(attenderActiveVisitList);
 		
 		Map<String, String> absentees = getAbsentees(retrievedCagVisit);
 		retrievedCagVisit.setAbsentees(absentees);
 		
 		List<Patient> presentPatients = getPresentPatients(absentees.keySet(), retrievedCagVisit.getCagId());
-		//		String dateStarted = formatDateTime(retrievedCagVisit.getDateStarted());
+		
 		for (Patient currentPatient : presentPatients) {
 			if (currentPatient.getUuid() != attender.getUuid()) {
 				Visit patientVisit = Context.getVisitService().getActiveVisitsByPatient(currentPatient).get(0);
@@ -239,8 +232,6 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 			}
 			
 		}
-		
-		//		retrievedCagVisit.setPresentPatients(presentPatients);
 		
 		return retrievedCagVisit;
 	}
@@ -290,11 +281,9 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		}
 		catch (Exception e) {
 			stopDate = new Date();
-			System.out.println("Cought ParseException Exception!!!");
 			throw new ParseException("Date ParseException encountered!", 1);
 		}
 		finally {
-			System.out.println("dateStopped=================== " + stopDate);
 			
 			CagVisit cagVisit = dao.closeCagVisit(uuid, dateStopped);
 			
@@ -304,28 +293,10 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 			Integer cagId = cagVisit.getCagId();
 			Date visitStartDate = cagVisit.getDateStarted();
 			
-			List<Visit> presentPatientVisits = closePatientVisits(absenteeUuidSet, cagId, visitStartDate, dateStopped);
+			//			List<Visit> presentPatientVisits = closePatientVisits(absenteeUuidSet, cagId, visitStartDate, dateStopped);
 			
 			return cagVisit;
 		}
-	}
-	
-	public List<Visit> closePatientVisits(Set<String> absenteeUuidSet, Integer cagId, Date visitDate, String dateStopped) {
-		List<Visit> visitList = new ArrayList<Visit>();
-		VisitType visitType = Context.getVisitService().getVisitType(10);
-		
-		List<Patient> cagPatientList = getCagPatientList(cagId);
-		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String VisitTime = simpleDateFormat.format(visitDate);
-		
-		for (Patient presentPatient : cagPatientList) {
-			if (!absenteeUuidSet.contains(presentPatient.getUuid())) {
-				dao.closeCagPatientVisit(presentPatient, VisitTime, dateStopped);
-			}
-		}
-		
-		return visitList;
 	}
 	
 	@Override
@@ -342,40 +313,23 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 		CagEncounter cagEncounter = dao.getCagEncounterByUuid(uuid);
 		System.out.println("Fetched CAG Encounter : " + cagEncounter.getCag());
 		
-		//		String displayed = dao.getCagById(cagEncounter.getCagId()).getName() + " @ "
-		//		        + Context.getLocationService().getLocation(cagEncounter.getLocationId()) + " - From "
-		//		        + cagEncounter.getDateCreated() + " - " + cagEncounter.getNextEncounterDate();
-		
 		return cagEncounter;
 	}
 	
 	@Override
 	public CagEncounter saveCagEncounter(CagEncounter cagEncounter) {
-		
-		//		Integer cagId = Context.getService(CagService.class).getCagByUuid(cagEncounter.getCag().getUuid()).getId();
-		//		CagVisit cagVisit = getCagVisitByUuid(cagEncounter.getCagVisit().getUuid());
-		
-		//		cagEncounter.setCagId(cagId);
-		//		cagEncounter.setCagVisitId(cagVisit.getId());
 		cagEncounter.setCreator(Context.getAuthenticatedUser());
-		
-		System.out.println("About to save Cag Encounter");
-		
 		dao.saveCagEncounter(cagEncounter);
 		
 		Set<Encounter> encounters = cagEncounter.getEncounters();
-		
 		for (Encounter currentEncounter : encounters) {
 			dao.saveCagPatientEncounter(currentEncounter);
 			
-			int count = 1;
 			Set<Obs> topLevelObs = currentEncounter.getObsAtTopLevel(false);
 			for (Obs currentObs : topLevelObs) {
-				System.out.println(count);
-				System.out.println("Current obs : " + currentObs);
 				currentObs.setEncounter(currentEncounter);
 				Context.getObsService().saveObs(currentObs, "Saving Cag member Observation");
-				count += 1;
+				
 			}
 			if (!currentEncounter.getOrders().isEmpty()) {
 				Set<Order> orders = currentEncounter.getOrders();
@@ -390,9 +344,7 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 			
 		}
 		
-		System.out.println("When trying to get encounter by uuid : " + cagEncounter.getUuid());
 		CagEncounter cagEncounter1 = getCagEncounterByUuid(cagEncounter.getUuid());
-		System.out.println("\nFinally!!!!!!!!!1\n" + cagEncounter1);
 		
 		return cagEncounter1;
 	}
@@ -400,45 +352,6 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	@Override
 	public void deleteCagEncounter(String uuid) {
 		
-	}
-	
-	public String formatDateTime(Date date) {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String dateString = simpleDateFormat.format(date);
-		
-		return dateString;
-	}
-	
-	public Double computeQty(DrugOrder order) {
-		Double dose = order.getDose();
-		Double frequency = order.getFrequency().getFrequencyPerDay();
-		Integer duration = order.getDuration();
-		
-		Integer conceptId = order.getDurationUnits().getConceptId();
-		Integer durationUnits = (conceptId == 76) ? 1 : (conceptId == 93) ? 7 : 30;
-		
-		Double qty = dose * frequency * duration * durationUnits;
-		
-		System.out.println("\nQuantity : " + qty + "\n");
-		
-		return qty;
-	}
-	
-	public List<Visit> getPresentPatientVisits(CagVisit cagVisit) {
-		List<Visit> presentPatientVisits = new ArrayList<Visit>();
-		
-		List<Patient> cagPatientList = getCagPatientList(cagVisit.getCagId());
-		Set<String> absenteeUuidSet = getAbsentees(cagVisit).keySet();
-		
-		String VisitTime = formatDateTime(cagVisit.getDateStarted());
-		
-		for (Patient presentPatient : cagPatientList) {
-			if (!absenteeUuidSet.contains(presentPatient.getUuid())) {
-				Visit visit = dao.getVisit(presentPatient, VisitTime);
-				presentPatientVisits.add(visit);
-			}
-		}
-		return presentPatientVisits;
 	}
 	
 }
