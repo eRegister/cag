@@ -207,13 +207,16 @@ public class HibernateCagDao implements CagDao {
 	
 	@Override
 	public void deletePatientFromCag(Integer patientId) {
+		
+		Patient patient = new Patient(patientId);
+		
 		Transaction tx = getSession().beginTransaction();
 		
 		Query query = getSession().createQuery(
-		    "update cag_patient cp set cp.status=:inactive where cp.patient_id=:patientId and cp.status=:isActive");
+		    "update cag_patient cp set cp.status=:inactive where cp.patient=:patient and cp.status=:isActive");
 		query.setInteger("inactive", 0);
 		query.setInteger("isActive", 1);
-		query.setInteger("patientId", patientId);
+		query.setParameter("patient", patient);
 		query.executeUpdate();
 		
 		if (!tx.wasCommitted())
