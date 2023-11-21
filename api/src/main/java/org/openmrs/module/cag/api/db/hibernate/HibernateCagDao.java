@@ -265,6 +265,35 @@ public class HibernateCagDao implements CagDao {
 		return cagVisit;
 	}
 	
+	public List<CagVisit> getCagVisitList() {
+		Transaction tx = getSession().beginTransaction();
+		
+		Query query = getSession().createQuery("from cag_visit cv where cv.voided=:voided");
+		query.setInteger("voided", 0);
+		List<CagVisit> cagVisits = query.list();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+		
+		return cagVisits;
+	}
+	
+	@Override
+	public List<CagVisit> getAttenderActiveCagVisitList(Patient attender) {
+		Transaction tx = getSession().beginTransaction();
+		
+		Query query = getSession().createQuery(
+		    "from cag_visit cv where cv.attender=:attender and cv.voided=:voided and cv.dateStopped is null");
+		query.setInteger("voided", 0);
+		query.setParameter("attender", attender);
+		List<CagVisit> cagVisits = (List<CagVisit>) query.list();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+		
+		return cagVisits;
+	}
+	
 	public CagVisit getCagVisitById(Integer id) {
 		Transaction tx = getSession().beginTransaction();
 		

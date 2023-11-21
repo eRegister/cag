@@ -44,6 +44,10 @@ public interface CagDao {
 	
 	CagVisit getCagVisitByUuid(String uuid);
 	
+	List<CagVisit> getCagVisitList();
+	
+	List<CagVisit> getAttenderActiveCagVisitList(Patient attender);
+	
 	CagVisit getCagVisitById(Integer id);
 	
 	void deleteCagVisit(Integer visitId);

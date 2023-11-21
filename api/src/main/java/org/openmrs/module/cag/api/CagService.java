@@ -56,6 +56,8 @@ public interface CagService extends OpenmrsService {
 	
 	CagVisit getCagVisitByUuid(String uuid);
 	
+	List<CagVisit> getCagVisitList();
+	
 	void deleteCagVisit(String uuid);
 	
 	public CagVisit closeCagVisit(String uuid, String dateStopped);
