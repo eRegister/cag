@@ -15,6 +15,7 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import org.springframework.stereotype.Component;
@@ -45,14 +46,14 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 	
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
-		return super.doGetAll(context);
+		return new NeedsPaging<CagVisit>(getService().getCagVisitList(), context);
 	}
 	
 	@Override
 	public CagVisit getByUniqueId(String uuid) {
 		System.out.println("Get CagVisit By Uuid been called !!!");
 		CagVisit cagVisit = getService().getCagVisitByUuid(uuid);
-		System.out.println(cagVisit);
+		System.out.println("Our cagVisit : " + cagVisit);
 		
 		return cagVisit;
 	}
@@ -100,24 +101,27 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			description = new DelegatingResourceDescription();
 			
 			description.addProperty("uuid");
-			description.addProperty("display");
-			//			description.addProperty("presentPatients");
-			description.addProperty("attenderVisit");
-			description.addProperty("otherMemberVisits");
+			description.addProperty("dateStarted");
+			description.addProperty("dateStopped");
+			description.addProperty("cag", Representation.REF);
+			description.addProperty("attender", Representation.REF);
+			description.addProperty("visits");
+			//			description.addProperty("attenderVisit");
+			//			description.addProperty("otherMemberVisits");
 			description.addProperty("absentees");
 			
-			description.addSelfLink();
 			description.addLink("full", ".?v=full");
 		} else if (representation instanceof FullRepresentation) {
 			description = new DelegatingResourceDescription();
 			
 			description.addProperty("uuid");
-			description.addProperty("display");
+			description.addProperty("cag", Representation.REF);
+			description.addProperty("attender", Representation.REF);
 			description.addProperty("dateStarted");
 			description.addProperty("dateStopped");
-			//			description.addProperty("presentPatients");
-			description.addProperty("attenderVisit");
-			description.addProperty("otherMemberVisits");
+			description.addProperty("visits");
+			//			description.addProperty("attenderVisit");
+			//			description.addProperty("otherMemberVisits");
 			description.addProperty("absentees");
 			
 			description.addSelfLink();
@@ -125,13 +129,16 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			description = new DelegatingResourceDescription();
 			
 			description.addProperty("uuid");
-			description.addProperty("display");
-			//			description.addProperty("presentPatients");
-			description.addProperty("attenderVisit");
-			description.addProperty("otherMemberVisits");
+			description.addProperty("dateStarted");
+			description.addProperty("dateStopped");
+			description.addProperty("cag", Representation.REF);
+			description.addProperty("attender", Representation.REF);
+			description.addProperty("visits");
+			//			description.addProperty("attenderVisit");
+			//			description.addProperty("otherMemberVisits");
 			description.addProperty("absentees");
 			
-			description.addSelfLink();
+			description.addLink("full", ".?v=full");
 		}
 		
 		return description;
