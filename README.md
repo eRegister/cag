@@ -44,7 +44,8 @@ POST http://localhost:8081/openmrs/ws/rest/v1/cag
     "description": "Youngsters from Thaba-Ts'oeu",
     "constituency": "Thaba-Ts'oeu",
     "village": "Mafika-Lisiu",
-    "district": "Mafeteng"
+    "district": "Mafeteng",
+    "cagPatientList": []
 }
 ```
 
@@ -116,7 +117,7 @@ e.g you can execute the following methods
 Retrieve CAG using patient uuid:
 
 `
-GET http://localhost:8081/openmrs/ws/rest/v1/cagPatient/cc8dd6f2-248a-4fc4-8012-5f01a40fe636`
+GET http://localhost:8081/openmrs/ws/rest/v1/cagPatient/{UUID}`
 
 Deactivate a member from any cag where they are active:
 
@@ -125,10 +126,23 @@ DELETE http://localhost:8081/openmrs/ws/rest/v1/cagPatient/{UUID}`
 
 #### 4. Updating a CAG visit
 
-To open CAG Visit:
+Get CAG Visit by attender(patient):
+
+` GET http://localhost:8081/openmrs/ws/rest/v1/cagPatient/af4726dd-ba5b-456c-b30e-d30ef3893242 `
+
+Close CAG Visit:
+
+` POST http://localhost:8081/openmrs/ws/rest/v1/cagVisit/{uuid}`
+
+```
+{
+    "dateStopped": "2023-10-12 03:38:23"
+}
+```
+
+Open CAG Visit:
 
 ` POST http://localhost:8081/openmrs/ws/rest/v1/cagVisit `
-
 
 ```
 {
@@ -374,59 +388,6 @@ To open CAG Visit:
         }
     ]
 }
-```
-
-Close CAG Visit:
-
-` POST http://localhost:8081/openmrs/ws/rest/v1/cagVisit/{uuid}`
-
-```
-{
-    "dateStopped": "2023-10-12 03:38:23"
-}
-```
-
-`add cag_visit table:`
-
-```
-CREATE TABLE `cag_visit` (
-  `cag_visit_id` int(11) NOT NULL AUTO_INCREMENT,
-  `cag_id` int(11) DEFAULT NULL,
-  `uuid` varchar(38) NOT NULL,
-  `next_encounter_date` date DEFAULT NULL,
-  `creator` int(11) DEFAULT NULL,
-  `date_created` datetime DEFAULT NULL,
-  `date_changed` datetime DEFAULT NULL,
-  `changed_by` int(11) DEFAULT NULL,
-  `voided` tinyint(1) DEFAULT NULL,
-  `voided_by` int(11) DEFAULT NULL,
-  `date_voided` date DEFAULT NULL,
-  `void_reason` varchar(255) DEFAULT NULL,
-  `date_started` datetime DEFAULT NULL,
-  `date_stopped` datetime DEFAULT NULL,
-  `patient_id` int(11) DEFAULT NULL,
-  `location` varchar(255) DEFAULT NULL,
-  `visit_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`cag_visit_id`),
-  KEY `cag_id_fkey` (`cag_id`),
-  KEY `patient_id` (`patient_id`),
-  KEY `visit_id` (`visit_id`),
-  CONSTRAINT `cag_id_fkey` FOREIGN KEY (`cag_id`) REFERENCES `cag` (`cag_id`),
-  CONSTRAINT `cag_visit_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`) ON UPDATE CASCADE,
-  CONSTRAINT `cag_visit_ibfk_2` FOREIGN KEY (`visit_id`) REFERENCES `visit` (`visit_id`) ON UPDATE CASCADE
-);
-```
-`add missed_drug_pickup table:`
-
-```
-CREATE TABLE missed_drug_pickup(
-missed_drug_pickup_id int primary key auto_increment,
-cag_visit_id int,
-patient_id int,
-reason_missed varchar(255),
-foreign key (cag_visit_id) references cag_visit(cag_visit_id) on update cascade,
-foreign key (patient_id) references patient(patient_id) on update cascade
-);
 ```
 
 ### +++++++++++++++++++++CAG ENCOUNTER+++++++++++++++++++++
@@ -930,48 +891,6 @@ Create CAG Encounter (ART Follow-up(Encounter + Obs) + Prescription(drug order))
     ]    
 }
 
-```
-
-`Add cag_encounter table:`
-
-```
-CREATE TABLE `cag_encounter` (
-  `cag_encounter_id` int(11) NOT NULL AUTO_INCREMENT,
-  `cag_id` int(11) NOT NULL,
-  `cag_visit_id` int(11) DEFAULT NULL,
-  `encounter_id` int(11) DEFAULT NULL,
-  `patient_id` int(11) DEFAULT NULL,
-  `cag_encounter_datetime` datetime DEFAULT NULL,
-  `uuid` varchar(38) NOT NULL,
-  `next_encounter_date` date DEFAULT NULL,
-  `creator` int(11) DEFAULT NULL,
-  `date_created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `date_changed` datetime DEFAULT NULL,
-  `changed_by` int(11) DEFAULT NULL,
-  `voided` tinyint(1) DEFAULT '0',
-  `voided_by` int(11) DEFAULT NULL,
-  `date_voided` date DEFAULT NULL,
-  `void_reason` varchar(255) DEFAULT NULL,
-  `location_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`cag_encounter_id`),
-  UNIQUE KEY `uuid` (`uuid`),
-  KEY `cag_id` (`cag_id`),
-  KEY `cag_visit_id` (`cag_visit_id`),
-  KEY `encounter_id` (`encounter_id`),
-  KEY `patient_id` (`patient_id`),
-  KEY `changed_by` (`changed_by`),
-  KEY `creator` (`creator`),
-  KEY `voided_by` (`voided_by`),
-  KEY `location_id` (`location_id`),
-  CONSTRAINT `cag_encounter_ibfk_1` FOREIGN KEY (`cag_id`) REFERENCES `cag` (`cag_id`) ON UPDATE CASCADE,
-  CONSTRAINT `cag_encounter_ibfk_2` FOREIGN KEY (`cag_visit_id`) REFERENCES `cag_visit` (`cag_visit_id`) ON UPDATE CASCADE,
-  CONSTRAINT `cag_encounter_ibfk_3` FOREIGN KEY (`encounter_id`) REFERENCES `encounter` (`encounter_id`) ON UPDATE CASCADE,
-  CONSTRAINT `cag_encounter_ibfk_4` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`) ON UPDATE CASCADE,
-  CONSTRAINT `cag_encounter_ibfk_5` FOREIGN KEY (`changed_by`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE,
-  CONSTRAINT `cag_encounter_ibfk_6` FOREIGN KEY (`creator`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE,
-  CONSTRAINT `cag_encounter_ibfk_7` FOREIGN KEY (`voided_by`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE,
-  CONSTRAINT `cag_encounter_ibfk_8` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`) ON UPDATE CASCADE
-)
 ```
 
 ### +++++++++++ Concepts Used (ART Followup Encounter) +++++++++++
