@@ -159,6 +159,15 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	}
 	
 	@Override
+	public CagPatient getActiveCagVisitByAttender(String uuid) {
+		Patient attender = Context.getPatientService().getPatientByUuid(uuid);
+		CagPatient cagPatient = new CagPatient();
+		cagPatient.setActiveCagVisits(dao.getAttenderActiveCagVisitList(attender));
+		
+		return cagPatient;
+	}
+	
+	@Override
 	public CagVisit openCagVisit(CagVisit cagVisit) {
 		
 		cagVisit.setCreator(Context.getAuthenticatedUser());

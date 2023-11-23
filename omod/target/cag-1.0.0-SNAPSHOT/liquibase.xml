@@ -131,6 +131,20 @@
                                  referencedColumnNames="user_id" />
     </changeSet>
 
+    <changeSet id="cag_visit-2023-11-23-21-09" author="Moletsane">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="cag_visit"/>
+                <not><columnExists tableName="cag_visit" columnName="location"/></not>
+            </and>
+        </preConditions>
+        <comment>
+            Adding location column CAG Visit Table
+        </comment>
+        <addColumn tableName="cag_visit">
+            <column name="location" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 
     <changeSet id="missed_drug_pickup-2023-11-15-03-05" author="Moletsane">
         <preConditions onFail="MARK_RAN">
@@ -214,6 +228,36 @@
                                  referencedColumnNames="user_id" />
         <addForeignKeyConstraint constraintName="cag_encounter_voided_by_fkey" baseTableName="cag_encounter" baseColumnNames="voided_by"  referencedTableName="users"
                                  referencedColumnNames="user_id" />
+    </changeSet>
+
+    <changeSet id="cag_encounter-2023-11-23-21-13" author="Moletsane">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="cag_encounter"/>
+                <not><columnExists tableName="cag_encounter" columnName="cag_encounter_datetime"/></not>
+            </and>
+        </preConditions>
+        <comment>
+            Adding cag_encounter_datetime column to CAG Encounter Table
+        </comment>
+        <addColumn tableName="cag_encounter">
+            <column name="cag_encounter_datetime" type="datetime" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="cag_encounter-2023-11-23-21-24" author="Moletsane">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="cag_encounter"/>
+                <not><columnExists tableName="cag_encounter" columnName="next_encounter_date"/></not>
+            </and>
+        </preConditions>
+        <comment>
+            Adding cag_encounter_datetime column to CAG Encounter Table
+        </comment>
+        <addColumn tableName="cag_encounter">
+            <column name="next_encounter_date" type="datetime" />
+        </addColumn>
     </changeSet>
 
     <changeSet id="cag_encounter_encounter-2023-11-18-13-31" author="Moletsane">

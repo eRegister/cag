@@ -49,9 +49,9 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 	
 	@Override
 	public CagPatient getByUniqueId(String uuid) {
+		
 		System.out.println("getByUniqueId id being called!!!");
-		CagPatient cagPatient = getService().getCagPatientByUuid(uuid);
-		System.out.println(cagPatient);
+		CagPatient cagPatient = getService().getActiveCagVisitByAttender(uuid);
 		
 		return cagPatient;
 	}
@@ -59,8 +59,6 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		//		description.addProperty("cagUuid");
-		//		description.addProperty("uuid");
 		description.addProperty("cag");
 		description.addProperty("patient");
 		return description;
@@ -73,23 +71,19 @@ public class CagPatientResource extends DelegatingCrudResource<CagPatient> {
 		if (representation instanceof DefaultRepresentation) {
 			description = new DelegatingResourceDescription();
 			
-			description.addProperty("uuid");
-			description.addProperty("cag");
+			description.addProperty("activeCagVisits");
 			
 			description.addSelfLink();
 			description.addLink("full", ".?v=full");
 		} else if (representation instanceof FullRepresentation) {
 			description = new DelegatingResourceDescription();
 			
-			description.addProperty("uuid");
-			description.addProperty("patient");
-			description.addProperty("cag");
+			description.addProperty("activeCagVisits");
 			
 			description.addSelfLink();
 		} else {
 			
-			description.addProperty("uuid");
-			description.addProperty("cag");
+			description.addProperty("activeCagVisits");
 			
 			description.addSelfLink();
 		}

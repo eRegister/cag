@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Please note that a corresponding table schema must be created in liquibase.xml.
@@ -40,12 +41,6 @@ public class CagPatient {
 	@Transient
 	private String cagUuid;
 	
-	//	@Column(name = "cag_id")
-	//	private Integer cag_id;
-	
-	//	@Column(name = "patient_id")
-	//	private Integer patient_id;
-	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cag_id")
 	private Cag cag;
@@ -57,6 +52,9 @@ public class CagPatient {
 	@Basic
 	@Column(name = "status")
 	private boolean status;
+	
+	@Transient
+	private List<CagVisit> activeCagVisits;
 	
 	public void setUuid(String patientUuid) {
 		this.uuid = patientUuid;
@@ -82,22 +80,6 @@ public class CagPatient {
 		return cagPatientId;
 	}
 	
-	//	public void setPatientId(Integer patientId) {
-	//		this.patient_id = patientId;
-	//	}
-	//
-	//	public Integer getPatientId() {
-	//		return patient_id;
-	//	}
-	//
-	//	public void setCagId(Integer cagId) {
-	//		this.cag_id = cagId;
-	//	}
-	//
-	//	public Integer getCagId() {
-	//		return cag_id;
-	//	}
-	
 	public Patient getPatient() {
 		return patient;
 	}
@@ -120,6 +102,14 @@ public class CagPatient {
 	
 	public boolean getStatus() {
 		return status;
+	}
+	
+	public List<CagVisit> getActiveCagVisits() {
+		return activeCagVisits;
+	}
+	
+	public void setActiveCagVisits(List<CagVisit> activeCagVisits) {
+		this.activeCagVisits = activeCagVisits;
 	}
 	
 	@Override

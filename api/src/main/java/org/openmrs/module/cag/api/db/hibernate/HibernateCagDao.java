@@ -15,10 +15,7 @@ import org.openmrs.module.cag.api.db.CagDao;
 import org.openmrs.module.cag.cag.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class HibernateCagDao implements CagDao {
 	
@@ -236,6 +233,22 @@ public class HibernateCagDao implements CagDao {
 			tx.commit();
 		
 		return cagPatient;
+	}
+	
+	@Override
+	public List<CagPatient> getActiveCagVisitByAttender(Patient attender) {
+		System.out.println("attender : " + attender);
+		Transaction tx = getSession().beginTransaction();
+		
+		Query query = getSession().createQuery(
+		    "from cag_visit cv where cv.attender=:attender and cv.dateStopped is NULL and cv.voided=0");
+		query.setParameter("attender", attender);
+		List<CagPatient> activeCagVisit = (List<CagPatient>) query.list();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+		
+		return activeCagVisit;
 	}
 	
 	@Override

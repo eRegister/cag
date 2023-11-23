@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Repository("cag.CagDao")
 public interface CagDao {
@@ -39,6 +40,8 @@ public interface CagDao {
 	void clearCag(Integer cagId);
 	
 	CagPatient getCagPatientByUuid(String uuid);
+	
+	List<CagPatient> getActiveCagVisitByAttender(Patient attender);
 	
 	CagVisit saveCagVisit(CagVisit cagVisit);
 	
