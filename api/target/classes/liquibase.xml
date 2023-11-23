@@ -80,6 +80,9 @@
             <column name="status" type="boolean" defaultValue="true">
                 <constraints nullable="false"></constraints>
             </column>
+            <column name="uuid" type="varchar(38)">
+                <constraints nullable="false"/>
+            </column>
 
         </createTable>
         <addForeignKeyConstraint constraintName="cag_patient_cag_id_fk" baseTableName="cag_patient" baseColumnNames="cag_id"  referencedTableName="cag"
