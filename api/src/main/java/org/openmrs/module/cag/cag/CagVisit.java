@@ -26,9 +26,6 @@ public class CagVisit extends BaseOpenmrsData {
 	@Column(name = "date_stopped")
 	private Date dateStopped;
 	
-	//	@Column(name = "patient_id")
-	//	private int patientId;
-	
 	@Column(name = "location")
 	private String locationName;
 	
@@ -44,25 +41,8 @@ public class CagVisit extends BaseOpenmrsData {
 	@JoinTable(name = "cag_visit_visit", joinColumns = { @JoinColumn(name = "cag_visit_id") }, inverseJoinColumns = { @JoinColumn(name = "visit_id") })
 	private Set<Visit> visits = new HashSet<Visit>();
 	
-	//	@Transient
-	//	private Set<Visit> otherMemberVisits = new HashSet<Visit>();
-	//
-	//	@Transient
-	//	private Visit attenderVisit;
-	
 	@Transient
 	private Map<String, String> absentees = new HashMap<String, String>();
-	
-	//	@Transient
-	//	private String display;
-	//
-	//	public int getPatientId() {
-	//		return patientId;
-	//	}
-	//
-	//	public void setPatientId(int patientId) {
-	//		this.patientId = patientId;
-	//	}
 	
 	public String getLocationName() {
 		return locationName;
@@ -96,14 +76,6 @@ public class CagVisit extends BaseOpenmrsData {
 		this.visits = visits;
 	}
 	
-	//	public Set<Visit> getOtherMemberVisits() {
-	//		return otherMemberVisits;
-	//	}
-	//
-	//	public void setOtherMemberVisits(Set<Visit> otherMemberVisits) {
-	//		this.otherMemberVisits = otherMemberVisits;
-	//	}
-	
 	@Override
 	public Integer getId() {
 		return id;
@@ -122,14 +94,6 @@ public class CagVisit extends BaseOpenmrsData {
 		this.absentees = absentees;
 	}
 	
-	//	public String getDisplay() {
-	//		return display;
-	//	}
-	//
-	//	public void setDisplay(String display) {
-	//		this.display = display;
-	//	}
-	
 	public Cag getCag() {
 		return cag;
 	}
@@ -145,14 +109,6 @@ public class CagVisit extends BaseOpenmrsData {
 	public void setAttender(Patient attender) {
 		this.attender = attender;
 	}
-	
-	//	public Visit getAttenderVisit() {
-	//		return attenderVisit;
-	//	}
-	//
-	//	public void setAttenderVisit(Visit attenderVisit) {
-	//		this.attenderVisit = attenderVisit;
-	//	}
 	
 	@Override
 	public String toString() {

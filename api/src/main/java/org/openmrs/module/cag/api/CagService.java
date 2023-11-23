@@ -2,6 +2,7 @@ package org.openmrs.module.cag.api;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.openmrs.Patient;
 import org.openmrs.Visit;
@@ -49,6 +50,8 @@ public interface CagService extends OpenmrsService {
 	Cag updateCag(Cag cag);
 	
 	CagPatient getCagPatientByUuid(String uuid);
+	
+	CagPatient getActiveCagVisitByAttender(String uuid);
 	
 	//	CagVisit saveCagVisit(CagVisit cagVisit);
 	
