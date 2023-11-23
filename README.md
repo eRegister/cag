@@ -33,10 +33,11 @@ CAG Module endpoints
 ------------
 #### 1. CAG
 
+Adding CAG:
+
 `
 POST http://localhost:8081/openmrs/ws/rest/v1/cag
 `
-
 
 ```
 {
@@ -78,10 +79,10 @@ POST http://localhost:8081/openmrs/ws/rest/v1/cag
 }
 ```
 
-#### 2. Updating a CAG:
+Updating a CAG:
 
 `
-POST http://localhost:8081/openmrs/ws/rest/v1/cag/{uuid}
+POST http://localhost:8081/openmrs/ws/rest/v1/cag/{UUID}
 `
 
 ```
@@ -94,13 +95,21 @@ POST http://localhost:8081/openmrs/ws/rest/v1/cag/{uuid}
 }
 ```
 
-e.g you can execute the following methods
+Retrieve specific CAG:
 
-` GET http://localhost:8081/openmrs/ws/rest/v1/cag/{uuid}`
+` GET http://localhost:8081/openmrs/ws/rest/v1/cag/{UUID}`
 
-` DELETE http://localhost:8081/openmrs/ws/rest/v1/cag/{uuid}`
+Retrieve All CAGs:
 
-#### 3. Adding members to a CAG (CAG Patient)
+` GET http://localhost:8081/openmrs/ws/rest/v1/cag`
+
+Delete CAG:
+
+` DELETE http://localhost:8081/openmrs/ws/rest/v1/cag/{UUID}`
+
+#### 3. Members of a CAG (CAG Patients)
+
+Adding CAG Member:
 
 ` POST http://localhost:8081/openmrs/ws/rest/v1/cagPatient` 
 
@@ -114,25 +123,20 @@ e.g you can execute the following methods
     }
 }
 ```
-Retrieve CAG using patient uuid:
-
-`
-GET http://localhost:8081/openmrs/ws/rest/v1/cagPatient/{UUID}`
 
 Deactivate a member from any cag where they are active:
 
-`
-DELETE http://localhost:8081/openmrs/ws/rest/v1/cagPatient/{UUID}`
+` DELETE http://localhost:8081/openmrs/ws/rest/v1/cagPatient/{UUID}`
 
-#### 4. Updating a CAG visit
+#### 4. CAG visit
 
 Get CAG Visit by attender(patient):
 
-` GET http://localhost:8081/openmrs/ws/rest/v1/cagPatient/af4726dd-ba5b-456c-b30e-d30ef3893242 `
+` GET http://localhost:8081/openmrs/ws/rest/v1/cagPatient/{UUID} `
 
 Close CAG Visit:
 
-` POST http://localhost:8081/openmrs/ws/rest/v1/cagVisit/{uuid}`
+` POST http://localhost:8081/openmrs/ws/rest/v1/cagVisit/{UUID}`
 
 ```
 {
@@ -390,11 +394,15 @@ Open CAG Visit:
 }
 ```
 
-### +++++++++++++++++++++CAG ENCOUNTER+++++++++++++++++++++
+### 5. CAG ENCOUNTER
+
+Retrieve a Specific CAG Encounter:
+
+` GET http://localhost:8081/openmrs/ws/rest/v1/cagEncounter/{UUID}`
 
 Create CAG Encounter (ART Follow-up(Encounter + Obs) + Prescription(drug order)):
 
-`POST http://localhost:8081/openmrs/ws/rest/v1/cagEncounter/`
+` POST http://localhost:8081/openmrs/ws/rest/v1/cagEncounter `
 
 ```
 {
@@ -892,149 +900,3 @@ Create CAG Encounter (ART Follow-up(Encounter + Obs) + Prescription(drug order))
 }
 
 ```
-
-### +++++++++++ Concepts Used (ART Followup Encounter) +++++++++++
-
-Type of client -  3843
-e0bc761d-ac3b-4033-92c7-476304b9c5e8
-	
-    Coded
-	Treatment Buddy (3841)
-	ART patient (3842)
-
-Appointment scheduled - 3751
-ed064424-0331-47f6-9532-77156f40a014
-	
-    Coded
-	Yes (2146)
-	No (2147)
-	
-	
-ART, Follow-up date - 3752
-88489023-783b-4021-b7a9-05ca9877bf67
-
-ART Regimen - 2250
-13382e01-9f18-488b-b2d2-58ab54c82d82
-	Coded
-	1c=AZT-3TC-NVP (2201)
-	2c=AZT-3TC-LPV/r (2210)
-	1j=TDF-3TC-DTG (4678)
-	1k=ABC-3TC-DTG (4679)
-	..e.t.c
-	
-ARV drugs supply duration - 4174
-9eb00622-1078-4f7b-aa69-61e6c36db347
-	
-    Coded
-	HIVTC, Two weeks supply (4243)
-	HIVTC, One month supply (4175)
-	HIVTC, Two months supply (4176)
-	HIVTC, Three months supply (4177)
-	HIVTC, Four months supply (4245)
-	HIVTC, Five months supply (4246)
-	HIVTC, Six months supply (4247)
-	HIVTC, Seven+ months supply (4820)
-
-HIVTC, HIV care WHO Staging - 2224
-	95e1fc28-84ab-4971-8bb1-d8ee68ef5739
-	
-    Coded
-	Stage I (2167)
-	Stage II (2168)
-	Stage III (2169)
-	Stage IV (2170)
-	
-Cotrimoxazole adherence - 3726
-e8d05f4a-9c3f-4f99-941c-596f238f095f
-	
-    Coded
-	Good adherence (2305)
-	Fair adherence (2306)
-	Poor adherence (3702)
-	Not Applicable (1975)
-	
-Cotrimoxazole days dispensed - 3728
-3485a002-f72f-43fd-8ba7-0288273489da
-
-AHD Client - 4958
-c7b89a7a-af6e-4070-aa22-3b6cc35ad51f
-	Coded
-	Yes (2146)
-	
-### ========== Concepts Used (Drug Order) ==========
-
-Drug(From DB)
-	
-    Members
-	1c=AZT-3TC-NVP (2201)
-	2c=AZT-3TC-LPV/r (2210)
-	1j=TDF-3TC-DTG (4678) - 189a5fc2-d29b-4ce5-b3ca-dc5405228bfc
-	1k=ABC-3TC-DTG (4679
-	
-Quantity - 5397
-65015328-b2fb-4845-8d55-2df9391da698
-	
-Dose Quantity Units - 56
-7a0c56d-3f10-11e4-adec-0800271c1b75
-	
-    coded
-	Ayurvedic (332)
-	Tablet(s) (342)
-	Tablet(s) (342) - 86239663-7b04-4563-b877-d7efc4fe6c46
-	Drops (338)
-	Capsule(s) (357)
-	Capsule(s) (357)
-	Jelly (368)
-	Lotion (345)
-	ml (63)
-	Ointment (344)
-	mg (64)
-	IU (947)
-	Powder (343)
-	Solution (340)
-	Spray (341)
-	Unit(s) (948)
-
-
-Dosage Frequency - 4
-818f75fe-3f10-11e4-adec-0800271c1b75
-	
-    Coded
-	qD (5) - 8198989e-3f10-11e4-adec-0800271c1b75 (EVERY DAY==once a day)
-	BID (6) (TWICE A DAY)
-	TID (7)
-	QID (8)
-
-Drug Routes - 65
-9d697972-3f10-11e4-adec-0800271c1b75
-	
-    Set Members
-	Intramuscular (66)
-	Intravenous (67)
-	Oral (68)  - 9d6bc13f-3f10-11e4-adec-0800271c1b75
-	Per Vaginal (69)
-	Sub Cutaneous (70)
-	Per Rectum (71)
-	Sub Lingual (72)
-	Nasogastric (74)
-	Intradermal (963)
-	Intraperitoneal (964)
-	Intrathecal (965)
-	Intraosseous (966)
-	Topical (969)
-	Nasal (970)
-	Inhalation (971)
-	
-Date of Operation - 147 / Date - 996 (e605731b-2e81-41a9-8446-2ed442c339e2)
-c38ce391-3f10-11e4-adec-0800271c1b75
-
-
-Duration Units - 75
-9d735b63-3f10-11e4-adec-0800271c1b75
-	
-    Members
-	Day(s) (76) - 9d7437a9-3f10-11e4-adec-0800271c1b75
-	Hour(s) (92)
-	Week(s) (93)
-	Month(s) (94)
-	Minute(s) (976)
