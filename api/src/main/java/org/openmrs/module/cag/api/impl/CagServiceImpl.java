@@ -162,7 +162,19 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	public CagPatient getActiveCagVisitByAttender(String uuid) {
 		Patient attender = Context.getPatientService().getPatientByUuid(uuid);
 		CagPatient cagPatient = new CagPatient();
-		cagPatient.setActiveCagVisits(dao.getAttenderActiveCagVisitList(attender));
+		
+		List<CagVisit> retrievedCagVisitList = dao.getCagVisitList();
+		
+		for (CagVisit retrievedCagVisit : retrievedCagVisitList) {
+			
+			Map<String, String> absentees = getAbsentees(dao.getCagVisitByUuid(retrievedCagVisit.getUuid()));
+			retrievedCagVisit.setAbsentees(absentees);
+			Set<Visit> visits = retrievedCagVisit.getVisits();
+			retrievedCagVisit.setVisits(visits);
+			
+		}
+		
+		cagPatient.setActiveCagVisits(retrievedCagVisitList);
 		
 		return cagPatient;
 	}
@@ -233,7 +245,18 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	
 	@Override
 	public List<CagVisit> getCagVisitList() {
-		return dao.getCagVisitList();
+		
+		List<CagVisit> retrievedCagVisitList = dao.getCagVisitList();
+		
+		for (CagVisit retrievedCagVisit : retrievedCagVisitList) {
+			
+			Map<String, String> absentees = getAbsentees(dao.getCagVisitByUuid(retrievedCagVisit.getUuid()));
+			retrievedCagVisit.setAbsentees(absentees);
+			Set<Visit> visits = retrievedCagVisit.getVisits();
+			retrievedCagVisit.setVisits(visits);
+			
+		}
+		return retrievedCagVisitList;
 	}
 	
 	public Map<String, String> getAbsentees(CagVisit cagVisit) {

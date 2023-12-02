@@ -105,12 +105,12 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			description.addProperty("dateStopped");
 			description.addProperty("cag", Representation.REF);
 			description.addProperty("attender", Representation.REF);
-			description.addProperty("visits");
+			description.addProperty("visits", Representation.REF);
 			//			description.addProperty("attenderVisit");
 			//			description.addProperty("otherMemberVisits");
 			description.addProperty("absentees");
 			
-			description.addLink("full", ".?v=full");
+			description.addLink("default", ".?v=default");
 		} else if (representation instanceof FullRepresentation) {
 			description = new DelegatingResourceDescription();
 			
@@ -124,7 +124,7 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			//			description.addProperty("otherMemberVisits");
 			description.addProperty("absentees");
 			
-			description.addSelfLink();
+			description.addLink("full", ".?v=full");
 		} else {
 			description = new DelegatingResourceDescription();
 			
@@ -138,7 +138,6 @@ public class CagVisitResource extends DelegatingCrudResource<CagVisit> {
 			//			description.addProperty("otherMemberVisits");
 			description.addProperty("absentees");
 			
-			description.addLink("full", ".?v=full");
 		}
 		
 		return description;
