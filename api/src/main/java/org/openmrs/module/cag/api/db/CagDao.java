@@ -3,6 +3,7 @@ package org.openmrs.module.cag.api.db;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.openmrs.Encounter;
+import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.Visit;
 import org.openmrs.module.cag.cag.*;
@@ -75,7 +76,9 @@ public interface CagDao {
 	
 	void saveCagPatientEncounter(Encounter encounter);
 	
-	void deleteCagEncounter(String uuid);
+	void updateCagEncounter(String cagEncounterUuid, Location location, Date encounterDateTime, Date nextEncounterDateTime);
+	
+	void deleteCagEncounter(CagEncounter cagEncounter);
 	
 	public List<CagPatient> getAllCagPatients();
 	

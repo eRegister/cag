@@ -310,9 +310,9 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	@Override
 	public CagEncounter getCagEncounterByUuid(String uuid) {
 		
-		System.out.println("About to fetch CAG Encounter : " + uuid);
+		//		System.out.println("About to fetch CAG Encounter : " + uuid);
 		CagEncounter cagEncounter = dao.getCagEncounterByUuid(uuid);
-		System.out.println("Fetched CAG Encounter : " + cagEncounter.getCag());
+		//		System.out.println("Fetched CAG Encounter : " + cagEncounter.getCag());
 		
 		//		String displayed = dao.getCagById(cagEncounter.getCagId()).getName() + " @ "
 		//		        + Context.getLocationService().getLocation(cagEncounter.getLocationId()) + " - From "
@@ -371,7 +371,42 @@ public class CagServiceImpl extends BaseOpenmrsService implements CagService {
 	
 	@Override
 	public void deleteCagEncounter(String uuid) {
+		CagEncounter cagEncounter = getCagEncounterByUuid(uuid);
+		cagEncounter.setVoided(true);
 		
+		System.out.println("retrieved cagEncounter : " + cagEncounter.getUuid() + "\nVoided : " + cagEncounter.getVoided());
+		
+		Set<Encounter> encounters = cagEncounter.getEncounters();
+		for (Encounter currentEncounter : encounters) {
+			currentEncounter.setVoided(true);
+			System.out.println(" encounter : " + currentEncounter + "\nVoided : " + currentEncounter.getVoided());
+			
+			System.out.println("\n");
+			Set<Obs> obs = currentEncounter.getObs();
+			for (Obs currentObs : obs) {
+				currentObs.setVoided(true);
+				System.out.println(" obs : " + currentObs + "\nVoided : " + currentObs.getVoided());
+			}
+
+			System.out.println("\n\n========================");
+			
+		}
+		
+		dao.deleteCagEncounter(cagEncounter);
+	}
+	
+	@Override
+	public CagEncounter updateCagEncounter(String cagEncounterUuid, String locationUuid, Date encounterDateTime,
+	        Date nextEncounterDateTime) {
+		CagEncounter retrievedCagEncounter = dao.getCagEncounterByUuid(cagEncounterUuid);
+		System.out.println("========nextEncounterDateTime ====\n" + retrievedCagEncounter);
+		
+		Location location = Context.getLocationService().getLocation(locationUuid);
+		System.out.println("location: " + locationUuid);
+		
+		dao.updateCagEncounter(cagEncounterUuid, location, encounterDateTime, nextEncounterDateTime);
+		
+		return null;
 	}
 	
 	public String formatDateTime(Date date) {
