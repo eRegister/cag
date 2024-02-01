@@ -5,6 +5,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Encounter;
+import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.Visit;
 import org.openmrs.api.PatientService;
@@ -457,14 +458,39 @@ public class HibernateCagDao implements CagDao {
 	}
 	
 	@Override
-	public void deleteCagEncounter(String uuid) {
-		
+	public void updateCagEncounter(String cagEncounterUuid, Location location, Date encounterDateTime,
+	        Date nextEncounterDateTime) {
 		Transaction tx = getSession().beginTransaction();
 		
-		Query query = getSession().createQuery("update cag_encounter ce set ce.voided=:voided where ce.uuid=:uuid");
-		query.setInteger("voided", 1);
-		query.setString("uuid", uuid);
+		Query query = getSession().createQuery(
+		    "update cag_encounter ce set ce.location=:location,"
+		            + " ce.cagEncounterDateTime=:encounterDateTime, ce.nextEncounterDate=:nextEncounterDateTime"
+		            + " where ce.uuid=:cagEncounterUuid");
+		query.setString("cagEncounterUuid", cagEncounterUuid);
+		query.setParameter("encounterDateTime", encounterDateTime);
+		query.setParameter("nextEncounterDateTime", nextEncounterDateTime);
+		query.setParameter("location", location);
 		query.executeUpdate();
+		
+		//		Query query2 = getSession().createQuery(
+		//				"update Encounter e set e.location=:location, e.encounterDatetime=:encounterDateTime"
+		//						+ " where ce.uuid=:cagEncounterUuid");
+		//		query2.setString("cagEncounterUuid", cagEncounterUuid);
+		//		query2.setParameter("encounterDateTime", encounterDateTime);
+		//		query2.setParameter("nextEncounterDateTime", nextEncounterDateTime);
+		//		query2.setParameter("location", location);
+		//		query2.executeUpdate();
+		
+		if (!tx.wasCommitted())
+			tx.commit();
+	}
+	
+	@Override
+	public void deleteCagEncounter(CagEncounter cagEncounter) {
+		System.out.println("\n=========Executing DAO deleteCagEncounter=========\n");
+		Transaction tx = getSession().beginTransaction();
+		
+		getSession().update(cagEncounter);
 		
 		if (!tx.wasCommitted())
 			tx.commit();

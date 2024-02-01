@@ -1,9 +1,11 @@
 package org.openmrs.module.cag.web.resource;
 
+import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.cag.api.CagService;
 import org.openmrs.module.cag.cag.CagEncounter;
 import org.openmrs.module.cag.web.controller.CagController;
+import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
@@ -14,7 +16,12 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
+import org.springframework.expression.ParseException;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Resource(name = RestConstants.VERSION_1 + CagController.CAG_ENCOUNTER_NAMESPACE, supportedClass = CagEncounter.class, supportedOpenmrsVersions = {
         "1.8.*", "2.1.*", "2.4.*" })
@@ -49,11 +56,29 @@ public class CagEncounterResource extends DelegatingCrudResource<CagEncounter> {
 	
 	@Override
 	public CagEncounter getByUniqueId(String uuid) {
-		//		System.out.println("getByUniqueId id being called!!!");
-		//		CagEncounter cagEncounter = getService().getCagEncounterByUuid(uuid);
-		//		System.out.println(cagEncounter);
-		
 		return getService().getCagEncounterByUuid(uuid);
+	}
+	
+	@Override
+	public Object update(String uuid, SimpleObject propertiesToUpdate, RequestContext context) throws ResponseException {
+		System.out.println("Updating CAG Encounter!!\n\n");
+		
+		String locationUuid = propertiesToUpdate.get("location").toString();
+		Date encounterDateTime = formatDate(propertiesToUpdate.get("encounterDateTime").toString());
+		Date nextEncounterDateTime = formatDate(propertiesToUpdate.get("nextEncounterDate").toString());
+		
+		return getService().updateCagEncounter(uuid, locationUuid, encounterDateTime, nextEncounterDateTime);
+	}
+	
+	@Override
+	public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		
+		description.addProperty("location");
+		description.addProperty("encounterDateTime");
+		description.addProperty("nextEncounterDate");
+		
+		return description;
 	}
 	
 	@Override
@@ -115,6 +140,19 @@ public class CagEncounterResource extends DelegatingCrudResource<CagEncounter> {
 	
 	private CagService getService() {
 		return Context.getService(CagService.class);
+	}
+	
+	private Date formatDate(String dateString) {
+		Date date = null;
+		
+		try {
+			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
+		}
+		catch (Exception e) {
+			throw new ParseException(1, "Unable to parse provided date, expects format : yyyy-MM-dd HH:mm:ss " + e);
+		}
+		
+		return date;
 	}
 	
 }

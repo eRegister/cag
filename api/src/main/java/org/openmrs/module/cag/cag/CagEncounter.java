@@ -120,4 +120,10 @@ public class CagEncounter extends BaseOpenmrsData {
 		this.displayed = displayed;
 	}
 	
+	@Override
+	public String toString() {
+		return "CagEncounter{" + "id=" + id + ", cag=" + cag + ", cagVisit=" + cagVisit + ", location=" + location.getName()
+		        + ", attender=" + attender + ", cagEncounterDateTime=" + cagEncounterDateTime + ", nextEncounterDate="
+		        + nextEncounterDate + ", encounters=" + encounters + ", displayed='" + displayed + '\'' + '}';
+	}
 }
